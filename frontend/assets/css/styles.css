@@ -1,0 +1,37 @@
+html {
+  overflow-x: hidden;
+}
+body {
+  background-color: #f3f3f3;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+.inline {
+  display: flex;
+  align-items: flex-start;
+}
+.middle {
+  vertical-align: middle;
+}
+.wrapper {
+  min-height: calc(100vh - 65px);
+}
+.mainContent {
+  margin-top: 30px;
+}
+.navBar {
+  color: white;
+  justify-content: flex-start !important;
+}
+.footer {
+  float: right;
+  padding-right: 10%;
+  font-size: 13px;
+  color: #95989b;
+  height: 2.5rem;
+}
+.link {
+  color: #5e72e4;
+  cursor: pointer;
+}

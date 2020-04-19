@@ -1,0 +1,33 @@
+{
+  "name": "TopfGame",
+  "version": "0.9.9",
+  "description": "Party game with friends ",
+  "main": "server/app.js",
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.9",
+    "path": "^0.12.7",
+    "ws": "^7.2.3"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2"
+  },
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "cross-env NODE_ENV=development nodemon server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mirobit/TopfGame/labelit"
+  },
+  "author": "Michael Rotarius",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mirobit/TopfGame/issues"
+  },
+  "homepage": "https://github.com/Mirobit/TopfGame#readme"
+}
