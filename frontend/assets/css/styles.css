@@ -35,3 +35,8 @@ body {
   color: #5e72e4;
   cursor: pointer;
 }
+
+.headerText {
+  font-size: 22px;
+  font-weight: bold;
+}

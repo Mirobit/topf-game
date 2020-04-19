@@ -1,8 +1,10 @@
 require('dotenv').config()
 
+const http = require('http')
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
+
 const routes = require('./routes')
 
 mongoose.Promise = Promise
@@ -21,6 +23,9 @@ mongoose
   })
 
 const app = express()
+server = http.createServer(app)
+const wss = require('./services/socket')(server)
+
 app.use(express.json())
 
 // Security
@@ -33,7 +38,7 @@ app.use((req, res, next) => {
   res.header('X-XSS-Protection', '1 mode=block')
   res.header(
     'Content-Security-Policy',
-    "default-src 'self' script-src 'unsafe-inline'"
+    "default-src 'self' connect-src ws://localhost:8000"
   )
   next()
 })
@@ -41,6 +46,6 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '../frontend/assets')))
 app.use(routes)
 
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(`Server is up and running: http://localhost:${process.env.PORT}`)
 })
