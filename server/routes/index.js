@@ -1,6 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const path = require('path')
+const apiRoutes = require('./api')
+
+// API
+router.use('/api/game', apiRoutes)
 
 // App
 router.get('/*', (req, res) => {

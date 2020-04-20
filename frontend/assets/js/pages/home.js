@@ -21,8 +21,8 @@ const tooglePassword = () => {
 const createGame = async () => {
   const name = document.getElementById('gameNameNew').value
   const description = document.getElementById('descriptionNew').value
-  const description = document.getElementById('roundsNew').value
-  const description = document.getElementById('timerNew').value
+  const rounds = document.getElementById('roundsNew').value
+  const timer = document.getElementById('timerNew').value
   const passwordEl = document.getElementById('passwordNew')
   const passwordRepeatEl = document.getElementById('passwordRepeatNew')
 
