@@ -13,19 +13,8 @@ const route = async () => {
   if (route === '/') {
     home.init()
   } else {
-    if (checkIfPassword(route)) {
-      return
-    }
     game.init()
   }
-}
-
-const checkIfPassword = (goUrl) => {
-  if (Store.password === '') {
-    passwordFuncs.init(goUrl)
-    return true
-  }
-  return false
 }
 
 init()

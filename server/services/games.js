@@ -52,13 +52,6 @@ const remove = async (id) => {
   }
 }
 
-const checkPassword = async (gameId, password, gamePassword) => {
-  if (gamePassword === undefined) {
-    gamePassword = (await Game.findOneById(gameId).select('password')).password
-  }
-  return hash(password) === gamePassword
-}
-
 const startGame = async (gameId) => {
   try {
     const game = await Game.findById(gameId)
@@ -86,9 +79,13 @@ function getRandomNumber(max) {
   return Math.floor(Math.random() * max)
 }
 
-const addPlayer = async (gameId, playerName) => {
+const join = async (gameId, playerName, gamePassword) => {
   try {
     const game = await Game.findById(gameId)
+
+    if (game.password && hash(gamePassword) !== game.password) {
+      throw new Error('Invalid game password')
+    }
     if (
       game.players.some(
         (player) => player.name.toUpperCase() === playerName.name.toUpperCase()
@@ -96,10 +93,11 @@ const addPlayer = async (gameId, playerName) => {
     ) {
       throw new Error('Duplicate player name')
     }
-    game.categories.push({ name: playerName })
-    game.save()
+    game.players.push({ name: playerName })
+    await game.save()
+    delete game.password
 
-    return
+    return game
   } catch (error) {
     throw new Error(error)
   }
@@ -130,7 +128,7 @@ const removePlayer = async (gameId, playerName) => {
       { _id: gameId },
       { $pull: { players: { name: playerName } } }
     )
-    return project
+    return game
   } catch (error) {
     throw new Error(error.message)
   }
@@ -142,9 +140,8 @@ module.exports = {
   create,
   update,
   remove,
-  checkPassword,
   startGame,
-  addPlayer,
+  join,
   updatePlayerStatus,
   removePlayer,
 }

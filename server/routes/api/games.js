@@ -66,14 +66,15 @@ router.delete('/:gameId', async (req, res) => {
   }
 })
 
-// Check passswort
-router.post('/password', async (req, res) => {
+// Join game
+router.post('/join', async (req, res) => {
   try {
-    const result = await gamesService.checkPassword(
+    const game = await gamesService.join(
       req.body.gameId,
+      req.body.playerName,
       req.body.password
     )
-    res.json({ status: true, valid: result })
+    res.json({ status: true, game })
   } catch (error) {
     console.log(error)
     res.json({ status: false })

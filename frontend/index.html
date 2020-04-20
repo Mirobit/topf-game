@@ -150,7 +150,41 @@
           </div>
         </div>
 
-        <div id="message"></div>
+        <div id="gameWrapper" class="row">
+          <div id="joinGameForm" hidden>
+            <div class="form-bottom" hidden>
+              <input
+                type="password"
+                class="form-control form-control-alternative"
+                placeholder="Game password"
+                id="gamePassword"
+                aria-describedby="gamePasswordHelp"
+                minlength="4"
+              />
+            </div>
+            <div class="form-bottom">
+              <input
+                type="text"
+                class="form-control form-control-alternative"
+                placeholder="Your name"
+                id="playerNameNew"
+                aria-describedby="playerNameNewHelp"
+                minlength="4"
+              />
+            </div>
+            <div>
+              <button type="button" class="btn btn-primary" id="joinGameButton">
+                <i class="fa fa-sign-in fa-lg" style="margin-right: 10px;"></i
+                >Join
+              </button>
+            </div>
+          </div>
+          <div id="gamePage" hidden>
+            this is the game
+          </div>
+        </div>
+
+        <div class="col-4" id="message"></div>
       </div>
     </div>
     <div class="footer">
