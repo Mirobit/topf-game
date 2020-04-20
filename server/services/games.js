@@ -21,10 +21,11 @@ const list = async () => {
 
 const create = async (data) => {
   try {
-    const game = await new Game(data)
+    console.log(data)
+    await new Game(data)
     if (data.password) game.password = hash(data.password)
     await game.save()
-    return true
+    return
   } catch (error) {
     throw new Error(error.message)
   }
@@ -58,6 +59,24 @@ const checkPassword = async (gameId, password, gamePassword) => {
   return hash(password) === gamePassword
 }
 
+const setGameOrder = async (gameId) => {
+  try {
+    const game = await Game.findOneById(gameId)
+    let count = players.length
+    while (count > 0) {
+      game.playOrder.push(game.player[getRandomNumber(count)].name)
+      count--
+    }
+    game.save()
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
+
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * max)
+}
+
 const addPlayer = async (gameId, playerName) => {
   try {
     const game = await Game.findById(gameId)
@@ -71,7 +90,7 @@ const addPlayer = async (gameId, playerName) => {
     game.categories.push({ name: playerName })
     game.save()
 
-    return project
+    return
   } catch (error) {
     throw new Error(error)
   }

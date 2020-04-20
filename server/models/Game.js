@@ -44,7 +44,7 @@ const gameSchema = new Schema(
       enum: ['new', 'playing', 'ended'],
       default: 'new',
     },
-    playOrder: [Schema.Types.ObjectId],
+    playOrder: [String],
     players: [
       {
         name: {

@@ -39,19 +39,15 @@ const createGame = async () => {
     passwordRepeatEl.classList.remove('is-invalid')
   }
 
-  const result = await sendData('/projects', 'POST', {
+  const result = await sendData('/game', 'POST', {
     name,
     description,
-    folderPath,
+    rounds,
+    timer,
     password: passwordEl.value,
   })
   if (result.status === true) {
-    document.getElementById('nameNew').value = ''
-    document.getElementById('descriptionNew').value = ''
-    document.getElementById('passwordNew').value = ''
-    document.getElementById('passwordRepeatNew').value = ''
-    document.getElementById('folderPathNew').value = ''
-    init()
+    // TODO redirect to game page
     displayMessage(result.status, 'Project successfully created')
   } else {
     displayMessage(result.status, 'Could not create project')
