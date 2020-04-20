@@ -47,13 +47,13 @@ const createGame = async () => {
     password: passwordEl.value,
   })
   if (result.status === true) {
-    const gameUrlDiv = document.getElementById('gameUrlNew')
-    gameUrlDiv.value = window.location.origin + '/play/' + result.gameId
-    gameUrlDiv.onclick = function () {
-      console.log('asda')
-      this.select()
+    document.getElementById('gameUrlNew').value =
+      window.location.origin + '/' + result.gameId
+    document.getElementById('copyUrlNew').onclick = function () {
+      document.getElementById('gameUrlNew').select()
+      document.execCommand('copy')
     }
-    gameUrlDiv.hidden = false
+    document.getElementById('urlBox').hidden = false
   } else {
     displayMessage(result.status, 'Could not create project')
   }

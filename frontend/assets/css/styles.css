@@ -44,5 +44,11 @@ body {
 }
 .urlBox {
   margin-top: 15px;
+}
+.newUrl {
   width: 375px;
+}
+.copy {
+  margin-left: 10px;
+  color: grey;
 }

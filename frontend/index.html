@@ -129,14 +129,23 @@
                 Create Game
               </button>
 
-              <input
-                type="text"
-                class="form-control-alternative form-control urlBox"
-                id="gameUrlNew"
-                aria-describedby="gameUrlNewHelp"
-                hidden
-                readonly
-              />
+              <div class="inline urlBox" id="urlBox" hidden>
+                <input
+                  type="text"
+                  class="form-control-alternative form-control newUrl"
+                  id="gameUrlNew"
+                  aria-describedby="gameUrlNewHelp"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="btn btn-neutral btn-sm copy"
+                  id="copyUrlNew"
+                >
+                  <i class="fa fa-clone" aria-hidden="true"></i>
+                  Copy
+                </button>
+              </div>
             </form>
           </div>
         </div>
