@@ -6,7 +6,7 @@ const gameSchema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
     },
     shortUrl: {
       type: String,
@@ -14,7 +14,7 @@ const gameSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
     password: {
       type: String,

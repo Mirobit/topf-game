@@ -27,14 +27,14 @@ router.get('/', async (req, res) => {
 // New
 router.post('/', async (req, res) => {
   try {
-    await gamesService.create({
+    const gameId = await gamesService.create({
       name: req.body.name,
       description: req.body.description,
       rounds: req.body.rounds,
       timer: req.body.timer,
       password: req.body.password,
     })
-    res.json({ status: true })
+    res.json({ status: true, gameId })
   } catch (error) {
     console.log(error)
     res.json({ status: false })

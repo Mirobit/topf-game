@@ -1,5 +1,5 @@
-const Game = require('../../models/Game')
-const { hash } = require('../../utils/crypter')
+const Game = require('../models/Game')
+const { hash } = require('../utils/crypter')
 
 const get = async (id) => {
   try {
@@ -22,10 +22,10 @@ const list = async () => {
 const create = async (data) => {
   try {
     console.log(data)
-    await new Game(data)
+    const game = await new Game(data)
     if (data.password) game.password = hash(data.password)
     await game.save()
-    return
+    return game._id
   } catch (error) {
     throw new Error(error.message)
   }
@@ -72,7 +72,7 @@ const startGame = async (gameId) => {
 }
 
 const setPlayOrder = async (game) => {
-  players = JSON.parse(JSON.stringify(game.players))
+  const players = JSON.parse(JSON.stringify(game.players))
   let count = players.length
   while (count > 0) {
     const ranNumber = getRandomNumber(count)

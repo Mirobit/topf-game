@@ -62,7 +62,7 @@
                     placeholder="3"
                     value="3"
                     class="form-control-alternative form-control"
-                    id="roundsNewHelp"
+                    id="roundsNew"
                     aria-describedby="roundsNewHelp"
                   />
                   <small id="roundsNewHelp" class="form-text text-muted"
@@ -74,12 +74,13 @@
                     type="Number"
                     placeholder="60"
                     value="60"
+                    step="5"
                     class="form-control-alternative form-control"
-                    id="roundsNewHelp"
-                    aria-describedby="roundsNewHelp"
+                    id="timerNew"
+                    aria-describedby="timerNewHelp"
                   />
-                  <small id="roundsNewHelp" class="form-text text-muted"
-                    >Timer (s)</small
+                  <small id="timerNewHelp" class="form-text text-muted"
+                    >Timer (sec)</small
                   >
                 </div>
               </div>
@@ -127,6 +128,15 @@
                 <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>
                 Create Game
               </button>
+
+              <input
+                type="text"
+                class="form-control-alternative form-control urlBox"
+                id="gameUrlNew"
+                aria-describedby="gameUrlNewHelp"
+                hidden
+                readonly
+              />
             </form>
           </div>
         </div>

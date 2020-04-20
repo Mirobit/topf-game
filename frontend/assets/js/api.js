@@ -2,6 +2,7 @@ const BASE_URL = window.location.origin
 
 const sendData = async (endpoint, type, data) => {
   const url = BASE_URL + '/api' + endpoint
+  console.log(type, url)
   const options = {
     method: type,
     headers: {

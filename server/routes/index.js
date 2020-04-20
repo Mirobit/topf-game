@@ -4,7 +4,7 @@ const path = require('path')
 const gameRoutes = require('./api/games')
 
 // API
-router.use('/api/games', gameRoutes)
+router.use('/api/game', gameRoutes)
 
 // App
 router.get('/*', (req, res) => {

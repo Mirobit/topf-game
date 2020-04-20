@@ -6,7 +6,7 @@ import { displayMessage } from '../components/message.js'
 const init = async () => {
   document.title = `TopfGame - Create new Game`
   createGameButton.onclick = createGame
-  passwordProtection.onclick = () => tooglePassword()
+  passwordProtection.onclick = tooglePassword
   Store.homePage.hidden = false
 }
 
@@ -47,8 +47,13 @@ const createGame = async () => {
     password: passwordEl.value,
   })
   if (result.status === true) {
-    // TODO redirect to game page
-    displayMessage(result.status, 'Project successfully created')
+    const gameUrlDiv = document.getElementById('gameUrlNew')
+    gameUrlDiv.value = window.location.origin + '/play/' + result.gameId
+    gameUrlDiv.onclick = function () {
+      console.log('asda')
+      this.select()
+    }
+    gameUrlDiv.hidden = false
   } else {
     displayMessage(result.status, 'Could not create project')
   }
