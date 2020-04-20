@@ -59,8 +59,8 @@
                 <div class="col-3">
                   <input
                     type="Number"
-                    placeholder="3"
                     value="3"
+                    min="1"
                     class="form-control-alternative form-control"
                     id="roundsNew"
                     aria-describedby="roundsNewHelp"
@@ -72,8 +72,8 @@
                 <div class="col-3">
                   <input
                     type="Number"
-                    placeholder="60"
                     value="60"
+                    min="5"
                     step="5"
                     class="form-control-alternative form-control"
                     id="timerNew"
@@ -81,6 +81,20 @@
                   />
                   <small id="timerNewHelp" class="form-text text-muted"
                     >Timer (sec)</small
+                  >
+                </div>
+                <div class="col-6">
+                  <input
+                    type="Number"
+                    value="3"
+                    min="1"
+                    max="10"
+                    class="form-control-alternative form-control"
+                    id="wordsNew"
+                    aria-describedby="wordsNewHelp"
+                  />
+                  <small id="wordsNewHelp" class="form-text text-muted"
+                    >Words each player has to submit</small
                   >
                 </div>
               </div>

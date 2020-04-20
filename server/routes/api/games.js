@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
       description: req.body.description,
       rounds: req.body.rounds,
       timer: req.body.timer,
+      words: req.body.words,
       password: req.body.password,
     })
     res.json({ status: true, gameId })

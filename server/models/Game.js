@@ -34,6 +34,11 @@ const gameSchema = new Schema(
       required: true,
       default: 60,
     },
+    wordsNo: {
+      type: Number,
+      requiredPaths,
+      default: 3,
+    },
     currentRound: {
       type: Number,
       required: true,

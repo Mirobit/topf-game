@@ -23,6 +23,7 @@ const createGame = async () => {
   const description = document.getElementById('descriptionNew').value
   const rounds = document.getElementById('roundsNew').value
   const timer = document.getElementById('timerNew').value
+  const wordsNo = document.getElementById('wordsNew').value
   const passwordEl = document.getElementById('passwordNew')
   const passwordRepeatEl = document.getElementById('passwordRepeatNew')
 
@@ -44,6 +45,7 @@ const createGame = async () => {
     description,
     rounds,
     timer,
+    wordsNo,
     password: passwordEl.value,
   })
   if (result.status === true) {
