@@ -84,22 +84,22 @@ const join = async (gameId, playerName, gamePassword) => {
     const game = await Game.findById(gameId)
 
     if (game.password && hash(gamePassword) !== game.password) {
-      throw new Error('Invalid game password')
+      throw { name: 'Custom', message: 'Invalid game password' }
     }
     if (
       game.players.some(
-        (player) => player.name.toUpperCase() === playerName.name.toUpperCase()
+        (player) => player.name.toUpperCase() === playerName.toUpperCase()
       )
     ) {
-      throw new Error('Duplicate player name')
+      throw { name: 'Custom', message: 'Player name already in use' }
     }
-    game.players.push({ name: playerName })
+    game.playerss.push({ name: playerName })
     await game.save()
     delete game.password
 
     return game
   } catch (error) {
-    throw new Error(error)
+    throw { name: error.name, message: error.message, stack: error.stack }
   }
 }
 

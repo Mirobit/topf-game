@@ -76,8 +76,12 @@ router.post('/join', async (req, res) => {
     )
     res.json({ status: true, game })
   } catch (error) {
-    console.log(error)
-    res.json({ status: false })
+    if (!error.stack) res.json({ status: false, message: error.message })
+    else {
+      res.json({ status: false })
+      // TODO use winston
+      console.log(error.stack)
+    }
   }
 })
 

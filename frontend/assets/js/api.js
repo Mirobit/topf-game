@@ -1,3 +1,5 @@
+import { displayMessage } from './components/message.js'
+
 const BASE_URL = window.location.origin
 
 const sendData = async (endpoint, type, data) => {
@@ -12,8 +14,9 @@ const sendData = async (endpoint, type, data) => {
     },
     body: JSON.stringify(data),
   }
-  const response = await fetch(url, options)
-  return response.json()
+  const response = await (await fetch(url, options)).json()
+  handleError(response)
+  return response
 }
 
 const getData = async (endpoint) => {
@@ -25,13 +28,15 @@ const getData = async (endpoint) => {
     },
   }
 
-  const response = await fetch(url, options)
-  return response.json()
+  const response = await (await fetch(url, options)).json()
+  handleError(response)
+  return response
 }
 
-const handleError = (result) => {
-  if (result.status === false) {
-    // TODO: display error
+const handleError = (response) => {
+  if (response.status === false) {
+    if (response.message) displayMessage(false, response.message)
+    else displayMessage(false, 'Could not join Game')
   }
 }
 

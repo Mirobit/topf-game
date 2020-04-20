@@ -1,7 +1,7 @@
 import { sendData } from '../api.js'
 import { initWs } from '../socket.js'
 import Store from '../store.js'
-import { displayMessage } from '../components/message.js'
+import { displayMessage, closeMessage } from '../components/message.js'
 
 let gameId
 
@@ -27,12 +27,11 @@ const joinGame = async () => {
   })
   if (result.status === true) {
     initGame(result.game)
-  } else {
-    displayMessage(result.status, 'Could not join Game')
   }
 }
 
 const initGame = async (game) => {
+  closeMessage()
   Store.game = game
   initWs()
   document.getElementById('joinGameForm').hidden = true
