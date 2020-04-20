@@ -27,6 +27,12 @@ const gameSchema = new Schema(
     rounds: {
       type: Number,
       required: true,
+      default: 3,
+    },
+    timer: {
+      type: Number,
+      required: true,
+      default: 60,
     },
     currentRound: {
       type: Number,
@@ -38,6 +44,7 @@ const gameSchema = new Schema(
       enum: ['new', 'playing', 'ended'],
       default: 'new',
     },
+    playOrder: [Schema.Types.ObjectId],
     players: [
       {
         name: {
@@ -51,7 +58,7 @@ const gameSchema = new Schema(
         },
         status: {
           type: String,
-          enum: ['new', 'ready', 'playing', 'left'],
+          enum: ['new', 'ready', 'playing', 'explaining', 'guessing', 'left'],
           default: 'new',
         },
         score: {

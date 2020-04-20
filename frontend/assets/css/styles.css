@@ -31,11 +31,13 @@ body {
   color: #95989b;
   height: 2.5rem;
 }
+.form-bottom {
+  margin-bottom: 10px;
+}
 .link {
   color: #5e72e4;
   cursor: pointer;
 }
-
 .headerText {
   font-size: 22px;
   font-weight: bold;

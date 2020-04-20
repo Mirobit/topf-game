@@ -38,7 +38,7 @@ app.use((req, res, next) => {
   res.header('X-XSS-Protection', '1 mode=block')
   res.header(
     'Content-Security-Policy',
-    "default-src 'self' connect-src ws://localhost:8000"
+    "default-src 'self' connect-src ws://localhost:8000 img-src data:"
   )
   next()
 })
