@@ -1,4 +1,5 @@
 const WebSocket = require('ws')
+const gamesServices = require('./games')
 
 const channels = new Map()
 

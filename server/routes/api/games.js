@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const gameService = require('../../services/games')
+const gamesService = require('../../services/games')
 
 // Single
 router.get('/:gameId', async (req, res) => {
   try {
-    const game = await gameService.get(req.params.gameId)
+    const game = await gamesService.get(req.params.gameId)
     res.json({ status: true, game })
   } catch (error) {
     console.log(error)
@@ -16,7 +16,7 @@ router.get('/:gameId', async (req, res) => {
 // List
 router.get('/', async (req, res) => {
   try {
-    const games = await gameService.list()
+    const games = await gamesService.list()
     res.json({ status: true, games })
   } catch (error) {
     console.log(error)
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 // New
 router.post('/', async (req, res) => {
   try {
-    await gameService.create({
+    await gamesService.create({
       name: req.body.name,
       description: req.body.description,
       rounds: req.body.rounds,
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
 // Update
 router.put('/:gameId', async (req, res) => {
   try {
-    await gameService.update(req.params.gameId, {
+    await gamesService.update(req.params.gameId, {
       name: req.body.name,
       description: req.body.description,
     })
@@ -58,7 +58,7 @@ router.put('/:gameId', async (req, res) => {
 // Remove
 router.delete('/:gameId', async (req, res) => {
   try {
-    await gameService.remove(req.params.gameId)
+    await gamesService.remove(req.params.gameId)
     res.json({ status: true })
   } catch (error) {
     console.log(error)
@@ -66,10 +66,10 @@ router.delete('/:gameId', async (req, res) => {
   }
 })
 
-// Check Passswort
+// Check passswort
 router.post('/password', async (req, res) => {
   try {
-    const result = await gameService.checkPassword(
+    const result = await gamesService.checkPassword(
       req.body.gameId,
       req.body.password
     )
@@ -80,10 +80,10 @@ router.post('/password', async (req, res) => {
   }
 })
 
-// Add Player
+// Add player
 router.post('/:gameId/player', async (req, res) => {
   try {
-    await gameService.addCategory(req.params.gameId, req.body.playerName)
+    await gamesService.addCategory(req.params.gameId, req.body.playerName)
     res.json({ status: true })
   } catch (error) {
     console.log(error)
@@ -91,10 +91,10 @@ router.post('/:gameId/player', async (req, res) => {
   }
 })
 
-// Update Player Status
+// Update player status
 router.put('/:gameId/player/:playerName', async (req, res) => {
   try {
-    await gameService.updateCategory(
+    await gamesService.updateCategory(
       req.params.gameId,
       req.params.playerName,
       req.body.status
@@ -109,7 +109,7 @@ router.put('/:gameId/player/:playerName', async (req, res) => {
 // Remove Player
 router.put('/:gameId/player/:playerName', async (req, res) => {
   try {
-    await gameService.removeCategory(req.params.gameId, req.params.playerName)
+    await gamesService.removeCategory(req.params.gameId, req.params.playerName)
     res.json({ status: true })
   } catch (error) {
     console.log(error)

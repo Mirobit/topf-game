@@ -59,17 +59,26 @@ const checkPassword = async (gameId, password, gamePassword) => {
   return hash(password) === gamePassword
 }
 
-const setGameOrder = async (gameId) => {
+const startGame = async (gameId) => {
   try {
-    const game = await Game.findOneById(gameId)
-    let count = players.length
-    while (count > 0) {
-      game.playOrder.push(game.player[getRandomNumber(count)].name)
-      count--
-    }
-    game.save()
+    const game = await Game.findById(gameId)
+    setPlayOrder(game)
+    game.status = 'started'
+    await game.save()
+    return game.playOrder
   } catch (error) {
     throw new Error(error.message)
+  }
+}
+
+const setPlayOrder = async (game) => {
+  players = JSON.parse(JSON.stringify(game.players))
+  let count = players.length
+  while (count > 0) {
+    const ranNumber = getRandomNumber(count)
+    game.playOrder.push(players[ranNumber].name)
+    player.splice(ranNumber, 1)
+    count--
   }
 }
 
@@ -134,6 +143,7 @@ module.exports = {
   update,
   remove,
   checkPassword,
+  startGame,
   addPlayer,
   updatePlayerStatus,
   removePlayer,

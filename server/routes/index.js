@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const path = require('path')
-const gameRoutes = require('./games')
+const gameRoutes = require('./api/games')
 
 // API
 router.use('/api/games', gameRoutes)

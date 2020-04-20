@@ -41,7 +41,7 @@ const gameSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ['new', 'playing', 'ended'],
+      enum: ['new', 'started', 'ended'],
       default: 'new',
     },
     playOrder: [String],
