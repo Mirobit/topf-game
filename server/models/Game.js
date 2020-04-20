@@ -1,0 +1,86 @@
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
+const gameSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    shortUrl: {
+      type: String,
+      required: false,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: false,
+    },
+    videoLink: {
+      type: String,
+      required: false,
+    },
+    rounds: {
+      type: Number,
+      required: true,
+    },
+    currentRound: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    status: {
+      type: String,
+      enum: ['new', 'playing', 'ended'],
+      default: 'new',
+    },
+    players: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        role: {
+          type: String,
+          enum: ['user', 'admin'],
+          default: 'user',
+        },
+        status: {
+          type: String,
+          enum: ['new', 'ready', 'playing', 'left'],
+          default: 'new',
+        },
+        score: {
+          type: Number,
+          required: true,
+          default: 0,
+        },
+      },
+    ],
+    words: [
+      {
+        string: {
+          type: String,
+          required: true,
+        },
+        player: {
+          type: Schema.Types.ObjectId,
+          required: true,
+        },
+      },
+    ],
+    //   admin: { type: Schema.Types.ObjectId, required: true },
+  },
+  {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  }
+)
+
+module.exports = mongoose.model('Games', gameSchema)

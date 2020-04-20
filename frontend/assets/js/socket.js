@@ -13,6 +13,7 @@ ws.onopen = () => {
 }
 
 ws.onerror = (error) => {
+  displayMessage(false, 'Server closed connection')
   console.log('errror:', error)
 }
 
