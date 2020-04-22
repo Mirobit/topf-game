@@ -31,6 +31,7 @@ const joinGame = async () => {
 }
 
 const initGame = async (game) => {
+  document.title = `TopfGame - ${game.name}`
   closeMessage()
   Store.game = game
   initWs()
