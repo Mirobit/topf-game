@@ -1,5 +1,5 @@
 {
-  "name": "TopfGame",
+  "name": "topgame",
   "version": "0.9.9",
   "description": "Party game with friends ",
   "main": "server/app.js",
