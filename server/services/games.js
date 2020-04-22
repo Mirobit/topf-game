@@ -93,7 +93,7 @@ const join = async (gameId, playerName, gamePassword) => {
     ) {
       throw { name: 'Custom', message: 'Player name already in use' }
     }
-    game.playerss.push({ name: playerName })
+    game.players.push({ name: playerName })
     await game.save()
     delete game.password
 

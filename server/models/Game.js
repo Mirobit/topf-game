@@ -36,7 +36,7 @@ const gameSchema = new Schema(
     },
     wordsNo: {
       type: Number,
-      requiredPaths,
+      required: true,
       default: 3,
     },
     currentRound: {
