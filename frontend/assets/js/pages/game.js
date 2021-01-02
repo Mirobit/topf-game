@@ -7,7 +7,7 @@ let gameId
 
 const init = async () => {
   gameId = window.location.pathname.replace('/', '')
-  document.title = `TopfGame - `
+  document.title = `TopfGame - Join Game`
   document.getElementById('joinGameButton').onclick = joinGame
   document.getElementById('joinGameForm').hidden = false
 }
