@@ -34,7 +34,7 @@ const gameSchema = new Schema(
       required: true,
       default: 60,
     },
-    wordsNo: {
+    wordsCount: {
       type: Number,
       required: true,
       default: 3,
