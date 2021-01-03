@@ -13,9 +13,15 @@
     "ws": "^7.4.2"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "prettier": "^2.2.1"
   },
   "scripts": {
+    "lint": "npx eslint .",
     "start": "node server/app.js",
     "dev": "cross-env NODE_ENV=development nodemon server/app.js"
   },
