@@ -1,9 +1,10 @@
 class Store {
-  constructor() {}
-  homePage = document.getElementById('homePage')
-  gamePage = document.getElementById('gamePage')
+  constructor() {
+    this.homePage = document.getElementById('homePage');
+    this.gamePage = document.getElementById('gamePage');
 
-  messageDiv = document.getElementById('message')
+    this.messageDiv = document.getElementById('message');
+  }
 }
 
-export default new Store()
+export default new Store();

@@ -1,20 +1,20 @@
-import Store from './store.js'
-import * as home from './pages/home.js'
-import * as game from './pages/game.js'
-import { closeMessage, displayMessage } from './components/message.js'
-
-const init = () => {
-  console.log('init')
-  route()
-}
+import Store from './store.js';
+import homeInit from './pages/home.js';
+import gameInit from './pages/game.js';
+import { closeMessage, displayMessage } from './components/message.js';
 
 const route = async () => {
-  const route = window.location.pathname
-  if (route === '/') {
-    home.init()
+  const currentRoute = window.location.pathname;
+  if (currentRoute === '/') {
+    homeInit();
   } else {
-    game.init()
+    gameInit();
   }
-}
+};
 
-init()
+const init = () => {
+  console.log('init');
+  route();
+};
+
+init();

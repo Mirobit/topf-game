@@ -1,47 +1,47 @@
-const WebSocket = require('ws')
-const gamesServices = require('./games')
+const WebSocket = require('ws');
+const gamesServices = require('./games');
 
-const channels = new Map()
+const channels = new Map();
 
 const addPlayer = (ws) => {
   //
-}
+};
 
 const removePlayer = (ws) => {
   //
-}
+};
 
 const startGame = (gameId) => {
   //
-}
+};
 
 const endGame = (gameId) => {
   //
-}
+};
 
 const nextRound = (gameId) => {
   //
-}
+};
 
 const createChannel = () => {
   //
-}
+};
 
 const init = (server) => {
-  var wss = new WebSocket.Server({ server })
+  const wss = new WebSocket.Server({ server });
 
   wss.on('connection', (ws) => {
-    console.log('new connection')
+    console.log('new connection');
     ws.on('message', (message) => {
-      console.log(message)
-    })
-  })
+      console.log(message);
+    });
+  });
 
   wss.on('message', (message) => {
-    console.log('asd', message)
-  })
+    console.log('asd', message);
+  });
 
-  return wss
-}
+  return wss;
+};
 
-module.exports = init
+module.exports = init;

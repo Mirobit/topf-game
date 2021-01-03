@@ -1,107 +1,107 @@
-const Game = require('../models/Game')
-const { hash } = require('../utils/crypter')
+const Game = require('../models/Game');
+const { hash } = require('../utils/crypter');
 
 const get = async (id) => {
   try {
-    const game = await Game.findOneById(id)
-    return game
+    const game = await Game.findOneById(id);
+    return game;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
-}
+};
 
 const list = async () => {
   try {
-    const games = await Game.find({}, null, { sort: { created_at: -1 } })
-    return games
+    const games = await Game.find({}, null, { sort: { created_at: -1 } });
+    return games;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
-}
+};
 
 const create = async (data) => {
   try {
-    console.log(data)
-    const game = await new Game(data)
-    if (data.password) game.password = hash(data.password)
-    await game.save()
-    return game._id
+    console.log(data);
+    const game = await new Game(data);
+    if (data.password) game.password = hash(data.password);
+    await game.save();
+    return game._id;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
-}
+};
 
 const update = async (id, data) => {
   try {
     await Game.findOneAndUpdate({ _id: id }, data, {
       new: true,
       runValidators: true,
-    })
-    return
+    });
+    return;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
-}
+};
 
 const remove = async (id) => {
   try {
-    await Game.findOneAndDelete({ _id: id })
-    return
+    await Game.findOneAndDelete({ _id: id });
+    return;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
-}
+};
 
-const startGame = async (gameId) => {
-  try {
-    const game = await Game.findById(gameId)
-    setPlayOrder(game)
-    game.status = 'started'
-    await game.save()
-    return game.playOrder
-  } catch (error) {
-    throw new Error(error.message)
-  }
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * max);
 }
 
 const setPlayOrder = async (game) => {
-  const players = JSON.parse(JSON.stringify(game.players))
-  let count = players.length
+  const players = JSON.parse(JSON.stringify(game.players));
+  let count = players.length;
   while (count > 0) {
-    const ranNumber = getRandomNumber(count)
-    game.playOrder.push(players[ranNumber].name)
-    player.splice(ranNumber, 1)
-    count--
+    const ranNumber = getRandomNumber(count);
+    game.playOrder.push(players[ranNumber].name);
+    players.splice(ranNumber, 1);
+    count--;
   }
-}
+};
 
-function getRandomNumber(max) {
-  return Math.floor(Math.random() * max)
-}
+const startGame = async (gameId) => {
+  try {
+    const game = await Game.findById(gameId);
+    setPlayOrder(game);
+    game.status = 'started';
+    await game.save();
+    return game.playOrder;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 const join = async (gameId, playerName, gamePassword) => {
   try {
-    const game = await Game.findById(gameId)
+    const game = await Game.findById(gameId);
 
     if (game.password && hash(gamePassword) !== game.password) {
-      throw { name: 'Custom', message: 'Invalid game password' }
+      throw { name: 'Custom', message: 'Invalid game password' };
     }
     if (
       game.players.some(
         (player) => player.name.toUpperCase() === playerName.toUpperCase()
       )
     ) {
-      throw { name: 'Custom', message: 'Player name already in use' }
+      throw { name: 'Custom', message: 'Player name already in use' };
     }
-    game.players.push({ name: playerName })
-    await game.save()
-    delete game.password
+    game.players.push({ name: playerName });
+    await game.save();
+    delete game.password;
 
-    return game
+    return game;
   } catch (error) {
-    throw { name: error.name, message: error.message, stack: error.stack }
+    throw { name: error.name, message: error.message, stack: error.stack };
   }
-}
+};
 
 const updatePlayerStatus = async (gameId, playerName, playerStatus) => {
   try {
@@ -109,30 +109,30 @@ const updatePlayerStatus = async (gameId, playerName, playerStatus) => {
       { _id: gameId, 'categories.name': playerName },
       {
         $set: {
-          'categories.$.name': data.name,
+          'categories.$.name': playerName,
           'categories.$.status': playerStatus,
         },
       },
       { runValidators: true, new: true }
-    )
+    );
 
-    return game
+    return game;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
-}
+};
 
 const removePlayer = async (gameId, playerName) => {
   try {
     const game = await Game.findOneAndUpdate(
       { _id: gameId },
       { $pull: { players: { name: playerName } } }
-    )
-    return game
+    );
+    return game;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
-}
+};
 
 module.exports = {
   get,
@@ -144,4 +144,4 @@ module.exports = {
   join,
   updatePlayerStatus,
   removePlayer,
-}
+};

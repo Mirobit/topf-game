@@ -1,5 +1,6 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const gameSchema = new Schema(
   {
@@ -93,6 +94,6 @@ const gameSchema = new Schema(
       updatedAt: 'updated_at',
     },
   }
-)
+);
 
-module.exports = mongoose.model('Games', gameSchema)
+module.exports = mongoose.model('Games', gameSchema);

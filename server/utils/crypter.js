@@ -1,10 +1,9 @@
-const crypto = require('crypto')
+const crypto = require('crypto');
 
-const hash = (text) => {
-  return crypto
+const hash = (text) =>
+  crypto
     .createHash('sha256')
     .update(text + process.env.SALT_SECRET)
-    .digest('hex')
-}
+    .digest('hex');
 
-module.exports = { hash }
+module.exports = { hash };
