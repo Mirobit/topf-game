@@ -11,19 +11,17 @@ const initWs = (mH) => {
   const socketUrl = sProtocol + baseUrl;
 
   ws = new WebSocket(socketUrl);
-  console.log(Store);
-  const msgObject = {
-    player: Store.playerName,
-    game: Store.game._id,
-    command: null,
-    value: null,
-  };
 
   ws.onopen = () => {
     console.log('ws open');
-    // displayMessage(true, 'connected to server')
-    ws.send(JSON.stringify(msgObject));
-    mH();
+    ws.send(
+      JSON.stringify({
+        playerName: Store.playerName,
+        gameId: Store.game._id,
+        command: 'player_join',
+        value: null,
+      })
+    );
   };
 
   ws.onerror = (error) => {
@@ -35,16 +33,16 @@ const initWs = (mH) => {
     console.log('connection cloed');
   };
 
-  ws.onmessage = (data) => {
-    messageHandler(data);
+  ws.onmessage = (message) => {
+    messageHandler(JSON.parse(message.data));
   };
 };
 
 const sendMessage = (command, value) => {
   console.log('sending msg', command, value);
   const msgObject = {
-    player: Store.playerName,
-    game: Store.game._id,
+    playerName: Store.playerName,
+    gameId: Store.game._id,
     command,
     value,
   };

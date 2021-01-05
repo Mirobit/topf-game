@@ -13,7 +13,8 @@
     "import/extensions": "off",
     "func-names": "off",
     "no-restricted-syntax": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-param-reassign": ["error", { "props": false }]
   },
   "ignorePatterns": ["node_modules", "frontend/assets/vendor"],
   "env": {

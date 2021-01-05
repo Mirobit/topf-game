@@ -5,8 +5,8 @@ import { displayMessage, closeMessage } from '../components/message.js';
 
 let gameId;
 
-const gameMessageHandler = () => {
-  console.log('running mh');
+const gameMessageHandler = (message) => {
+  console.log('running mh', message);
 };
 
 const drawPlayerList = () => {
@@ -32,7 +32,8 @@ const updatePlayerReady = (data) => {
 };
 
 const handleSetReady = (event) => {
-  sendMessage('ready', event.target.checked);
+  const status = event.target.checked ? 'ready' : 'new';
+  sendMessage('player_status', status);
 };
 
 const handleSubmitWords = (event) => {
