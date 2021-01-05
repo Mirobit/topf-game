@@ -10,13 +10,14 @@ const tooglePassword = () => {
 };
 
 const createGame = async () => {
-  const name = document.getElementById('gameNameNew').value;
+  const gameName = document.getElementById('gameNameNew').value;
   const description = document.getElementById('descriptionNew').value;
   const rounds = document.getElementById('roundsNew').value;
   const timer = document.getElementById('timerNew').value;
   const wordsCount = document.getElementById('wordsCountNew').value;
   const passwordEl = document.getElementById('passwordNew');
   const passwordRepeatEl = document.getElementById('passwordRepeatNew');
+  const adminName = document.getElementById('adminNameNew').value;
 
   if (passwordEl.value !== passwordRepeatEl.value) {
     passwordEl.classList.add('is-invalid');
@@ -32,12 +33,13 @@ const createGame = async () => {
   }
 
   const result = await sendData('/game', 'POST', {
-    name,
+    gameName,
     description,
     rounds,
     timer,
     wordsCount,
     password: passwordEl.value,
+    adminName,
   });
   if (result.status === true) {
     document.getElementById(

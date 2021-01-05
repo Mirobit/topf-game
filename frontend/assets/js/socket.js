@@ -1,16 +1,29 @@
 import { displayMessage } from './components/message.js';
+import Store from './store.js';
 
-const initWs = () => {
+let ws;
+let messageHandler;
+
+const initWs = (mH) => {
+  messageHandler = mH;
   const baseUrl = window.location.host;
   const sProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
   const socketUrl = sProtocol + baseUrl;
 
-  const ws = new WebSocket(socketUrl);
+  ws = new WebSocket(socketUrl);
+  console.log(Store);
+  const msgObject = {
+    player: Store.playerName,
+    game: Store.game._id,
+    command: null,
+    value: null,
+  };
 
   ws.onopen = () => {
     console.log('ws open');
     // displayMessage(true, 'connected to server')
-    ws.send('hello server');
+    ws.send(JSON.stringify(msgObject));
+    mH();
   };
 
   ws.onerror = (error) => {
@@ -23,8 +36,19 @@ const initWs = () => {
   };
 
   ws.onmessage = (data) => {
-    console.log(data);
+    messageHandler(data);
   };
 };
 
-export default initWs;
+const sendMessage = (command, value) => {
+  console.log('sending msg', command, value);
+  const msgObject = {
+    player: Store.playerName,
+    game: Store.game._id,
+    command,
+    value,
+  };
+  ws.send(JSON.stringify(msgObject));
+};
+
+export { sendMessage, initWs };

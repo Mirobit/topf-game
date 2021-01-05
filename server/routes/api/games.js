@@ -29,12 +29,13 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const gameId = await gamesService.create({
-      name: req.body.name,
+      name: req.body.gameName,
       description: req.body.description,
       rounds: req.body.rounds,
       timer: req.body.timer,
       wordsCount: req.body.wordsCount,
       password: req.body.password,
+      adminName: req.body.adminName,
     });
     res.json({ status: true, gameId });
   } catch (error) {

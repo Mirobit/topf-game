@@ -33,7 +33,7 @@ const init = (server) => {
   wss.on('connection', (ws) => {
     console.log('new connection');
     ws.on('message', (message) => {
-      console.log(message);
+      console.log(JSON.parse(message));
     });
   });
 

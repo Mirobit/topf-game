@@ -55,3 +55,7 @@ body {
 #joinGameForm {
   margin-left: 40%;
 }
+
+.required::placeholder {
+  font-weight: 550;
+}

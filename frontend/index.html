@@ -30,21 +30,33 @@
       <div class="container mainContent">
         <div id="homePage" class="row" hidden>
           <div class="col-5">
-            <div class="subHeader">New Game</div>
+            <div class="subHeader">Create a new Game</div>
             <form>
               <div class="row form-bottom">
                 <div class="col-6">
                   <input
                     type="text"
-                    class="form-control-alternative form-control"
-                    placeholder="Game Name*"
+                    class="form-control-alternative form-control required"
+                    placeholder="Game Name"
                     maxlength="50"
                     id="gameNameNew"
-                    aria-describedby="gameNameHelp"
+                    aria-describedby="gameNameNewHelp"
                   />
                 </div>
 
                 <div class="col-6">
+                  <input
+                    type="text"
+                    class="form-control-alternative form-control required"
+                    placeholder="Your player name"
+                    maxlength="50"
+                    id="adminNameNew"
+                    aria-describedby="adminNameNewHelp"
+                  />
+                </div>
+              </div>
+              <div class="row form-bottom">
+                <div class="col-12">
                   <input
                     type="text"
                     class="form-control-alternative form-control"
@@ -188,13 +200,44 @@
             </div>
             <div>
               <button type="button" class="btn btn-primary" id="joinGameButton">
-                <i class="fa fa-sign-in fa-lg" style="margin-right: 10px;"></i
+                <i class="fa fa-sign-in fa-lg" style="margin-right: 10px"></i
                 >Join
               </button>
             </div>
           </div>
           <div id="gamePage" hidden>
             this is the game
+
+            <!-- Suggest Words -->
+            <div id="wordSuggetions"></div>
+            <button type="button" class="btn btn-primary" id="submitWords">
+              Submit Words
+            </button>
+            <br />
+            <!-- Ready Checkbox -->
+            <div class="custom-control custom-checkbox mb-3">
+              <input
+                class="custom-control-input"
+                id="setReady"
+                type="checkbox"
+                disabled
+              /><label class="custom-control-label text-muted" for="setReady"
+                >Ready</label
+              >
+            </div>
+            <!-- Start Game Button -->
+            <div class="custom-control custom-checkbox mb-3" hidden>
+              <input
+                class="custom-control-input"
+                id="setReady"
+                type="checkbox"
+                disabled
+              /><label class="custom-control-label text-muted" for="setReady"
+                >Start Game</label
+              >
+            </div>
+            <!-- Player list -->
+            <div class="" id="playerList"></div>
           </div>
         </div>
 
@@ -202,7 +245,7 @@
       </div>
     </div>
     <div class="footer">
-      © 2020
+      © 2021
       <a href="https://github.com/Mirobit/TopfGame"
         ><i class="fa fa-github-alt" aria-hidden="true"></i> TopfGame</a
       >

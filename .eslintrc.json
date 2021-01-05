@@ -11,7 +11,9 @@
     "no-throw-literal": "off",
     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
     "import/extensions": "off",
-    "func-names": "off"
+    "func-names": "off",
+    "no-restricted-syntax": "off",
+    "import/prefer-default-export": "off"
   },
   "ignorePatterns": ["node_modules", "frontend/assets/vendor"],
   "env": {

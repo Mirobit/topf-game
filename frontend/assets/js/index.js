@@ -1,6 +1,6 @@
 import Store from './store.js';
 import homeInit from './pages/home.js';
-import gameInit from './pages/game.js';
+import { init as gameInit } from './pages/game.js';
 import { closeMessage, displayMessage } from './components/message.js';
 
 const route = async () => {

@@ -4,6 +4,8 @@ class Store {
     this.gamePage = document.getElementById('gamePage');
 
     this.messageDiv = document.getElementById('message');
+    this.gameId = null;
+    this.playerName = null;
   }
 }
 

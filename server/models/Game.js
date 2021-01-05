@@ -51,6 +51,7 @@ const gameSchema = new Schema(
       default: 'new',
     },
     playOrder: [String],
+    adminName: { type: String, required: true },
     players: [
       {
         name: {
@@ -64,7 +65,15 @@ const gameSchema = new Schema(
         },
         status: {
           type: String,
-          enum: ['new', 'ready', 'playing', 'explaining', 'guessing', 'left'],
+          enum: [
+            'new',
+            'ready',
+            'playing',
+            'explaining',
+            'guessing',
+            'disconnected',
+            'quit',
+          ],
           default: 'new',
         },
         score: {
@@ -86,7 +95,6 @@ const gameSchema = new Schema(
         },
       },
     ],
-    //   admin: { type: Schema.Types.ObjectId, required: true },
   },
   {
     timestamps: {
