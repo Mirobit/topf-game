@@ -134,6 +134,20 @@ const removePlayer = async (gameId, playerName) => {
   }
 };
 
+const addWords = async (gameId, playerName, words) => {
+  const wordsArr = words.map((word) => ({ playerName, string: word }));
+  try {
+    const game = await Game.findOneAndUpdate(
+      { _id: gameId },
+      { $push: { words: { $each: wordsArr } } },
+      { runValidators: true }
+    );
+    return game;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 module.exports = {
   get,
   list,
@@ -144,4 +158,5 @@ module.exports = {
   join,
   updatePlayerStatus,
   removePlayer,
+  addWords,
 };

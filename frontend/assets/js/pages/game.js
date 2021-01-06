@@ -30,9 +30,8 @@ const updatePlayerStatus = (data) => {
 const gameStart = () => {
   const timeLeftDiv = document.getElementById('timeLeft');
   const endSound = document.getElementById('endSound');
-  // endSound.volume = 1;
+  endSound.volume = 1; // 1 -> 100%
   let timeLeft = Store.game.timer;
-  timeLeftDiv.innerText = timeLeft;
   const timeLeftInt = setInterval(() => {
     timeLeft--;
 
@@ -48,6 +47,7 @@ const gameStart = () => {
 
 const gameStartCountdown = (data) => {
   const countdownDiv = document.getElementById('gameCountdown');
+  document.getElementById('timeLeft').innerText = Store.game.timer;
   let countdownSecs = 5;
   countdownDiv.innerText = countdownSecs;
   const countdownInt = setInterval(() => {
@@ -110,8 +110,8 @@ const handleSubmitWords = (event) => {
     }
   }
 
-  sendMessage('submit_words', words);
-  // document.getElementById('submitWords').disabled = true;
+  sendMessage('player_words_submitted', words);
+  document.getElementById('submitWords').disabled = true;
   document.getElementById('setReady').disabled = false;
   displayMessage(
     true,

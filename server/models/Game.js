@@ -67,6 +67,7 @@ const gameSchema = new Schema(
           type: String,
           enum: [
             'new',
+            'submitted',
             'ready',
             'playing',
             'explaining',
@@ -89,8 +90,12 @@ const gameSchema = new Schema(
           type: String,
           required: true,
         },
-        player: {
-          type: Schema.Types.ObjectId,
+        guessed: {
+          type: Boolean,
+          default: false,
+        },
+        playerName: {
+          type: String,
           required: true,
         },
       },

@@ -66,6 +66,9 @@ const messageHandler = (message, ws) => {
     case 'game_start':
       gameStart(message.gameId);
       break;
+    case 'player_words_submitted':
+      gamesServices.addWords(message.gameId, message.playerName, message.value);
+      break;
     default:
       console.log('unknown command', message.command);
   }
