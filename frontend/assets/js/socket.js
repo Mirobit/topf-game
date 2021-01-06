@@ -49,4 +49,9 @@ const sendMessage = (command, value) => {
   ws.send(JSON.stringify(msgObject));
 };
 
-export { sendMessage, initWs };
+const closeConnection = () => {
+  ws.close();
+  console.log('connection closed');
+};
+
+export { closeConnection, sendMessage, initWs };

@@ -1,13 +1,9 @@
 import { sendData } from '../api.js';
-import { sendMessage, initWs } from '../socket.js';
+import { closeConnection, sendMessage, initWs } from '../socket.js';
 import Store from '../store.js';
 import { displayMessage, closeMessage } from '../components/message.js';
 
 let gameId;
-
-const gameMessageHandler = (message) => {
-  console.log('running mh', message);
-};
 
 const drawPlayerList = () => {
   const playerListParentDiv = document.getElementById('playerList');
@@ -21,7 +17,7 @@ const drawPlayerList = () => {
   });
 };
 
-const updatePlayerReady = (data) => {
+const updatePlayerStatus = (data) => {
   const playerUpdated = Store.game.players.find(
     (player) => player.name === data.playerName
   );
@@ -29,6 +25,31 @@ const updatePlayerReady = (data) => {
   document.getElementById(
     `playerListEntry-${data.playerName}`
   ).innerText = `${data.playerName}: ${data.status}`;
+};
+
+const gameStart = (data) => {
+  //
+};
+
+const gameMessageHandler = (message) => {
+  switch (message.command) {
+    case 'player_status':
+      updatePlayerStatus(message.value);
+      break;
+    case 'player_join':
+      updatePlayerStatus(message.value);
+      break;
+    case 'game_start':
+      gameStart(message.value);
+      break;
+    default:
+      console.log('unknown command', message);
+  }
+};
+
+const handlePayerLeft = () => {
+  closeConnection();
+  // TODO show player different page
 };
 
 const handleSetReady = (event) => {
@@ -67,7 +88,7 @@ const handleSubmitWords = (event) => {
 };
 
 const handleStartGame = () => {
-  sendMessage('start_game', true);
+  sendMessage('game_start', true);
 };
 
 const initGame = async (game) => {
@@ -97,9 +118,10 @@ const initGame = async (game) => {
   // Set event handlers
   document.getElementById('setReady').onclick = handleSetReady;
   document.getElementById('submitWords').onclick = handleSubmitWords;
-  // document.getElementById('startGame').onclick = handleStartGame;
+  document.getElementById('startGame').onclick = handleStartGame;
 
   // Set pages visibilty
+  document.getElementById('startGameSection').hidden = false;
   document.getElementById('joinGameForm').hidden = true;
   Store.gamePage.hidden = false;
 };
