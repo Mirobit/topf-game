@@ -205,43 +205,45 @@
               </button>
             </div>
           </div>
-          <div id="gamePage" hidden>
-            this is the game
-
+          <div id="gamePage" class="row col-12" hidden>
+            <div class="row">
+              <div class="col-4" id="message"></div>
+            </div>
             <!-- Suggest Words -->
-            <div id="wordSuggetions"></div>
-            <button type="button" class="btn btn-primary" id="submitWords">
-              Submit Words
-            </button>
-            <br />
-            <!-- Ready Checkbox -->
-            <div class="custom-control custom-checkbox mb-3">
-              <input
-                class="custom-control-input"
-                id="setReady"
-                type="checkbox"
-                disabled
-              /><label class="custom-control-label text-muted" for="setReady"
-                >Ready</label
+            <div id="leftColumm" class="col-3">
+              <div id="wordSuggetions"></div>
+              <button type="button" class="btn btn-primary" id="submitWords">
+                Submit Words
+              </button>
+              <!-- Ready Checkbox -->
+              <div class="custom-control custom-checkbox mb-3">
+                <input
+                  class="custom-control-input"
+                  id="setReady"
+                  type="checkbox"
+                  disabled
+                /><label class="custom-control-label text-muted" for="setReady"
+                  >Ready</label
+                >
+              </div>
+              <!-- Start Game Button -->
+              <div
+                class="custom-control custom-checkbox mb-3"
+                id="startGameSection"
+                hidden
               >
+                <button type="button" class="btn btn-primary" id="startGame">
+                  Start Game
+                </button>
+              </div>
             </div>
-            <!-- Start Game Button -->
-            <div class="custom-control custom-checkbox mb-3" hidden>
-              <input
-                class="custom-control-input"
-                id="setReady"
-                type="checkbox"
-                disabled
-              /><label class="custom-control-label text-muted" for="setReady"
-                >Start Game</label
-              >
+            <div id="gameColumm" class="col-3">s</div>
+            <div id="rightColumm" class="col-3">
+              <!-- Player list -->
+              <div class="" id="playerList"></div>
             </div>
-            <!-- Player list -->
-            <div class="" id="playerList"></div>
           </div>
         </div>
-
-        <div class="col-4" id="message"></div>
       </div>
     </div>
     <div class="footer">
