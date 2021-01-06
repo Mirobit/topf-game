@@ -27,8 +27,40 @@ const updatePlayerStatus = (data) => {
   ).innerText = `${data.playerName}: ${data.status}`;
 };
 
-const gameStart = (data) => {
-  //
+const gameStart = () => {
+  const timeLeftDiv = document.getElementById('timeLeft');
+  const endSound = document.getElementById('endSound');
+  // endSound.volume = 1;
+  let timeLeft = Store.game.timer;
+  timeLeftDiv.innerText = timeLeft;
+  const timeLeftInt = setInterval(() => {
+    timeLeft--;
+
+    if (timeLeft === 0) {
+      clearInterval(timeLeftInt);
+      timeLeftDiv.innerText = 'Over!';
+      endSound.play();
+    } else {
+      timeLeftDiv.innerText = timeLeft;
+    }
+  }, 1000);
+};
+
+const gameStartCountdown = (data) => {
+  const countdownDiv = document.getElementById('gameCountdown');
+  let countdownSecs = 5;
+  countdownDiv.innerText = countdownSecs;
+  const countdownInt = setInterval(() => {
+    countdownSecs--;
+
+    if (countdownSecs === 0) {
+      clearInterval(countdownInt);
+      countdownDiv.innerText = 'Go!';
+      gameStart();
+    } else {
+      countdownDiv.innerText = countdownSecs;
+    }
+  }, 1000);
 };
 
 const gameMessageHandler = (message) => {
@@ -40,7 +72,7 @@ const gameMessageHandler = (message) => {
       updatePlayerStatus(message.value);
       break;
     case 'game_start':
-      gameStart(message.value);
+      gameStartCountdown(message.value);
       break;
     default:
       console.log('unknown command', message);

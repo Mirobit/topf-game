@@ -206,9 +206,6 @@
             </div>
           </div>
           <div id="gamePage" class="row col-12" hidden>
-            <div class="row">
-              <div class="col-4" id="message"></div>
-            </div>
             <!-- Suggest Words -->
             <div id="leftColumm" class="col-3">
               <div id="wordSuggetions"></div>
@@ -237,12 +234,32 @@
                 </button>
               </div>
             </div>
-            <div id="gameColumm" class="col-3">s</div>
+            <div id="gameColumm" class="col-6">
+              <div id="gameCountdown"></div>
+              <br />
+              <div id="timeLeft"></div>
+              <br />
+              <div id="currentPoints"></div>
+              <br />
+              <div id="totalPoints"></div>
+              <br />
+              <div id="currentWord"></div>
+              <br />
+              <div id="currentListener"></div>
+              <br />
+              <div id="currentRound"></div>
+              <br />
+              <div id="currentTask"></div>
+              <br />
+            </div>
             <div id="rightColumm" class="col-3">
               <!-- Player list -->
               <div class="" id="playerList"></div>
             </div>
           </div>
+        </div>
+        <div class="row">
+          <div id="message"></div>
         </div>
       </div>
     </div>
@@ -253,6 +270,9 @@
       >
       v0.9.9
     </div>
+    <!-- Sounds -->
+    <audio id="endSound" src="sounds/end.mp3" type="audio/mpeg" />
+    <!-- Scripts -->
     <script src="/vendor/bootstrap/jquery-3.4.1.slim.min.js"></script>
     <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="/js/index.js" type="module"></script>
