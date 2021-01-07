@@ -19,7 +19,7 @@ const initWs = (mH) => {
       JSON.stringify({
         playerName: Store.playerName,
         gameId: Store.game._id,
-        command: 'player_join',
+        command: 'player_joined',
         payload: { token },
       })
     );
@@ -35,6 +35,7 @@ const initWs = (mH) => {
   };
 
   ws.onmessage = (message) => {
+    console.log('receiving msg:', message.data);
     messageHandler(JSON.parse(message.data));
   };
 };

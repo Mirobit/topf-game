@@ -5,50 +5,71 @@ const { verifyToken } = require('./auth');
 const games = new Map();
 let wss;
 
-const sendMessageGame = (gameId, data) => {
+const sendMessageGame = (gameId, messageData) => {
+  console.log(games);
   const { players } = games.get(gameId);
   players.forEach((ws) => {
-    ws.send(JSON.stringify(data));
+    ws.send(JSON.stringify(messageData));
   });
 };
 
-const sendMessagePlayer = (gameId, playerName, data) => {
-  const ws = games.get(gameId).find((player) => player.name === playerName);
-  ws.send(data);
+const sendMessagePlayer = (gameId, playerName, messageData) => {
+  const ws = games
+    .get(gameId)
+    .players.find((player) => player.info.name === playerName);
+  ws.send(messageData);
 };
 
-const updatePlayerStatus = (gameId, playerName, status) => {
+const messagePlayerStatus = (gameId, playerName, newStatus) => {
   sendMessageGame(gameId, {
     command: 'player_status',
-    payload: { playerName, status },
+    payload: { playerName, newStatus },
   });
 };
 
-const playerJoined = (message, ws) => {
+const handlePlayerJoined = (gameId, playerName, token, ws) => {
   try {
-    verifyToken(message.gameId, message.playerName, message.payload.token);
+    verifyToken(gameId, playerName, token);
   } catch ($err) {
     console.log($err);
     // TODO send error per websocket
     return;
   }
 
-  ws.playerName = message.playerName;
-  ws.gameId = message.gameId;
-  if (games.has(message.gameId)) {
-    games.get(message.gameId).players.push(ws);
+  ws.info = { gameId, playerName, status: 'new' };
+  if (games.has(gameId)) {
+    games.get(gameId).players.push(ws);
   } else {
-    games.set(message.gameId, { players: [ws] });
+    games.set(gameId, { players: [ws] });
   }
+
+  sendMessageGame(gameId, {
+    command: 'player_joined',
+    payload: { playerName, newStatus: 'new' },
+  });
 };
 
-const playerLeft = (gameId, playerName, code) => {
-  const status = code === 10005 ? 'quit' : 'disconnected';
-  updatePlayerStatus(gameId, playerName, status);
-  // Update db
+const updatePlayerStatus = (gameId, playerName, newStatus) => {
+  games
+    .get(gameId)
+    .players.find(
+      (player) => player.info.playerName === playerName
+    ).status = newStatus;
+  // TODO: Update db
 };
 
-const gameStart = (gameId) => {
+const handlePlayerLeft = (gameId, playerName, code) => {
+  const newStatus = code === 10005 ? 'quit' : 'disconnected';
+  updatePlayerStatus(gameId, playerName, newStatus);
+  messagePlayerStatus(gameId, playerName, newStatus);
+};
+
+const handlePlayerStatusChange = (gameId, playerName, newStatus) => {
+  updatePlayerStatus(gameId, playerName, newStatus);
+  messagePlayerStatus(gameId, playerName, newStatus);
+};
+
+const handleGameStart = (gameId) => {
   sendMessageGame(gameId, { command: 'game_start', payload: true });
 };
 
@@ -67,19 +88,28 @@ const createChannel = () => {
 const messageHandler = (message, ws) => {
   switch (message.command) {
     case 'player_status':
-      updatePlayerStatus(message.gameId, message.playerName, message.payload);
+      handlePlayerStatusChange(
+        message.gameId,
+        message.playerName,
+        message.payload.newStatus
+      );
       break;
-    case 'player_join':
-      playerJoined(message, ws);
+    case 'player_joined':
+      handlePlayerJoined(
+        message.gameId,
+        message.playerName,
+        message.payload.token,
+        ws
+      );
       break;
     case 'game_start':
-      gameStart(message.gameId);
+      handleGameStart(message.gameId);
       break;
     case 'player_words_submitted':
       gamesServices.addWords(
         message.gameId,
         message.playerName,
-        message.payload
+        message.payload.words
       );
       break;
     default:
@@ -98,20 +128,12 @@ const init = (server) => {
     });
     ws.on('close', (code) => {
       console.log('innerclose:', code);
-      playerLeft(ws.gameId, ws.playerName, code);
+      handlePlayerLeft(ws.info.gameId, ws.info.playerName, code);
     });
     ws.on('error', (data) => {
       console.log('innererror', data);
     });
   });
-
-  // wss.on('message', (message) => {
-  //   console.log('asd', message);
-  // });
-
-  // wss.on('close', (ws) => {
-  //   console.log(`${ws.playerName} left game`);
-  // });
 
   wss.on('error', (error) => {
     console.log(error);

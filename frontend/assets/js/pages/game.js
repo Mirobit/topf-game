@@ -17,14 +17,25 @@ const drawPlayerList = () => {
   });
 };
 
-const updatePlayerStatus = (data) => {
+const updatePlayerStatus = ({ playerName, newStatus }) => {
   const playerUpdated = Store.game.players.find(
-    (player) => player.name === data.playerName
+    (player) => player.name === playerName
   );
-  playerUpdated.status = data.status;
-  document.getElementById(
-    `playerListEntry-${data.playerName}`
-  ).innerText = `${data.playerName}: ${data.status}`;
+  if (!playerUpdated) {
+    const playerDiv = document
+      .getElementById('playerList')
+      .appendChild(document.createElement('div'));
+    playerDiv.classList = 'player-list-entry';
+    playerDiv.id = `playerListEntry-${playerName}`;
+    playerDiv.innerText = `${playerName}: ${newStatus}`;
+
+    Store.game.players.push({ playerName, status: newStatus });
+  } else {
+    playerUpdated.status = newStatus;
+    document.getElementById(
+      `playerListEntry-${playerName}`
+    ).innerText = `${playerName}: ${newStatus}`;
+  }
 };
 
 const gameStart = () => {
@@ -68,7 +79,7 @@ const gameMessageHandler = (message) => {
     case 'player_status':
       updatePlayerStatus(message.payload);
       break;
-    case 'player_join':
+    case 'player_joined':
       updatePlayerStatus(message.payload);
       break;
     case 'game_start':
@@ -85,8 +96,8 @@ const handlePayerLeft = () => {
 };
 
 const handleSetReady = (event) => {
-  const status = event.target.checked ? 'ready' : 'new';
-  sendMessage('player_status', status);
+  const newStatus = event.target.checked ? 'ready' : 'new';
+  sendMessage('player_status', { newStatus });
 };
 
 const handleSubmitWords = (event) => {
@@ -110,7 +121,7 @@ const handleSubmitWords = (event) => {
     }
   }
 
-  sendMessage('player_words_submitted', words);
+  sendMessage('player_words_submitted', { words });
   document.getElementById('submitWords').disabled = true;
   document.getElementById('setReady').disabled = false;
   displayMessage(
