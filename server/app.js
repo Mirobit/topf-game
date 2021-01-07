@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
+const security = require('./middleware/security');
 const routes = require('./routes');
 
 mongoose.Promise = Promise;
@@ -27,22 +28,7 @@ const server = http.createServer(app);
 const wss = require('./services/socket')(server);
 
 app.use(express.json());
-
-// Security
-app.disable('x-powered-by');
-app.use((req, res, next) => {
-  res.header('X-Frame-Options', 'DENY');
-  res.header('Strict-Transport-Security', 'max-age=31536000');
-  res.header('X-Content-Type-Options', 'nosniff');
-  res.header('Referrer-Policy', 'same-origin');
-  res.header('X-XSS-Protection', '1 mode=block');
-  res.header(
-    'Content-Security-Policy',
-    "default-src 'self'; connect-src ws://localhost:8000; style-src 'self' 'unsafe-inline'"
-  );
-  next();
-});
-
+app.use(security);
 app.use(express.static(path.join(__dirname, '../frontend/assets')));
 app.use(routes);
 
