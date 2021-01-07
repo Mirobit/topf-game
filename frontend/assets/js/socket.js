@@ -3,6 +3,7 @@ import Store from './store.js';
 
 let ws;
 let messageHandler;
+let token;
 
 const initWs = (mH) => {
   messageHandler = mH;
@@ -11,7 +12,7 @@ const initWs = (mH) => {
   const socketUrl = sProtocol + baseUrl;
 
   ws = new WebSocket(socketUrl);
-
+  token = localStorage.getItem('identity');
   ws.onopen = () => {
     console.log('ws open');
     ws.send(
@@ -19,7 +20,7 @@ const initWs = (mH) => {
         playerName: Store.playerName,
         gameId: Store.game._id,
         command: 'player_join',
-        value: null,
+        payload: { token },
       })
     );
   };
@@ -38,13 +39,13 @@ const initWs = (mH) => {
   };
 };
 
-const sendMessage = (command, value) => {
-  console.log('sending msg', command, value);
+const sendMessage = (command, payload) => {
+  console.log('sending msg', command, payload);
   const msgObject = {
     playerName: Store.playerName,
     gameId: Store.game._id,
     command,
-    value,
+    payload,
   };
   ws.send(JSON.stringify(msgObject));
 };

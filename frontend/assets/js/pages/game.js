@@ -66,13 +66,13 @@ const gameStartCountdown = (data) => {
 const gameMessageHandler = (message) => {
   switch (message.command) {
     case 'player_status':
-      updatePlayerStatus(message.value);
+      updatePlayerStatus(message.payload);
       break;
     case 'player_join':
-      updatePlayerStatus(message.value);
+      updatePlayerStatus(message.payload);
       break;
     case 'game_start':
-      gameStartCountdown(message.value);
+      gameStartCountdown(message.payload);
       break;
     default:
       console.log('unknown command', message);
@@ -128,7 +128,6 @@ const initGame = async (game) => {
   document.title = `TopfGame - ${game.name}`;
   closeMessage();
   initWs(gameMessageHandler);
-
   // Create forms
   const wordsParentDiv = document.getElementById('wordSuggetions');
   for (let i = 0; i < Store.game.wordsCount; i++) {
@@ -168,8 +167,9 @@ const joinGame = async () => {
     gamePassword,
   });
   if (result.status === true) {
+    localStorage.setItem('identity', result.data.token);
     Store.playerName = playerName;
-    initGame(result.game);
+    initGame(result.data.game);
   }
 };
 

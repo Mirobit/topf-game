@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const gamesServices = require('./games');
+const { verifyToken } = require('./auth');
 
 const games = new Map();
 let wss;
@@ -19,11 +20,19 @@ const sendMessagePlayer = (gameId, playerName, data) => {
 const updatePlayerStatus = (gameId, playerName, status) => {
   sendMessageGame(gameId, {
     command: 'player_status',
-    value: { playerName, status },
+    payload: { playerName, status },
   });
 };
 
 const playerJoined = (message, ws) => {
+  try {
+    verifyToken(message.gameId, message.playerName, message.payload.token);
+  } catch ($err) {
+    console.log($err);
+    // TODO send error per websocket
+    return;
+  }
+
   ws.playerName = message.playerName;
   ws.gameId = message.gameId;
   if (games.has(message.gameId)) {
@@ -40,7 +49,7 @@ const playerLeft = (gameId, playerName, code) => {
 };
 
 const gameStart = (gameId) => {
-  sendMessageGame(gameId, { command: 'game_start', value: true });
+  sendMessageGame(gameId, { command: 'game_start', payload: true });
 };
 
 const endGame = (gameId) => {
@@ -58,7 +67,7 @@ const createChannel = () => {
 const messageHandler = (message, ws) => {
   switch (message.command) {
     case 'player_status':
-      updatePlayerStatus(message.gameId, message.playerName, message.value);
+      updatePlayerStatus(message.gameId, message.playerName, message.payload);
       break;
     case 'player_join':
       playerJoined(message, ws);
@@ -67,7 +76,11 @@ const messageHandler = (message, ws) => {
       gameStart(message.gameId);
       break;
     case 'player_words_submitted':
-      gamesServices.addWords(message.gameId, message.playerName, message.value);
+      gamesServices.addWords(
+        message.gameId,
+        message.playerName,
+        message.payload
+      );
       break;
     default:
       console.log('unknown command', message.command);

@@ -1,5 +1,6 @@
 const Game = require('../models/Game');
 const { hash } = require('../utils/crypter');
+const { createToken } = require('./auth');
 
 const get = async (id) => {
   try {
@@ -93,11 +94,18 @@ const join = async (gameId, playerName, gamePassword) => {
     ) {
       throw { name: 'Custom', message: 'Player name already in use' };
     }
-    game.players.push({ name: playerName });
+    let role = 'user';
+    if (playerName === game.adminName) role = 'admin';
+    game.players.push({ name: playerName, role });
     await game.save();
-    delete game.password;
 
-    return game;
+    delete game.password;
+    delete game.words;
+    delete game.adminName;
+
+    const token = createToken(gameId, playerName, role);
+
+    return { game, token };
   } catch (error) {
     throw { name: error.name, message: error.message, stack: error.stack };
   }

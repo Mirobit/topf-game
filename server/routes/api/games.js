@@ -72,12 +72,12 @@ router.post('/', async (req, res) => {
 // Join game
 router.post('/join', async (req, res) => {
   try {
-    const game = await gamesService.join(
+    const data = await gamesService.join(
       req.body.gameId,
       req.body.playerName,
       req.body.password
     );
-    res.json({ status: true, game });
+    res.json({ status: true, data });
   } catch (error) {
     if (!error.stack) res.json({ status: false, message: error.message });
     else {
