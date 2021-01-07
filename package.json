@@ -10,7 +10,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.9",
+    "mongoose": "^5.11.10",
     "ws": "^7.4.2"
   },
   "devDependencies": {
@@ -22,7 +22,7 @@
     "prettier": "^2.2.1"
   },
   "scripts": {
-    "lint": "npx eslint .",
+    "lint": "eslint .",
     "start": "node server/app.js",
     "dev": "cross-env NODE_ENV=development nodemon server/app.js"
   },
