@@ -1,6 +1,7 @@
 const Game = require('../models/Game');
 const { hash } = require('../utils/crypter');
 const { createToken } = require('./auth');
+const { ValError } = require('../utils/errors');
 
 const get = async (id) => {
   try {
@@ -21,15 +22,11 @@ const list = async () => {
 };
 
 const create = async (data) => {
-  try {
-    console.log(data);
-    const game = await new Game(data);
-    if (data.password) game.password = hash(data.password);
-    await game.save();
-    return game._id;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  console.log(data);
+  const game = await new Game(data);
+  if (data.password) game.password = hash(data.password);
+  await game.save();
+  return game._id;
 };
 
 const update = async (id, data) => {
@@ -81,34 +78,30 @@ const startGame = async (gameId) => {
 };
 
 const join = async (gameId, playerName, gamePassword) => {
-  try {
-    const game = await Game.findById(gameId);
+  const game = await Game.findById(gameId);
 
-    if (game.password && hash(gamePassword) !== game.password) {
-      throw { name: 'Custom', message: 'Invalid game password' };
-    }
-    if (
-      game.players.some(
-        (player) => player.name.toUpperCase() === playerName.toUpperCase()
-      )
-    ) {
-      throw { name: 'Custom', message: 'Player name already in use' };
-    }
-    let role = 'user';
-    if (playerName === game.adminName) role = 'admin';
-    game.players.push({ name: playerName, role });
-    await game.save();
-
-    delete game.password;
-    delete game.words;
-    delete game.adminName;
-
-    const token = createToken(gameId, playerName, role);
-
-    return { game, token };
-  } catch (error) {
-    throw { name: error.name, message: error.message, stack: error.stack };
+  if (game.password && hash(gamePassword) !== game.password) {
+    throw new ValError('Invalid game password');
   }
+  if (
+    game.players.some(
+      (player) => player.name.toUpperCase() === playerName.toUpperCase()
+    )
+  ) {
+    throw new ValError('Player name already in use');
+  }
+  let role = 'user';
+  if (playerName === game.adminName) role = 'admin';
+  game.players.push({ name: playerName, role });
+  await game.save();
+
+  delete game.password;
+  delete game.words;
+  delete game.adminName;
+
+  const token = createToken(gameId, playerName, role);
+
+  return { game, token };
 };
 
 const updatePlayerStatus = async (gameId, playerName, playerStatus) => {

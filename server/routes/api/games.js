@@ -1,4 +1,5 @@
 const express = require('express');
+const asyncWrap = require('../../middleware/asyncWrap');
 const gamesService = require('../../services/games');
 
 const router = express.Router();
@@ -26,8 +27,9 @@ const router = express.Router();
 // });
 
 // Create Game
-router.post('/', async (req, res) => {
-  try {
+router.post(
+  '/',
+  asyncWrap(async (req, res) => {
     const gameId = await gamesService.create({
       name: req.body.gameName,
       description: req.body.description,
@@ -37,12 +39,9 @@ router.post('/', async (req, res) => {
       password: req.body.password,
       adminName: req.body.adminName,
     });
-    res.json({ status: true, gameId });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: false });
-  }
-});
+    res.json({ status: 200, gameId });
+  })
+);
 
 // Update Game
 // router.put('/:gameId', async (req, res) => {
@@ -70,23 +69,17 @@ router.post('/', async (req, res) => {
 // });
 
 // Join game
-router.post('/join', async (req, res) => {
-  try {
+router.post(
+  '/join',
+  asyncWrap(async (req, res) => {
     const data = await gamesService.join(
       req.body.gameId,
       req.body.playerName,
       req.body.password
     );
-    res.json({ status: true, data });
-  } catch (error) {
-    if (!error.stack) res.json({ status: false, message: error.message });
-    else {
-      res.json({ status: false });
-      // TODO use winston
-      console.log(error.stack);
-    }
-  }
-});
+    res.json({ status: 200, data });
+  })
+);
 
 // Add player
 // router.post('/:gameId/player', async (req, res) => {

@@ -2,11 +2,21 @@ import { displayMessage } from './components/message.js';
 
 const BASE_URL = window.location.origin;
 
-const handleError = (response) => {
-  if (response.status === false) {
-    if (response.message) displayMessage(false, response.message);
-    else displayMessage(false, 'Could not join Game');
+const handleError = (result) => {
+  console.log(result);
+  if (result.status === 200) return;
+  console.log('only error');
+  if (result.status === 401) {
+    window.location.pathname = '/login';
+    return;
   }
+
+  displayMessage(
+    false,
+    result.status === 400
+      ? result.message
+      : "Unexpected server error. Couldn't finish action."
+  );
 };
 
 const sendData = async (endpoint, type, data) => {

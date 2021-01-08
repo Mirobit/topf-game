@@ -6,7 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const security = require('./middleware/security');
-const errorHandler = require('./middleware/security');
+const errorHandler = require('./middleware/errorHandler');
 const routes = require('./routes');
 
 mongoose.Promise = Promise;
