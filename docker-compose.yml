@@ -10,7 +10,7 @@ services:
       - mongodb
 
   mongodb:
-    image: mongo
+    image: mongo:4
     volumes:
       - db:/data/db
     expose:

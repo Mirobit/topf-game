@@ -1,7 +1,7 @@
 import { sendData } from '../api.js';
 // import { switchPage } from '../index.js'
 import Store from '../store.js';
-import { displayMessage } from '../components/message.js';
+import { displayMessage, closeMessage } from '../components/message.js';
 
 const tooglePassword = () => {
   document.getElementById('passwordNewRow').hidden = !document.getElementById(
@@ -10,6 +10,7 @@ const tooglePassword = () => {
 };
 
 const createGame = async () => {
+  closeMessage();
   const gameName = document.getElementById('gameNameNew').value;
   const description = document.getElementById('descriptionNew').value;
   const rounds = document.getElementById('roundsNew').value;
