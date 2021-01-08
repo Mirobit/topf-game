@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const security = require('./middleware/security');
+const errorHandler = require('./middleware/security');
 const routes = require('./routes');
 
 mongoose.Promise = Promise;
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use(security);
 app.use(express.static(path.join(__dirname, '../frontend/assets')));
 app.use(routes);
+app.use(errorHandler);
 
 server.listen(process.env.PORT, () => {
   console.log(`Server is up and running: http://localhost:${process.env.PORT}`);
