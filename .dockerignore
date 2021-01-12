@@ -1,0 +1,11 @@
+node_modules
+error.log
+.git
+.github
+.gitignore
+.dockerignore
+.eslintrc.json
+.prettierrc
+docker-compose.yml
+Dockerfile
+LICENSE
