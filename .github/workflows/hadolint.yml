@@ -3,21 +3,20 @@ name: Hadolint Docker
 on:
   push:
     paths:
-    - 'Dockerfile'
+      - 'Dockerfile'
   pull_request:
     paths:
-    - 'Dockerfile'
-
+      - 'Dockerfile'
   workflow_dispatch:
 
 jobs:
   lintdocker:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Run hadolint
-      uses: brpaz/hadolint-action@v1.2.1
-      with:
-        dockerfile: Dockerfile
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run hadolint
+        uses: brpaz/hadolint-action@v1.2.1
+        with:
+          dockerfile: Dockerfile
