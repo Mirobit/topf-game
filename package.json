@@ -10,8 +10,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.10",
-    "pino": "^6.9.0",
+    "mongoose": "^5.11.11",
+    "pino": "^6.10.0",
     "ws": "^7.4.2"
   },
   "devDependencies": {
