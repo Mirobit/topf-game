@@ -20,10 +20,19 @@ const drawPlayerList = () => {
   });
 };
 
+const allPlayersReady = () => {
+  let ready = true;
+  Store.game.players.forEach((player) => {
+    if (player.status === 'new' || player.status === 'submitted') ready = false;
+  });
+
+  return ready;
+};
+
 const updatePlayerStatus = ({ playerName, newStatus }) => {
-  const playerUpdated = Store.game.players.find(
-    (player) => player.name === playerName
-  );
+  const playerUpdated = Store.game.players.find((player) => {
+    return player.name === playerName;
+  });
   if (!playerUpdated) {
     const playerDiv = document
       .getElementById('playerList')
@@ -32,12 +41,15 @@ const updatePlayerStatus = ({ playerName, newStatus }) => {
     playerDiv.id = `playerListEntry-${playerName}`;
     playerDiv.innerText = `${playerName}: ${newStatus}`;
 
-    Store.game.players.push({ playerName, status: newStatus });
+    Store.game.players.push({ name: playerName, status: newStatus });
   } else {
     playerUpdated.status = newStatus;
     document.getElementById(
       `playerListEntry-${playerName}`
     ).innerText = `${playerName}: ${newStatus}`;
+  }
+  if (Store.isAdmin) {
+    document.getElementById('startGame').disabled = !allPlayersReady();
   }
 };
 
@@ -142,11 +154,17 @@ const handleStartGame = () => {
   sendMessage('game_start', true);
 };
 
+const isUserAdmin = (token) => {
+  return JSON.parse(atob(token.split('.')[1])).role === 'user' ? false : true;
+};
+
 const initGame = async (game) => {
   closeNotification();
   Store.game = game;
   document.title = `TopfGame - ${game.name}`;
+
   initWs(gameMessageHandler);
+
   // Create forms
   const wordsParentDiv = document.getElementById('wordSuggetions');
   for (let i = 0; i < Store.game.wordsCount; i++) {
@@ -165,10 +183,15 @@ const initGame = async (game) => {
   // Draw player list
   drawPlayerList();
 
+  // Admin only
+  if (Store.isAdmin) {
+    document.getElementById('startGame').hidden = false;
+    document.getElementById('startGame').onclick = handleStartGame;
+  }
+
   // Set event handlers
   document.getElementById('setReady').onclick = handleSetReady;
   document.getElementById('submitWords').onclick = handleSubmitWords;
-  document.getElementById('startGame').onclick = handleStartGame;
 
   // Set pages visibilty
   document.getElementById('startGameSection').hidden = false;
@@ -189,6 +212,7 @@ const joinGame = async () => {
   if (result.status === 200) {
     localStorage.setItem('identity', result.data.token);
     Store.playerName = playerName;
+    Store.isAdmin = isUserAdmin(result.data.token);
     initGame(result.data.game);
   }
 };
