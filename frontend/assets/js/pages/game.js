@@ -178,7 +178,7 @@ const joinGame = async () => {
     gamePassword,
   });
   console.log(result);
-  if (result.status === true) {
+  if (result.status === 200) {
     localStorage.setItem('identity', result.data.token);
     Store.playerName = playerName;
     initGame(result.data.game);

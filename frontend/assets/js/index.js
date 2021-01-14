@@ -13,7 +13,6 @@ const route = async () => {
 };
 
 const init = () => {
-  console.log('init');
   route();
 };
 

@@ -1,9 +1,8 @@
-const express = require('express');
-const asyncWrap = require('../../middleware/asyncWrap');
-const gamesService = require('../../services/games');
+import express from 'express';
+import asyncWrap from '../../middleware/asyncWrap.js';
+import * as gamesService from '../../services/games.js';
 
 const router = express.Router();
-
 // Single
 // router.get('/:gameId', async (req, res) => {
 //   try {
@@ -118,4 +117,4 @@ router.post(
 //   }
 // });
 
-module.exports = router;
+export default router;

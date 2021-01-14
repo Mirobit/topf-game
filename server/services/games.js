@@ -1,7 +1,7 @@
-const Game = require('../models/Game');
-const { hash } = require('../utils/crypter');
-const { createToken } = require('./auth');
-const { ValError } = require('../utils/errors');
+import Game from '../models/Game.js';
+import { hash } from '../utils/crypter.js';
+import { createToken } from './auth.js';
+import { ValError } from '../utils/errors.js';
 
 const get = async (id) => {
   try {
@@ -22,7 +22,6 @@ const list = async () => {
 };
 
 const create = async (data) => {
-  console.log(data);
   const game = await new Game(data);
   if (data.password) game.password = hash(data.password);
   await game.save();
@@ -149,7 +148,7 @@ const addWords = async (gameId, playerName, words) => {
   }
 };
 
-module.exports = {
+export {
   get,
   list,
   create,

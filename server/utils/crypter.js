@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const hash = (text) =>
   crypto
@@ -6,4 +6,4 @@ const hash = (text) =>
     .update(text + process.env.SALT_SECRET)
     .digest('hex');
 
-module.exports = { hash };
+export { hash };

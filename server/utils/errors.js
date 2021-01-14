@@ -16,4 +16,4 @@ class AuthError extends Error {
   }
 }
 
-module.exports = { ValError, AuthError };
+export { ValError, AuthError };

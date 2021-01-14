@@ -1,6 +1,7 @@
-const express = require('express');
-const path = require('path');
-const gameRoutes = require('./api/games');
+import express from 'express';
+import path from 'path';
+import gameRoutes from './api/games.js';
+import dirname from '../utils/dirname.cjs';
 
 const router = express.Router();
 
@@ -9,11 +10,11 @@ router.use('/api/game', gameRoutes);
 
 // App
 router.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../frontend/index.html'));
+  res.sendFile(path.join(dirname, '../../frontend/index.html'));
 });
 
 router.use((req, res) => {
   res.status(404).send({ error: 'not-found' });
 });
 
-module.exports = router;
+export default router;

@@ -1,4 +1,5 @@
-const logger = require('pino')('./error.log');
+import logger from 'pino';
+logger('./error.log');
 
 const errorHandler = (error, req, res, next) => {
   let { message } = error;
@@ -11,4 +12,4 @@ const errorHandler = (error, req, res, next) => {
   res.json({ status: error.status ? error.status : 500, message });
 };
 
-module.exports = errorHandler;
+export default errorHandler;

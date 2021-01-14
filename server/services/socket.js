@@ -1,6 +1,6 @@
-const WebSocket = require('ws');
-const gamesServices = require('./games');
-const { verifyToken } = require('./auth');
+import WebSocket from 'ws';
+import * as gamesServices from './games.js';
+import { verifyToken } from './auth.js';
 
 const games = new Map();
 let wss;
@@ -142,4 +142,4 @@ const init = (server) => {
   return wss;
 };
 
-module.exports = init;
+export default init;

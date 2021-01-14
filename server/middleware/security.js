@@ -8,9 +8,9 @@ const security = (req, res, next) => {
   // TODO remove 'unsafe-inline' (react dev tools firefox error)
   res.header(
     'Content-Security-Policy',
-    "default-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost:8000; style-src 'self' 'unsafe-inline';"
+    "default-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost:8000; style-src 'self' 'unsafe-inline'; img-src data: 'self';"
   );
   next();
 };
 
-module.exports = security;
+export default security;

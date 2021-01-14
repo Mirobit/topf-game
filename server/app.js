@@ -1,13 +1,15 @@
-require('dotenv').config();
+import 'dotenv/config.js';
 
-const http = require('http');
-const express = require('express');
-const path = require('path');
-const mongoose = require('mongoose');
+import http from 'http';
+import path from 'path';
+import express from 'express';
+import mongoose from 'mongoose';
 
-const security = require('./middleware/security');
-const errorHandler = require('./middleware/errorHandler');
-const routes = require('./routes');
+import security from './middleware/security.js';
+import errorHandler from './middleware/errorHandler.js';
+import routes from './routes/index.js';
+import wssInit from './services/socket.js';
+import dirname from './utils/dirname.cjs';
 
 mongoose.Promise = Promise;
 mongoose
@@ -26,11 +28,11 @@ mongoose
 
 const app = express();
 const server = http.createServer(app);
-const wss = require('./services/socket')(server);
+wssInit(server);
 
 app.use(express.json());
 app.use(security);
-app.use(express.static(path.join(__dirname, '../frontend/assets')));
+app.use(express.static(path.join(dirname, '../../frontend/assets')));
 app.use(routes);
 app.use(errorHandler);
 

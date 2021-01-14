@@ -42,7 +42,7 @@ const createGame = async () => {
     password: passwordEl.value,
     adminName,
   });
-  if (result.status === true) {
+  if (result.status === 200) {
     document.getElementById(
       'gameUrlNew'
     ).value = `${window.location.origin}/${result.gameId}`;
@@ -52,6 +52,7 @@ const createGame = async () => {
     };
     document.getElementById('urlBox').hidden = false;
   } else {
+    console.log(result);
     displayMessage(result.status, 'Could not create project');
   }
 };
