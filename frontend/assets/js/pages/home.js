@@ -1,7 +1,10 @@
 import { sendData } from '../api.js';
 // import { switchPage } from '../index.js'
 import Store from '../store.js';
-import { displayMessage, closeMessage } from '../components/message.js';
+import {
+  displayNotification,
+  closeNotification,
+} from '../components/notification.js';
 
 const tooglePassword = () => {
   document.getElementById('passwordNewRow').hidden = !document.getElementById(
@@ -10,7 +13,7 @@ const tooglePassword = () => {
 };
 
 const createGame = async () => {
-  closeMessage();
+  closeNotification();
   const gameName = document.getElementById('gameNameNew').value;
   const description = document.getElementById('descriptionNew').value;
   const rounds = document.getElementById('roundsNew').value;
@@ -23,7 +26,7 @@ const createGame = async () => {
   if (passwordEl.value !== passwordRepeatEl.value) {
     passwordEl.classList.add('is-invalid');
     passwordRepeatEl.classList.add('is-invalid');
-    displayMessage(false, 'Passwords not the same');
+    displayNotification(false, 'Passwords not the same');
     return;
   }
 
@@ -52,8 +55,7 @@ const createGame = async () => {
     };
     document.getElementById('urlBox').hidden = false;
   } else {
-    console.log(result);
-    displayMessage(result.status, 'Could not create project');
+    displayNotification(result.status, 'Could not create project');
   }
 };
 const init = async () => {

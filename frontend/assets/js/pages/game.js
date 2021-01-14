@@ -1,7 +1,10 @@
 import { sendData } from '../api.js';
 import { closeConnection, sendMessage, initWs } from '../socket.js';
 import Store from '../store.js';
-import { displayMessage, closeMessage } from '../components/message.js';
+import {
+  displayNotification,
+  closeNotification,
+} from '../components/notification.js';
 
 let gameId;
 
@@ -96,6 +99,7 @@ const handlePayerLeft = () => {
 };
 
 const handleSetReady = (event) => {
+  closeNotification();
   const newStatus = event.target.checked ? 'ready' : 'new';
   sendMessage('player_status', { newStatus });
 };
@@ -109,14 +113,17 @@ const handleSubmitWords = (event) => {
   for (let i = 0; i < Store.game.wordsCount; i++) {
     words[i] = wordNodes[i].value;
     if (i !== words.indexOf(words[i])) {
-      displayMessage(
+      displayNotification(
         false,
         `All ${Store.game.wordsCount} words must be unqiue`
       );
       return;
     }
     if (words[i] === '') {
-      displayMessage(false, `Please enter all ${Store.game.wordsCount} words`);
+      displayNotification(
+        false,
+        `Please enter all ${Store.game.wordsCount} words`
+      );
       return;
     }
   }
@@ -124,20 +131,21 @@ const handleSubmitWords = (event) => {
   sendMessage('player_words_submitted', { words });
   document.getElementById('submitWords').disabled = true;
   document.getElementById('setReady').disabled = false;
-  displayMessage(
+  displayNotification(
     true,
     `Words succesfully submitted. You can now signal that you are ready!`
   );
 };
 
 const handleStartGame = () => {
+  closeNotification();
   sendMessage('game_start', true);
 };
 
 const initGame = async (game) => {
+  closeNotification();
   Store.game = game;
   document.title = `TopfGame - ${game.name}`;
-  closeMessage();
   initWs(gameMessageHandler);
   // Create forms
   const wordsParentDiv = document.getElementById('wordSuggetions');

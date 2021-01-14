@@ -1,17 +1,15 @@
-import { displayMessage } from './components/message.js';
+import { displayNotification } from './components/notification.js';
 
 const BASE_URL = window.location.origin;
 
 const handleError = (result) => {
-  console.log(result);
   if (result.status === 200) return;
-  console.log('only error');
   if (result.status === 401) {
     window.location.pathname = '/login';
     return;
   }
 
-  displayMessage(
+  displayNotification(
     false,
     result.status === 400
       ? result.message

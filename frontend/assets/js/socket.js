@@ -1,4 +1,4 @@
-import { displayMessage } from './components/message.js';
+import { displayNotification } from './components/notification.js';
 import Store from './store.js';
 
 let ws;
@@ -26,7 +26,7 @@ const initWs = (mH) => {
   };
 
   ws.onerror = (error) => {
-    displayMessage(false, 'Server closed connection');
+    displayNotification(false, 'Server closed connection');
     console.log('errror:', error);
   };
 
