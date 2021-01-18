@@ -1,4 +1,5 @@
 import logger from 'pino';
+
 logger('./error.log');
 
 const errorHandler = (error, req, res, next) => {
@@ -8,7 +9,7 @@ const errorHandler = (error, req, res, next) => {
     if (process.env.NODE_ENV === 'development') console.log(error);
     else logger.info(error);
   }
-  console.log(error.status, message);
+
   res.json({ status: error.status ? error.status : 500, message });
 };
 

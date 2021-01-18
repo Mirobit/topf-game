@@ -29,24 +29,38 @@ const allPlayersReady = () => {
   return ready;
 };
 
-const updatePlayerStatus = ({ playerName, newStatus }) => {
-  const playerUpdated = Store.game.players.find((player) => {
-    return player.name === playerName;
-  });
+const updatePlayerStatus = ({ playerName, newStatus, action }) => {
+  const playerUpdated = Store.game.players.find(
+    (player) => player.name === playerName
+  );
+  let actionTag = '';
+  switch (action) {
+    case 'none':
+      break;
+    case 'guessing':
+      actionTag = '[G] ';
+      break;
+    case 'explaining':
+      actionTag = '[E] ';
+      break;
+    default:
+      break;
+  }
   if (!playerUpdated) {
     const playerDiv = document
       .getElementById('playerList')
       .appendChild(document.createElement('div'));
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${playerName}`;
-    playerDiv.innerText = `${playerName}: ${newStatus}`;
+    playerDiv.innerText = `${actionTag}${playerName}: ${newStatus}`;
 
     Store.game.players.push({ name: playerName, status: newStatus });
   } else {
     playerUpdated.status = newStatus;
+    playerUpdated.action = action;
     document.getElementById(
       `playerListEntry-${playerName}`
-    ).innerText = `${playerName}: ${newStatus}`;
+    ).innerText = `${actionTag}${playerName}: ${newStatus}`;
   }
   if (Store.isAdmin) {
     document.getElementById('startGame').disabled = !allPlayersReady();
@@ -131,6 +145,7 @@ const handleSubmitWords = (event) => {
       );
       return;
     }
+
     if (words[i] === '') {
       displayNotification(
         false,
@@ -154,9 +169,8 @@ const handleStartGame = () => {
   sendMessage('game_start', true);
 };
 
-const isUserAdmin = (token) => {
-  return JSON.parse(atob(token.split('.')[1])).role === 'user' ? false : true;
-};
+const isUserAdmin = (token) =>
+  JSON.parse(atob(token.split('.')[1])).role === 'user';
 
 const initGame = async (game) => {
   closeNotification();

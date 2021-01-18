@@ -8,13 +8,13 @@ let wss;
 const sendMessageGame = (gameId, messageData) => {
   console.log(games);
   const { players } = games.get(gameId);
-  players.forEach((ws) => {
-    ws.send(JSON.stringify(messageData));
+  players.forEach((player) => {
+    player.ws.send(JSON.stringify(messageData));
   });
 };
 
 const sendMessagePlayer = (gameId, playerName, messageData) => {
-  const ws = games
+  const { ws } = games
     .get(gameId)
     .players.find((player) => player.info.name === playerName);
   ws.send(messageData);
@@ -27,6 +27,21 @@ const messagePlayerStatus = (gameId, playerName, newStatus) => {
   });
 };
 
+const updatePlayerStatus = (gameId, playerName, newStatus) => {
+  games
+    .get(gameId)
+    .players.find(
+      (player) => player.info.playerName === playerName
+    ).status = newStatus;
+  // TODO: Update db
+};
+
+const getExplainerName = (gameId) => {
+  const explainerName = games
+    .get(gameId)
+    .players.find((player) => player.action === 'explaining').playerName;
+};
+
 const handlePlayerJoined = (gameId, playerName, token, ws) => {
   try {
     verifyToken(gameId, playerName, token);
@@ -36,26 +51,24 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
     return;
   }
 
-  ws.info = { gameId, playerName, status: 'new' };
-  if (games.has(gameId)) {
-    games.get(gameId).players.push(ws);
+  let action = 'none';
+  const player = { gameId, playerName, status: 'new', action, ws };
+  player.ws.parent = player;
+
+  const game = games.get(gameId);
+
+  if (game) {
+    if (game.players.length === 1) action = 'guessing';
+    game.players.push(player);
   } else {
-    games.set(gameId, { players: [ws] });
+    action = 'explaining';
+    games.set(gameId, { players: [player] });
   }
 
   sendMessageGame(gameId, {
     command: 'player_joined',
-    payload: { playerName, newStatus: 'new' },
+    payload: { playerName, newStatus: 'new', action },
   });
-};
-
-const updatePlayerStatus = (gameId, playerName, newStatus) => {
-  games
-    .get(gameId)
-    .players.find(
-      (player) => player.info.playerName === playerName
-    ).status = newStatus;
-  // TODO: Update db
 };
 
 const handlePlayerLeft = (gameId, playerName, code) => {
@@ -71,6 +84,7 @@ const handlePlayerStatusChange = (gameId, playerName, newStatus) => {
 
 const handleGameStart = (gameId) => {
   sendMessageGame(gameId, { command: 'game_start', payload: true });
+  const explainerName = getExplainerName(gameId);
 };
 
 const endGame = (gameId) => {
@@ -128,7 +142,7 @@ const init = (server) => {
     });
     ws.on('close', (code) => {
       console.log('innerclose:', code);
-      handlePlayerLeft(ws.info.gameId, ws.info.playerName, code);
+      handlePlayerLeft(ws.parent.gameId, ws.parent.playerName, code);
     });
     ws.on('error', (data) => {
       console.log('innererror', data);
