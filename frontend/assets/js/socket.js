@@ -17,7 +17,7 @@ const initWs = (mH) => {
     console.log('ws open');
     ws.send(
       JSON.stringify({
-        playerName: Store.playerName,
+        playerName: Store.player.name,
         gameId: Store.game._id,
         command: 'player_joined',
         payload: { token },
@@ -43,7 +43,7 @@ const initWs = (mH) => {
 const sendMessage = (command, payload) => {
   console.log('sending msg', command, payload);
   const msgObject = {
-    playerName: Store.playerName,
+    playerName: Store.player.name,
     gameId: Store.game._id,
     command,
     payload,

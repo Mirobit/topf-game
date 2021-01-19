@@ -11,15 +11,15 @@ let gameId;
 const drawPlayerList = () => {
   const playerListParentDiv = document.getElementById('playerList');
   Store.game.players.forEach((player) => {
-    let actionTag = '';
-    switch (player.action) {
+    let activityTag = '';
+    switch (player.activity) {
       case 'none':
         break;
       case 'guessing':
-        actionTag = '[G] ';
+        activityTag = '[G] ';
         break;
       case 'explaining':
-        actionTag = '[E] ';
+        activityTag = '[E] ';
         break;
       default:
         break;
@@ -29,7 +29,7 @@ const drawPlayerList = () => {
     );
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${player.name}`;
-    playerDiv.innerText = `${actionTag}${player.name}: ${player.status}`;
+    playerDiv.innerText = `${activityTag}${player.name}: ${player.status}`;
   });
 };
 
@@ -45,19 +45,19 @@ const checkPlayersReady = () => {
 const checkIsAdmin = (token) =>
   JSON.parse(atob(token.split('.')[1])).role === 'admin';
 
-const updatePlayerStatus = ({ playerName, newStatus, action }) => {
+const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
   const playerUpdated = Store.game.players.find(
     (player) => player.name === playerName
   );
-  let actionTag = '';
-  switch (action) {
+  let activityTag = '';
+  switch (activity) {
     case 'none':
       break;
     case 'guessing':
-      actionTag = '[G] ';
+      activityTag = '[G] ';
       break;
     case 'explaining':
-      actionTag = '[E] ';
+      activityTag = '[E] ';
       break;
     default:
       break;
@@ -68,17 +68,17 @@ const updatePlayerStatus = ({ playerName, newStatus, action }) => {
       .appendChild(document.createElement('div'));
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${playerName}`;
-    playerDiv.innerText = `${actionTag}${playerName}: ${newStatus}`;
+    playerDiv.innerText = `${activityTag}${playerName}: ${newStatus}`;
 
     Store.game.players.push({ name: playerName, status: newStatus });
   } else {
     playerUpdated.status = newStatus;
-    playerUpdated.action = action;
+    playerUpdated.activity = activity;
     document.getElementById(
       `playerListEntry-${playerName}`
-    ).innerText = `${actionTag}${playerName}: ${newStatus}`;
+    ).innerText = `${activityTag}${playerName}: ${newStatus}`;
   }
-  if (Store.isAdmin) {
+  if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = !checkPlayersReady();
   }
 };
@@ -117,7 +117,7 @@ const setGameWords = (data) => {
   Store.game.words = data.words;
 };
 
-const gameStartCountdown = (data) => {
+const gameStartCountdown = () => {
   const countdownDiv = document.getElementById('gameCountdown');
   document.getElementById('timeLeft').innerText = Store.game.timer;
   let countdownSecs = 5;
@@ -134,6 +134,11 @@ const gameStartCountdown = (data) => {
   }, 1000);
 };
 
+const initGame = (data) => {
+  document.getElementById('wordSuggetionsArea').visibility = 'hidden';
+  gameStartCountdown();
+};
+
 const gameMessageHandler = (message) => {
   switch (message.command) {
     case 'player_status':
@@ -146,7 +151,7 @@ const gameMessageHandler = (message) => {
       setGameWords(message.payload);
       break;
     case 'game_start':
-      gameStartCountdown(message.payload);
+      initGame(message.payload);
       break;
     case 'game_player_list':
       updatePlayerList(message.payload);
@@ -206,7 +211,7 @@ const handleStartGame = () => {
   sendMessage('game_start', true);
 };
 
-const initGame = async (game) => {
+const initGameLobby = async (game) => {
   closeNotification();
   Store.game = game;
   document.title = `TopfGame - ${game.name}`;
@@ -229,7 +234,7 @@ const initGame = async (game) => {
   }
 
   // Admin only
-  if (Store.isAdmin) {
+  if (Store.player.isAdmin) {
     document.getElementById('startGame').hidden = false;
     document.getElementById('startGame').onclick = handleStartGame;
   }
@@ -262,7 +267,7 @@ const joinGame = async () => {
     Store.game = result.data.game;
     Store.player.name = playerName;
     Store.player.isAdmin = checkIsAdmin(result.data.token);
-    initGame(result.data.game);
+    initGameLobby(result.data.game);
   }
 };
 

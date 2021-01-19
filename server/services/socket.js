@@ -13,11 +13,12 @@ const sendMessageGame = (gameId, messageData) => {
 };
 
 const sendMessagePlayer = (gameId, playerName, messageData) => {
-  const { ws } = games
+  console.log('message to', gameId, playerName, messageData);
+  const ret = games
     .get(gameId)
     .players.find((player) => player.name === playerName);
-  console.log(messageData);
-  ws.send(JSON.stringify(messageData));
+  // console.log('single message', ret);
+  ret.ws.send(JSON.stringify(messageData));
 };
 
 const messagePlayerStatus = (gameId, playerName, newStatus) => {
@@ -37,13 +38,15 @@ const updatePlayerStatus = (gameId, playerName, newStatus) => {
 const getExplainerName = (gameId) => {
   const explainerName = games
     .get(gameId)
-    .players.find((player) => player.action === 'explaining').name;
+    .players.find((player) => player.activity === 'explaining').name;
+
+  return explainerName;
 };
 
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
 const getRandomizedWords = (gameId) => {
-  const { words } = games.get(gameId).filter((word) => !word.guessed);
+  const words = games.get(gameId).words.filter((word) => !word.guessed);
 
   for (let i = words.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -66,7 +69,7 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
     gameId,
     name: playerName,
     status: 'new',
-    action: 'none',
+    activity: 'none',
     ws,
   };
   player.ws.gameId = gameId;
@@ -75,11 +78,11 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
   const game = games.get(gameId);
 
   if (game) {
-    if (game.players.length === 1) player.action = 'guessing';
+    if (game.players.length === 1) player.activity = 'guessing';
     game.players.push(player);
   } else {
-    player.action = 'explaining';
-    games.set(gameId, { players: [player] });
+    player.activity = 'explaining';
+    games.set(gameId, { players: [player], words: [] });
   }
 
   sendMessagePlayer(gameId, playerName, {
@@ -89,7 +92,7 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
         acc.push({
           name: cur.name,
           status: cur.status,
-          action: cur.action,
+          activity: cur.activity,
         });
         return acc;
       }, []),
@@ -97,7 +100,7 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
   });
   sendMessageGame(gameId, {
     command: 'player_joined',
-    payload: { playerName, newStatus: 'new', action: player.action },
+    payload: { playerName, newStatus: 'new', action: player.activity },
   });
 };
 
@@ -120,6 +123,13 @@ const handleGameStart = (gameId) => {
     command: 'game_words',
     payload: { words },
   });
+};
+
+const handleWordsSubmitted = (gameId, playerName, words) => {
+  const game = games.get(gameId);
+  for (const word of words) {
+    game.words.push({ string: word, guessed: false });
+  }
 };
 
 const endGame = (gameId) => {
@@ -155,7 +165,7 @@ const messageHandler = (message, ws) => {
       handleGameStart(message.gameId);
       break;
     case 'player_words_submitted':
-      gamesServices.addWords(
+      handleWordsSubmitted(
         message.gameId,
         message.playerName,
         message.payload.words

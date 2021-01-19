@@ -207,7 +207,7 @@
           </div>
           <div id="gamePage" class="row col-12" hidden>
             <!-- Suggest Words -->
-            <div id="leftColumm" class="col-3">
+            <div id="wordSuggetionsArea" class="col-3">
               <div id="wordSuggetions"></div>
               <button type="button" class="btn btn-primary" id="submitWords">
                 Submit Words
@@ -258,7 +258,26 @@
               <br />
               <div id="currentTask"></div>
               <br />
-              Word: <span id="currentWord"></span>
+              <div id="wordArea" hidden>
+                <span id="currentWord"></span>
+                <span>
+                  <button
+                    type="button"
+                    class="btn btn-warning btn-sm"
+                    id="wordGuessed"
+                  >
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </span>
+                <span>
+                  <button
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    id="wordSkipped"
+                  >
+                    <i class="fa fa-times" aria-hidden="true"></i></button
+                ></span>
+              </div>
             </div>
             <div id="rightColumm" class="col-3">
               <!-- Player list -->

@@ -18,7 +18,7 @@ class Store {
     this.player = {
       name: null,
       isAdmin: false,
-      role: null,
+      activity: null,
       currentPoints: 0,
       totalPoints: 0,
     };
