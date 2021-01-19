@@ -6,7 +6,6 @@ const games = new Map();
 let wss;
 
 const sendMessageGame = (gameId, messageData) => {
-  console.log(games);
   const { players } = games.get(gameId);
   players.forEach((player) => {
     player.ws.send(JSON.stringify(messageData));
@@ -16,8 +15,9 @@ const sendMessageGame = (gameId, messageData) => {
 const sendMessagePlayer = (gameId, playerName, messageData) => {
   const { ws } = games
     .get(gameId)
-    .players.find((player) => player.info.name === playerName);
-  ws.send(messageData);
+    .players.find((player) => player.name === playerName);
+  console.log(messageData);
+  ws.send(JSON.stringify(messageData));
 };
 
 const messagePlayerStatus = (gameId, playerName, newStatus) => {
@@ -40,6 +40,19 @@ const getExplainerName = (gameId) => {
     .players.find((player) => player.action === 'explaining').name;
 };
 
+const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+
+const getRandomizedWords = (gameId) => {
+  const { words } = games.get(gameId).filter((word) => !word.guessed);
+
+  for (let i = words.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [words[i], words[j]] = [words[j], words[i]];
+  }
+
+  return words;
+};
+
 const handlePlayerJoined = (gameId, playerName, token, ws) => {
   try {
     verifyToken(gameId, playerName, token);
@@ -49,23 +62,42 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
     return;
   }
 
-  let action = 'none';
-  const player = { gameId, name: playerName, status: 'new', action, ws };
-  player.ws.player = player;
+  const player = {
+    gameId,
+    name: playerName,
+    status: 'new',
+    action: 'none',
+    ws,
+  };
+  player.ws.gameId = gameId;
+  player.ws.playerName = playerName;
 
   const game = games.get(gameId);
 
   if (game) {
-    if (game.players.length === 1) action = 'guessing';
+    if (game.players.length === 1) player.action = 'guessing';
     game.players.push(player);
   } else {
-    action = 'explaining';
+    player.action = 'explaining';
     games.set(gameId, { players: [player] });
   }
 
+  sendMessagePlayer(gameId, playerName, {
+    command: 'game_player_list',
+    payload: {
+      players: games.get(gameId).players.reduce((acc, cur) => {
+        acc.push({
+          name: cur.name,
+          status: cur.status,
+          action: cur.action,
+        });
+        return acc;
+      }, []),
+    },
+  });
   sendMessageGame(gameId, {
     command: 'player_joined',
-    payload: { playerName, newStatus: 'new', action },
+    payload: { playerName, newStatus: 'new', action: player.action },
   });
 };
 
@@ -82,8 +114,12 @@ const handlePlayerStatusChange = (gameId, playerName, newStatus) => {
 
 const handleGameStart = (gameId) => {
   const explainerName = getExplainerName(gameId);
+  const words = getRandomizedWords(gameId);
   sendMessageGame(gameId, { command: 'game_start', payload: true });
-  sendMessagePlayer(gameId);
+  sendMessagePlayer(gameId, explainerName, {
+    command: 'game_words',
+    payload: { words },
+  });
 };
 
 const endGame = (gameId) => {
@@ -141,7 +177,7 @@ const init = (server) => {
     });
     ws.on('close', (code) => {
       console.log('innerclose:', code);
-      handlePlayerLeft(ws.player.gameId, ws.player.name, code);
+      handlePlayerLeft(ws.gameId, ws.playerName, code);
     });
     ws.on('error', (data) => {
       console.log('innererror', data);

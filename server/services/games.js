@@ -97,6 +97,7 @@ const join = async (gameId, playerName, gamePassword) => {
   delete game.password;
   delete game.words;
   delete game.adminName;
+  delete game.players;
 
   const token = createToken(gameId, playerName, role);
 

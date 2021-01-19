@@ -94,10 +94,6 @@ const gameSchema = new Schema(
           type: Boolean,
           default: false,
         },
-        playerName: {
-          type: String,
-          required: true,
-        },
       },
     ],
   },

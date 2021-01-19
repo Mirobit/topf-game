@@ -11,16 +11,29 @@ let gameId;
 const drawPlayerList = () => {
   const playerListParentDiv = document.getElementById('playerList');
   Store.game.players.forEach((player) => {
+    let actionTag = '';
+    switch (player.action) {
+      case 'none':
+        break;
+      case 'guessing':
+        actionTag = '[G] ';
+        break;
+      case 'explaining':
+        actionTag = '[E] ';
+        break;
+      default:
+        break;
+    }
     const playerDiv = playerListParentDiv.appendChild(
       document.createElement('div')
     );
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${player.name}`;
-    playerDiv.innerText = `${player.name}: ${player.status}`;
+    playerDiv.innerText = `${actionTag}${player.name}: ${player.status}`;
   });
 };
 
-const allPlayersReady = () => {
+const checkPlayersReady = () => {
   let ready = true;
   Store.game.players.forEach((player) => {
     if (player.status === 'new' || player.status === 'submitted') ready = false;
@@ -28,6 +41,9 @@ const allPlayersReady = () => {
 
   return ready;
 };
+
+const checkIsAdmin = (token) =>
+  JSON.parse(atob(token.split('.')[1])).role === 'user';
 
 const updatePlayerStatus = ({ playerName, newStatus, action }) => {
   const playerUpdated = Store.game.players.find(
@@ -63,8 +79,13 @@ const updatePlayerStatus = ({ playerName, newStatus, action }) => {
     ).innerText = `${actionTag}${playerName}: ${newStatus}`;
   }
   if (Store.isAdmin) {
-    document.getElementById('startGame').disabled = !allPlayersReady();
+    document.getElementById('startGame').disabled = !checkPlayersReady();
   }
+};
+
+const updatePlayerList = (data) => {
+  Store.game.players = data.players;
+  drawPlayerList();
 };
 
 const gameStart = () => {
@@ -113,6 +134,9 @@ const gameMessageHandler = (message) => {
       break;
     case 'game_start':
       gameStartCountdown(message.payload);
+      break;
+    case 'game_player_list':
+      updatePlayerList(message.payload);
       break;
     default:
       console.log('unknown command', message);
@@ -169,9 +193,6 @@ const handleStartGame = () => {
   sendMessage('game_start', true);
 };
 
-const isUserAdmin = (token) =>
-  JSON.parse(atob(token.split('.')[1])).role === 'user';
-
 const initGame = async (game) => {
   closeNotification();
   Store.game = game;
@@ -193,9 +214,6 @@ const initGame = async (game) => {
     wordSuggetion.id = `wordSuggestion${i + 1}`;
     wordSuggetion['aria-describedby'] = `wordSuggestionHelp${1 + 1}`;
   }
-
-  // Draw player list
-  drawPlayerList();
 
   // Admin only
   if (Store.isAdmin) {
@@ -226,7 +244,7 @@ const joinGame = async () => {
   if (result.status === 200) {
     localStorage.setItem('identity', result.data.token);
     Store.playerName = playerName;
-    Store.isAdmin = isUserAdmin(result.data.token);
+    Store.isAdmin = checkIsAdmin(result.data.token);
     initGame(result.data.game);
   }
 };
