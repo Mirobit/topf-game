@@ -43,7 +43,7 @@ const checkPlayersReady = () => {
 };
 
 const checkIsAdmin = (token) =>
-  JSON.parse(atob(token.split('.')[1])).role === 'user';
+  JSON.parse(atob(token.split('.')[1])).role === 'admin';
 
 const updatePlayerStatus = ({ playerName, newStatus, action }) => {
   const playerUpdated = Store.game.players.find(
@@ -113,7 +113,6 @@ const gameStartCountdown = (data) => {
   countdownDiv.innerText = countdownSecs;
   const countdownInt = setInterval(() => {
     countdownSecs--;
-
     if (countdownSecs === 0) {
       clearInterval(countdownInt);
       countdownDiv.innerText = 'Go!';
