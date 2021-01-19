@@ -25,7 +25,7 @@ const gameSchema = new Schema(
       type: String,
       required: false,
     },
-    rounds: {
+    totalRounds: {
       type: Number,
       required: true,
       default: 3,

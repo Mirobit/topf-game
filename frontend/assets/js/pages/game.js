@@ -88,22 +88,33 @@ const updatePlayerList = (data) => {
   drawPlayerList();
 };
 
+const updateGameInfo = () => {
+  console.log(Store);
+  Store.timeLeftNode.innerText = Store.game.timer;
+  Store.totalRoundsNode.innerText = Store.game.totalRounds;
+  Store.currentRoundNode.innerText = Store.game.currentRound;
+  Store.currentPointsNode.innerText = Store.player.currentPoints;
+  Store.totalPointsNode.innerText = Store.player.totalPoints;
+};
+
 const gameStart = () => {
-  const timeLeftDiv = document.getElementById('timeLeft');
   const endSound = document.getElementById('endSound');
   endSound.volume = 1; // 1 -> 100%
   let timeLeft = Store.game.timer;
   const timeLeftInt = setInterval(() => {
     timeLeft--;
-
     if (timeLeft === 0) {
       clearInterval(timeLeftInt);
-      timeLeftDiv.innerText = 'Over!';
+      Store.timeLeftNode.innerText = 'Over!';
       endSound.play();
     } else {
-      timeLeftDiv.innerText = timeLeft;
+      Store.timeLeftNode.innerText = timeLeft;
     }
   }, 1000);
+};
+
+const setGameWords = (data) => {
+  Store.game.words = data.words;
 };
 
 const gameStartCountdown = (data) => {
@@ -130,6 +141,9 @@ const gameMessageHandler = (message) => {
       break;
     case 'player_joined':
       updatePlayerStatus(message.payload);
+      break;
+    case 'game_words':
+      setGameWords(message.payload);
       break;
     case 'game_start':
       gameStartCountdown(message.payload);
@@ -220,6 +234,9 @@ const initGame = async (game) => {
     document.getElementById('startGame').onclick = handleStartGame;
   }
 
+  // Set game board
+  updateGameInfo();
+
   // Set event handlers
   document.getElementById('setReady').onclick = handleSetReady;
   document.getElementById('submitWords').onclick = handleSubmitWords;
@@ -242,8 +259,9 @@ const joinGame = async () => {
   console.log(result);
   if (result.status === 200) {
     localStorage.setItem('identity', result.data.token);
-    Store.playerName = playerName;
-    Store.isAdmin = checkIsAdmin(result.data.token);
+    Store.game = result.data.game;
+    Store.player.name = playerName;
+    Store.player.isAdmin = checkIsAdmin(result.data.token);
     initGame(result.data.game);
   }
 };
