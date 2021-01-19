@@ -30,16 +30,14 @@ const messagePlayerStatus = (gameId, playerName, newStatus) => {
 const updatePlayerStatus = (gameId, playerName, newStatus) => {
   games
     .get(gameId)
-    .players.find(
-      (player) => player.info.playerName === playerName
-    ).status = newStatus;
+    .players.find((player) => player.name === playerName).status = newStatus;
   // TODO: Update db
 };
 
 const getExplainerName = (gameId) => {
   const explainerName = games
     .get(gameId)
-    .players.find((player) => player.action === 'explaining').playerName;
+    .players.find((player) => player.action === 'explaining').name;
 };
 
 const handlePlayerJoined = (gameId, playerName, token, ws) => {
@@ -52,8 +50,8 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
   }
 
   let action = 'none';
-  const player = { gameId, playerName, status: 'new', action, ws };
-  player.ws.parent = player;
+  const player = { gameId, name: playerName, status: 'new', action, ws };
+  player.ws.player = player;
 
   const game = games.get(gameId);
 
@@ -83,8 +81,9 @@ const handlePlayerStatusChange = (gameId, playerName, newStatus) => {
 };
 
 const handleGameStart = (gameId) => {
-  sendMessageGame(gameId, { command: 'game_start', payload: true });
   const explainerName = getExplainerName(gameId);
+  sendMessageGame(gameId, { command: 'game_start', payload: true });
+  sendMessagePlayer(gameId);
 };
 
 const endGame = (gameId) => {
@@ -142,7 +141,7 @@ const init = (server) => {
     });
     ws.on('close', (code) => {
       console.log('innerclose:', code);
-      handlePlayerLeft(ws.parent.gameId, ws.parent.playerName, code);
+      handlePlayerLeft(ws.player.gameId, ws.player.name, code);
     });
     ws.on('error', (data) => {
       console.log('innererror', data);
