@@ -133,10 +133,10 @@ const handlePlayerStatusChange = (gameId, playerName, newStatus) => {
   messagePlayerStatus(gameId, playerName, newStatus);
 };
 
-const handleGameStart = (gameId) => {
+const handleTurnStart = (gameId) => {
   const explainerName = getExplainerName(gameId);
   const words = getRandomizedWords(gameId);
-  sendMessageGame(gameId, { command: 'game_start', payload: true });
+  sendMessageGame(gameId, { command: 'game_turn_start', payload: '' });
   sendMessagePlayer(gameId, explainerName, {
     command: 'game_words',
     payload: { words },
@@ -280,8 +280,8 @@ const messageHandler = (message, ws) => {
         message.payload.words
       );
       break;
-    case 'game_start':
-      handleGameStart(message.gameId);
+    case 'game_turn_start':
+      handleTurnStart(message.gameId);
       break;
     default:
       console.log('unknown command', message.command);

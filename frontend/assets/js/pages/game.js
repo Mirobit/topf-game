@@ -94,7 +94,9 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
 };
 
 const updateResultsLastTurn = (data) => {
-  // console.log(data);
+  if (Store.player.isAdmin) {
+    document.getElementById('startGame').disabled = false;
+  }
 };
 
 const setPlayerList = (data) => {
@@ -122,7 +124,9 @@ const turnFinish = () => {
       timeLeft: Store.game.timeLeft,
     });
     document.getElementById('wordArea').hidden = true;
+    Store.player.activity = 'none';
   }
+  Store.game.curWordIndex = 0;
 };
 
 const turnStart = () => {
@@ -143,9 +147,9 @@ const turnStart = () => {
   }, 1000);
 };
 
-const setGameWords = (data) => {
+const setGameWords = ({ words }) => {
   Store.player.activity = 'explaining';
-  Store.game.words = data.words;
+  Store.game.words = words;
 };
 
 const gameStartCountdown = () => {
@@ -164,9 +168,12 @@ const gameStartCountdown = () => {
   }, 1000);
 };
 
-const initGame = (data) => {
-  // why?
-  // document.getElementById('wordSuggetionsArea').visibility = 'hidden';
+const setNextRound = ({ roundNo }) => {
+  Store.game.currentRound = roundNo;
+};
+
+const initGame = () => {
+  document.getElementById('wordSuggetionsArea').style.visibility = 'hidden';
   gameStartCountdown();
 };
 
@@ -184,8 +191,11 @@ const gameMessageHandler = (message) => {
     case 'game_words':
       setGameWords(message.payload);
       break;
-    case 'game_start':
-      initGame(message.payload);
+    case 'game_next_round':
+      setNextRound(message.payload);
+      break;
+    case 'game_turn_start':
+      initGame();
       break;
     case 'game_player_list':
       setPlayerList(message.payload);
@@ -254,7 +264,8 @@ const handleSubmitWords = (event) => {
 const handleStartGame = () => {
   closeNotification();
   document.getElementById('startGame').disabled = true;
-  sendMessage('game_start', true);
+  document.getElementById('startGame').innerText = 'Next';
+  sendMessage('game_turn_start', true);
 };
 
 const initGameLobby = async (game) => {
