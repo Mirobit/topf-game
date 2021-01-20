@@ -66,7 +66,7 @@ const getPlayersLean = (gameId) =>
     return acc;
   }, []);
 
-const handlePlayerJoined = (gameId, playerName, token, ws) => {
+const handlePlayerJoined = async (gameId, playerName, token, ws) => {
   try {
     verifyToken(gameId, playerName, token);
   } catch ($err) {
@@ -92,7 +92,7 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
     if (game.players.length === 1) player.activity = 'guessing';
     game.players.push(player);
   } else {
-    const gameDB = gamesServices.get(gameId);
+    const gameDB = await gamesServices.get(gameId);
     player.activity = 'explaining';
     games.set(gameId, {
       players: [player],
@@ -169,7 +169,6 @@ const setGameFinished = (gameId) => {
 
 const setNextTurn = (gameId, finishedRound) => {
   const game = games.get(gameId);
-  console.log('timeleft', game.timeLeft);
   // Set next player pair
   if (game.timeLeft === 0) {
     console.log('new player pair');
@@ -213,7 +212,7 @@ const setNextTurn = (gameId, finishedRound) => {
   });
 };
 
-const handlePlayerFinished = (gameId, words, timeLeft) => {
+const handleTurnFinished = (gameId, words, timeLeft) => {
   const game = games.get(gameId);
   const player = game.players.find(
     (playerT) => playerT.activity === 'guessing'
@@ -230,10 +229,16 @@ const handlePlayerFinished = (gameId, words, timeLeft) => {
 
   sendMessageGame(gameId, {
     command: 'player_words_guessed',
-    payload: { points, playerName: player.name, roundNo: game.currentRound },
+    payload: {
+      points,
+      playerName: player.name,
+      roundNo: game.currentRound,
+      timeLeft,
+    },
   });
 
   let roundFinished = true;
+  // TODO: handle duplicates
   for (const word of game.words) {
     if (!word.guessed) {
       roundFinished = false;
@@ -251,18 +256,21 @@ const handlePlayerFinished = (gameId, words, timeLeft) => {
 
 const messageHandler = (message, ws) => {
   switch (message.command) {
+    case 'game_turn_finished':
+      handleTurnFinished(
+        message.gameId,
+        message.payload.words,
+        message.payload.timeLeft
+      );
+      break;
+    case 'game_turn_start':
+      handleTurnStart(message.gameId);
+      break;
     case 'player_status':
       handlePlayerStatusChange(
         message.gameId,
         message.playerName,
         message.payload.newStatus
-      );
-      break;
-    case 'player_finished':
-      handlePlayerFinished(
-        message.gameId,
-        message.payload.words,
-        message.payload.timeLeft
       );
       break;
     case 'player_joined':
@@ -279,9 +287,6 @@ const messageHandler = (message, ws) => {
         message.playerName,
         message.payload.words
       );
-      break;
-    case 'game_turn_start':
-      handleTurnStart(message.gameId);
       break;
     default:
       console.log('unknown command', message.command);

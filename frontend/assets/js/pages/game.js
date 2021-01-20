@@ -93,10 +93,13 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
   }
 };
 
-const updateResultsLastTurn = (data) => {
+const updateResultsLastTurn = ({ timeLeft }) => {
+  console.log('timeleft!!!', timeLeft);
+  Store.syncTimeLeft(timeLeft);
   if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = false;
   }
+  console.log('timeleft!!! afer', Store.game.timeLeft);
 };
 
 const setPlayerList = (data) => {
@@ -105,6 +108,7 @@ const setPlayerList = (data) => {
 };
 
 const updateGameInfo = () => {
+  console.log('updating game info');
   Store.timeLeftNode.innerText = Store.game.timer;
   Store.totalRoundsNode.innerText = Store.game.totalRounds;
   Store.currentRoundNode.innerText = Store.game.currentRound;
@@ -119,7 +123,7 @@ const turnFinish = () => {
   endSound.play();
   Store.countdownNode.innerText = 'Over!';
   if (Store.player.activity === 'explaining') {
-    sendMessage('player_finished', {
+    sendMessage('game_turn_finished', {
       words: Store.game.words,
       timeLeft: Store.game.timeLeft,
     });
@@ -137,7 +141,9 @@ const turnStart = () => {
   } else {
     console.log('not explaing', Store.player);
   }
+  console.log('Store timer', Store.game.timeLeft);
   Store.game.timeLeft = Store.game.timeLeft || Store.game.timer;
+  console.log('Printed timer', Store.game.timeLeft);
   Store.timeLeftInt = setInterval(() => {
     Store.game.timeLeft--;
     Store.timeLeftNode.innerText = Store.game.timeLeft;
@@ -153,7 +159,6 @@ const setGameWords = ({ words }) => {
 };
 
 const gameStartCountdown = () => {
-  document.getElementById('timeLeft').innerText = Store.game.timer;
   let countdownSecs = 5;
   Store.countdownNode.innerText = countdownSecs;
   const countdownInt = setInterval(() => {
@@ -168,8 +173,13 @@ const gameStartCountdown = () => {
   }, 1000);
 };
 
+// const setTurnFinished = ({ timeLeft }) => {
+//   clearInterval(Store.timeLeftInt);
+//   Store.game.timeLeft = timeLeft;
+// };
+
 const setNextRound = ({ roundNo }) => {
-  Store.game.currentRound = roundNo;
+  Store.setCurrentRound(roundNo);
 };
 
 const initGame = () => {
@@ -194,6 +204,9 @@ const gameMessageHandler = (message) => {
     case 'game_next_round':
       setNextRound(message.payload);
       break;
+    // case 'game_turn_finished':
+    //   setTurnFinished(message.payload);
+    //   break;
     case 'game_turn_start':
       initGame();
       break;

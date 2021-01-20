@@ -25,6 +25,19 @@ class Store {
     };
     this.timeLeftInt = null;
   }
+
+  setCurrentRound(roundNo) {
+    this.game.currentRound = roundNo;
+    console.log('settinground', roundNo);
+    this.currentRoundNode.innerText = roundNo;
+  }
+
+  syncTimeLeft(timeLeft) {
+    console.log('sync timer');
+    clearInterval(this.timeLeftInt);
+    this.game.timeLeft = timeLeft;
+    this.timeLeftNode.innerText = timeLeft;
+  }
 }
 
 export default new Store();
