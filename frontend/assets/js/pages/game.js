@@ -50,7 +50,6 @@ const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
     (player) => player.name === playerName
   );
   activity = activity || playerUpdated.activity;
-  console.log(activity, playerUpdated.activity);
   let activityTag = '';
   switch (activity) {
     case 'none':
@@ -85,13 +84,16 @@ const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
   }
 };
 
+const updateResultsLastTurn = (data) => {
+  // console.log(data);
+};
+
 const setPlayerList = (data) => {
   Store.game.players = data.players;
   drawPlayerList();
 };
 
 const updateGameInfo = () => {
-  console.log(Store);
   Store.timeLeftNode.innerText = Store.game.timer;
   Store.totalRoundsNode.innerText = Store.game.totalRounds;
   Store.currentRoundNode.innerText = Store.game.currentRound;
@@ -101,11 +103,17 @@ const updateGameInfo = () => {
 
 const roundFinish = () => {
   clearInterval(Store.timeLeftInt);
-  Store.countdownNode.innerText = 'Over!';
-  // Store.timeLeftNode.innerText = 'Over!';
   const endSound = document.getElementById('endSound');
   endSound.volume = 1; // 1 -> 100%
   endSound.play();
+  Store.countdownNode.innerText = 'Over!';
+  if (Store.player.activity === 'explaining') {
+    sendMessage('player_finished', {
+      words: Store.game.words,
+      timeLeft: Store.timeLeftNode.innerText,
+    });
+    document.getElementById('wordArea').hidden = true;
+  }
 };
 
 const roundStart = () => {
@@ -119,10 +127,9 @@ const roundStart = () => {
   let timeLeft = Store.game.timer;
   Store.timeLeftInt = setInterval(() => {
     timeLeft--;
+    Store.timeLeftNode.innerText = timeLeft;
     if (timeLeft === 0) {
       roundFinish();
-    } else {
-      Store.timeLeftNode.innerText = timeLeft;
     }
   }, 1000);
 };
@@ -149,7 +156,8 @@ const gameStartCountdown = () => {
 };
 
 const initGame = (data) => {
-  document.getElementById('wordSuggetionsArea').visibility = 'hidden';
+  // why?
+  // document.getElementById('wordSuggetionsArea').visibility = 'hidden';
   gameStartCountdown();
 };
 
@@ -160,6 +168,9 @@ const gameMessageHandler = (message) => {
       break;
     case 'player_joined':
       updatePlayerStatus(message.payload);
+      break;
+    case 'player_words_guessed':
+      updateResultsLastTurn(message.payload);
       break;
     case 'game_words':
       setGameWords(message.payload);
@@ -181,12 +192,6 @@ const handlePayerLeft = () => {
 };
 
 const handleNextWord = (guessed) => {
-  console.log(
-    'next word',
-    guessed,
-    Store.game.curWordIndex,
-    Store.game.words.length
-  );
   Store.game.words[Store.game.curWordIndex].guessed = guessed;
   if (Store.game.curWordIndex === Store.game.words.length - 1) {
     roundFinish();

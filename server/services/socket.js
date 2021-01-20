@@ -6,6 +6,7 @@ const games = new Map();
 let wss;
 
 const sendMessageGame = (gameId, messageData) => {
+  console.log('message to', gameId, messageData);
   const { players } = games.get(gameId);
   players.forEach((player) => {
     player.ws.send(JSON.stringify(messageData));
@@ -13,7 +14,7 @@ const sendMessageGame = (gameId, messageData) => {
 };
 
 const sendMessagePlayer = (gameId, playerName, messageData) => {
-  console.log('message to', gameId, playerName, messageData);
+  console.log('private message to', gameId, playerName, messageData);
   const { ws } = games
     .get(gameId)
     .players.find((player) => player.name === playerName);
@@ -54,6 +55,17 @@ const getRandomizedWords = (gameId) => {
   return words;
 };
 
+const getPlayersLean = (gameId) =>
+  games.get(gameId).players.reduce((acc, cur) => {
+    acc.push({
+      name: cur.name,
+      status: cur.status,
+      activity: cur.activity,
+      score: cur.score,
+    });
+    return acc;
+  }, []);
+
 const handlePlayerJoined = (gameId, playerName, token, ws) => {
   try {
     verifyToken(gameId, playerName, token);
@@ -68,6 +80,7 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
     name: playerName,
     status: 'new',
     activity: 'none',
+    score: null,
     ws,
   };
   player.ws.gameId = gameId;
@@ -79,21 +92,23 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
     if (game.players.length === 1) player.activity = 'guessing';
     game.players.push(player);
   } else {
+    const gameDB = gamesServices.get(gameId);
     player.activity = 'explaining';
-    games.set(gameId, { players: [player], words: [] });
+    games.set(gameId, {
+      players: [player],
+      words: [],
+      currentRound: 1,
+      totalRounds: gameDB.totalRounds,
+      adminName: gamesServices.adminName,
+      status: gameDB.status,
+      timeLeft: 0,
+    });
   }
 
   sendMessagePlayer(gameId, playerName, {
     command: 'game_player_list',
     payload: {
-      players: games.get(gameId).players.reduce((acc, cur) => {
-        acc.push({
-          name: cur.name,
-          status: cur.status,
-          activity: cur.activity,
-        });
-        return acc;
-      }, []),
+      players: getPlayersLean(gameId),
     },
   });
   sendMessageGame(gameId, {
@@ -130,16 +145,100 @@ const handleWordsSubmitted = (gameId, playerName, words) => {
   }
 };
 
-const endGame = (gameId) => {
-  //
+const setGameFinished = (gameId) => {
+  const game = games.get(gameId);
+  let winner = 'error';
+  let highscore = 0;
+  for (const player of game.players) {
+    if (player.score > highscore) {
+      winner = player.name;
+      highscore = player.score;
+    }
+  }
+  sendMessageGame(gameId, {
+    command: 'game_finished',
+    payload: { winner, score: highscore },
+  });
+  game.status = 'finished';
 };
 
-const nextRound = (gameId) => {
-  //
+const setNextTurn = (gameId, finishedRound) => {
+  const game = games.get(gameId);
+
+  // Set next player pair
+  if (game.timeLeft === 0) {
+    const curExplainerIndex = game.players.findIndex(
+      (player) => player.activity === 'explaining'
+    );
+    const curGuesserIndex = game.players.findIndex(
+      (player) => player.activity === 'guessing'
+    );
+
+    game.players[curExplainerIndex].activity = 'none';
+    game.players[curGuesserIndex].activity = 'none';
+
+    const newExplainerIndex =
+      curExplainerIndex < game.players.length ? curExplainerIndex + 1 : 0;
+    const newGuesserIndex =
+      curGuesserIndex < game.players.length ? curGuesserIndex + 1 : 0;
+
+    game.players[newExplainerIndex].activity = 'explaining';
+    game.players[newGuesserIndex].activity = 'guessing';
+  }
+
+  // Set next round
+  if (finishedRound) {
+    game.words = game.words.map((word) => {
+      word.guessed = false;
+      return word;
+    });
+    game.currentRound++;
+    sendMessageGame(gameId, {
+      command: 'game_next_round',
+      payload: { roundNo: game.currentRound },
+    });
+  }
+
+  sendMessageGame(gameId, {
+    command: 'game_player_list',
+    payload: { players: getPlayersLean(gameId) },
+  });
 };
 
-const createChannel = () => {
-  //
+const handlePlayerFinished = (gameId, words, timeLeft) => {
+  const game = games.get(gameId);
+  const player = game.players.find(
+    (playerT) => playerT.activity === 'guessing'
+  );
+  let points = 0;
+
+  for (const word of words) {
+    if (!word.guessed) {
+      points++;
+      game.words.find((wordT) => wordT.string === word.string).guessed = true;
+    }
+  }
+  player.score += points;
+
+  sendMessageGame(gameId, {
+    command: 'player_words_guessed',
+    payload: { points, playerName: player.name, roundNo: game.currentRound },
+  });
+
+  let roundFinished = true;
+  for (const word of game.words) {
+    if (!word.guessed) {
+      roundFinished = false;
+      break;
+    }
+  }
+
+  if (roundFinished && game.totalRounds === game.currentRound) {
+    setGameFinished(gameId);
+  } else {
+    game.timeLeft = timeLeft;
+    setNextTurn(gameId, roundFinished);
+  }
 };
 
 const messageHandler = (message, ws) => {
@@ -151,6 +250,13 @@ const messageHandler = (message, ws) => {
         message.payload.newStatus
       );
       break;
+    case 'player_finished':
+      handlePlayerFinished(
+        message.gameId,
+        message.payload.words,
+        message.payload.timeLeft
+      );
+      break;
     case 'player_joined':
       handlePlayerJoined(
         message.gameId,
@@ -159,15 +265,15 @@ const messageHandler = (message, ws) => {
         ws
       );
       break;
-    case 'game_start':
-      handleGameStart(message.gameId);
-      break;
     case 'player_words_submitted':
       handleWordsSubmitted(
         message.gameId,
         message.playerName,
         message.payload.words
       );
+      break;
+    case 'game_start':
+      handleGameStart(message.gameId);
       break;
     default:
       console.log('unknown command', message.command);

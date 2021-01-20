@@ -5,7 +5,7 @@ import { ValError } from '../utils/errors.js';
 
 const get = async (id) => {
   try {
-    const game = await Game.findOneById(id);
+    const game = await Game.findById(id);
     return game;
   } catch (error) {
     throw new Error(error.message);
