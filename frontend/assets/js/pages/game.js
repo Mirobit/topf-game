@@ -9,7 +9,9 @@ import {
 let gameId;
 
 const drawPlayerList = () => {
+  console.time('playerlist');
   const playerListParentDiv = document.getElementById('playerList');
+  playerListParentDiv.innerHTML = '';
   Store.game.players.forEach((player) => {
     let activityTag = '';
     switch (player.activity) {
@@ -29,8 +31,9 @@ const drawPlayerList = () => {
     );
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${player.name}`;
-    playerDiv.innerText = `${activityTag}${player.name}: ${player.status}`;
+    playerDiv.innerText = `${activityTag}${player.name}: ${player.status} (${player.score})`;
   });
+  console.timeEnd('playerlist');
 };
 
 const checkPlayersReady = () => {
@@ -45,7 +48,7 @@ const checkPlayersReady = () => {
 const checkIsAdmin = (token) =>
   JSON.parse(atob(token.split('.')[1])).role === 'admin';
 
-const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
+const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
   const playerUpdated = Store.game.players.find(
     (player) => player.name === playerName
   );
@@ -69,15 +72,21 @@ const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
       .appendChild(document.createElement('div'));
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${playerName}`;
-    playerDiv.innerText = `${activityTag}${playerName}: ${newStatus}`;
+    playerDiv.innerText = `${activityTag}${playerName}: ${newStatus} (${score})`;
 
-    Store.game.players.push({ name: playerName, status: newStatus, activity });
+    Store.game.players.push({
+      name: playerName,
+      status: newStatus,
+      activity,
+      score,
+    });
   } else {
+    console.log('player:', playerUpdated);
     playerUpdated.status = newStatus;
     playerUpdated.activity = activity;
     document.getElementById(
       `playerListEntry-${playerName}`
-    ).innerText = `${activityTag}${playerName}: ${newStatus}`;
+    ).innerText = `${activityTag}${playerName}: ${newStatus} (${playerUpdated.score})`;
   }
   if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = !checkPlayersReady();
@@ -101,7 +110,7 @@ const updateGameInfo = () => {
   Store.totalPointsNode.innerText = Store.player.totalPoints;
 };
 
-const roundFinish = () => {
+const turnFinish = () => {
   clearInterval(Store.timeLeftInt);
   const endSound = document.getElementById('endSound');
   endSound.volume = 1; // 1 -> 100%
@@ -110,13 +119,13 @@ const roundFinish = () => {
   if (Store.player.activity === 'explaining') {
     sendMessage('player_finished', {
       words: Store.game.words,
-      timeLeft: Store.timeLeftNode.innerText,
+      timeLeft: Store.game.timeLeft,
     });
     document.getElementById('wordArea').hidden = true;
   }
 };
 
-const roundStart = () => {
+const turnStart = () => {
   if (Store.player.activity === 'explaining') {
     console.log('explaining', Store.game.words[0].string);
     Store.currentWordNode.innerText = Store.game.words[0].string;
@@ -124,12 +133,12 @@ const roundStart = () => {
   } else {
     console.log('not explaing', Store.player);
   }
-  let timeLeft = Store.game.timer;
+  Store.game.timeLeft = Store.game.timeLeft || Store.game.timer;
   Store.timeLeftInt = setInterval(() => {
-    timeLeft--;
-    Store.timeLeftNode.innerText = timeLeft;
-    if (timeLeft === 0) {
-      roundFinish();
+    Store.game.timeLeft--;
+    Store.timeLeftNode.innerText = Store.game.timeLeft;
+    if (Store.game.timeLeft === 0) {
+      turnFinish();
     }
   }, 1000);
 };
@@ -148,7 +157,7 @@ const gameStartCountdown = () => {
     if (countdownSecs === 0) {
       Store.countdownNode.innerText = 'Go!';
       clearInterval(countdownInt);
-      roundStart();
+      turnStart();
     } else {
       Store.countdownNode.innerText = countdownSecs;
     }
@@ -194,7 +203,7 @@ const handlePayerLeft = () => {
 const handleNextWord = (guessed) => {
   Store.game.words[Store.game.curWordIndex].guessed = guessed;
   if (Store.game.curWordIndex === Store.game.words.length - 1) {
-    roundFinish();
+    turnFinish();
     return;
   }
   Store.game.curWordIndex++;
@@ -244,6 +253,7 @@ const handleSubmitWords = (event) => {
 
 const handleStartGame = () => {
   closeNotification();
+  document.getElementById('startGame').disabled = true;
   sendMessage('game_start', true);
 };
 

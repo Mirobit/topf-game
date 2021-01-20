@@ -80,7 +80,7 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
     name: playerName,
     status: 'new',
     activity: 'none',
-    score: null,
+    score: 0,
     ws,
   };
   player.ws.gameId = gameId;
@@ -113,7 +113,12 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
   });
   sendMessageGame(gameId, {
     command: 'player_joined',
-    payload: { playerName, newStatus: 'new', activity: player.activity },
+    payload: {
+      playerName,
+      newStatus: 'new',
+      activity: player.activity,
+      score: player.score,
+    },
   });
 };
 
@@ -164,9 +169,10 @@ const setGameFinished = (gameId) => {
 
 const setNextTurn = (gameId, finishedRound) => {
   const game = games.get(gameId);
-
+  console.log('timeleft', game.timeLeft);
   // Set next player pair
   if (game.timeLeft === 0) {
+    console.log('new player pair');
     const curExplainerIndex = game.players.findIndex(
       (player) => player.activity === 'explaining'
     );
@@ -178,14 +184,16 @@ const setNextTurn = (gameId, finishedRound) => {
     game.players[curGuesserIndex].activity = 'none';
 
     const newExplainerIndex =
-      curExplainerIndex < game.players.length ? curExplainerIndex + 1 : 0;
+      curExplainerIndex < game.players.length - 1 ? curExplainerIndex + 1 : 0;
     const newGuesserIndex =
-      curGuesserIndex < game.players.length ? curGuesserIndex + 1 : 0;
-
+      curGuesserIndex < game.players.length - 1 ? curGuesserIndex + 1 : 0;
+    console.log('guesser', curGuesserIndex, newGuesserIndex);
+    console.log('explainer', curExplainerIndex, newExplainerIndex);
     game.players[newExplainerIndex].activity = 'explaining';
     game.players[newGuesserIndex].activity = 'guessing';
   }
 
+  console.log('finished round', finishedRound);
   // Set next round
   if (finishedRound) {
     game.words = game.words.map((word) => {
@@ -213,7 +221,7 @@ const handlePlayerFinished = (gameId, words, timeLeft) => {
   let points = 0;
 
   for (const word of words) {
-    if (!word.guessed) {
+    if (word.guessed) {
       points++;
       game.words.find((wordT) => wordT.string === word.string).guessed = true;
     }

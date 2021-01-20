@@ -35,6 +35,11 @@ const gameSchema = new Schema(
       required: true,
       default: 60,
     },
+    timeLeft: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     wordsCount: {
       type: Number,
       required: true,

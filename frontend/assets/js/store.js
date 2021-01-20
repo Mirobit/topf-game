@@ -15,7 +15,6 @@ class Store {
     this.totalPointsNode = document.getElementById('totalPoints');
     this.currentWordNode = document.getElementById('currentWord');
 
-    this.timeLeftInt = null;
     this.game = null;
     this.player = {
       name: null,
