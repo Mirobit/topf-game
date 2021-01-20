@@ -5,6 +5,7 @@ class Store {
 
     this.messageNode = document.getElementById('message');
 
+    this.countdownNode = document.getElementById('gameCountdown');
     this.timeLeftNode = document.getElementById('timeLeft');
     this.currentGuesserNode = document.getElementById('currentGuesser');
     this.currentExplainerNode = document.getElementById('currentExplainer');
@@ -14,6 +15,7 @@ class Store {
     this.totalPointsNode = document.getElementById('totalPoints');
     this.currentWordNode = document.getElementById('currentWord');
 
+    this.timeLeftInt = null;
     this.game = null;
     this.player = {
       name: null,
@@ -22,11 +24,7 @@ class Store {
       currentPoints: 0,
       totalPoints: 0,
     };
-    // this.playerName = null;
-    // this.isAdmin = false;
-    // this.role = null;
-    // this.currentPoints = 0;
-    // this.totalPoints = 0;
+    this.timeLeftInt = null;
   }
 }
 

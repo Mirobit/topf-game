@@ -43,6 +43,11 @@ const gameSchema = new Schema(
     currentRound: {
       type: Number,
       required: true,
+      default: 1,
+    },
+    curWordIndex: {
+      type: Number,
+      required: true,
       default: 0,
     },
     status: {
@@ -50,7 +55,6 @@ const gameSchema = new Schema(
       enum: ['new', 'started', 'ended'],
       default: 'new',
     },
-    playOrder: [String],
     adminName: { type: String, required: true },
     players: [
       {

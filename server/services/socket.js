@@ -14,11 +14,10 @@ const sendMessageGame = (gameId, messageData) => {
 
 const sendMessagePlayer = (gameId, playerName, messageData) => {
   console.log('message to', gameId, playerName, messageData);
-  const ret = games
+  const { ws } = games
     .get(gameId)
     .players.find((player) => player.name === playerName);
-  // console.log('single message', ret);
-  ret.ws.send(JSON.stringify(messageData));
+  ws.send(JSON.stringify(messageData));
 };
 
 const messagePlayerStatus = (gameId, playerName, newStatus) => {
@@ -39,7 +38,6 @@ const getExplainerName = (gameId) => {
   const explainerName = games
     .get(gameId)
     .players.find((player) => player.activity === 'explaining').name;
-
   return explainerName;
 };
 
@@ -100,7 +98,7 @@ const handlePlayerJoined = (gameId, playerName, token, ws) => {
   });
   sendMessageGame(gameId, {
     command: 'player_joined',
-    payload: { playerName, newStatus: 'new', action: player.activity },
+    payload: { playerName, newStatus: 'new', activity: player.activity },
   });
 };
 
@@ -182,7 +180,7 @@ const init = (server) => {
   wss.on('connection', (ws) => {
     console.log('new connection');
     ws.on('message', (message) => {
-      console.log(JSON.parse(message));
+      console.log('message from', JSON.parse(message));
       messageHandler(JSON.parse(message), ws);
     });
     ws.on('close', (code) => {

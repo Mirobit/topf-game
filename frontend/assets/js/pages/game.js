@@ -49,6 +49,8 @@ const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
   const playerUpdated = Store.game.players.find(
     (player) => player.name === playerName
   );
+  activity = activity || playerUpdated.activity;
+  console.log(activity, playerUpdated.activity);
   let activityTag = '';
   switch (activity) {
     case 'none':
@@ -70,7 +72,7 @@ const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
     playerDiv.id = `playerListEntry-${playerName}`;
     playerDiv.innerText = `${activityTag}${playerName}: ${newStatus}`;
 
-    Store.game.players.push({ name: playerName, status: newStatus });
+    Store.game.players.push({ name: playerName, status: newStatus, activity });
   } else {
     playerUpdated.status = newStatus;
     playerUpdated.activity = activity;
@@ -83,7 +85,7 @@ const updatePlayerStatus = ({ playerName, newStatus, activity }) => {
   }
 };
 
-const updatePlayerList = (data) => {
+const setPlayerList = (data) => {
   Store.game.players = data.players;
   drawPlayerList();
 };
@@ -97,16 +99,28 @@ const updateGameInfo = () => {
   Store.totalPointsNode.innerText = Store.player.totalPoints;
 };
 
-const gameStart = () => {
+const roundFinish = () => {
+  clearInterval(Store.timeLeftInt);
+  Store.countdownNode.innerText = 'Over!';
+  // Store.timeLeftNode.innerText = 'Over!';
   const endSound = document.getElementById('endSound');
   endSound.volume = 1; // 1 -> 100%
+  endSound.play();
+};
+
+const roundStart = () => {
+  if (Store.player.activity === 'explaining') {
+    console.log('explaining', Store.game.words[0].string);
+    Store.currentWordNode.innerText = Store.game.words[0].string;
+    document.getElementById('wordArea').hidden = false;
+  } else {
+    console.log('not explaing', Store.player);
+  }
   let timeLeft = Store.game.timer;
-  const timeLeftInt = setInterval(() => {
+  Store.timeLeftInt = setInterval(() => {
     timeLeft--;
     if (timeLeft === 0) {
-      clearInterval(timeLeftInt);
-      Store.timeLeftNode.innerText = 'Over!';
-      endSound.play();
+      roundFinish();
     } else {
       Store.timeLeftNode.innerText = timeLeft;
     }
@@ -114,22 +128,22 @@ const gameStart = () => {
 };
 
 const setGameWords = (data) => {
+  Store.player.activity = 'explaining';
   Store.game.words = data.words;
 };
 
 const gameStartCountdown = () => {
-  const countdownDiv = document.getElementById('gameCountdown');
   document.getElementById('timeLeft').innerText = Store.game.timer;
   let countdownSecs = 5;
-  countdownDiv.innerText = countdownSecs;
+  Store.countdownNode.innerText = countdownSecs;
   const countdownInt = setInterval(() => {
     countdownSecs--;
     if (countdownSecs === 0) {
+      Store.countdownNode.innerText = 'Go!';
       clearInterval(countdownInt);
-      countdownDiv.innerText = 'Go!';
-      gameStart();
+      roundStart();
     } else {
-      countdownDiv.innerText = countdownSecs;
+      Store.countdownNode.innerText = countdownSecs;
     }
   }, 1000);
 };
@@ -154,7 +168,7 @@ const gameMessageHandler = (message) => {
       initGame(message.payload);
       break;
     case 'game_player_list':
-      updatePlayerList(message.payload);
+      setPlayerList(message.payload);
       break;
     default:
       console.log('unknown command', message);
@@ -164,6 +178,23 @@ const gameMessageHandler = (message) => {
 const handlePayerLeft = () => {
   closeConnection();
   // TODO show player different page
+};
+
+const handleNextWord = (guessed) => {
+  console.log(
+    'next word',
+    guessed,
+    Store.game.curWordIndex,
+    Store.game.words.length
+  );
+  Store.game.words[Store.game.curWordIndex].guessed = guessed;
+  if (Store.game.curWordIndex === Store.game.words.length - 1) {
+    roundFinish();
+    return;
+  }
+  Store.game.curWordIndex++;
+  Store.currentWordNode.innerText =
+    Store.game.words[Store.game.curWordIndex].string;
 };
 
 const handleSetReady = (event) => {
@@ -245,6 +276,8 @@ const initGameLobby = async (game) => {
   // Set event handlers
   document.getElementById('setReady').onclick = handleSetReady;
   document.getElementById('submitWords').onclick = handleSubmitWords;
+  document.getElementById('wordGuessed').onclick = () => handleNextWord(true);
+  document.getElementById('wordSkipped').onclick = () => handleNextWord(false);
 
   // Set pages visibilty
   document.getElementById('startGameSection').hidden = false;

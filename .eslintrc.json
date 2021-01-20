@@ -14,7 +14,7 @@
     "func-names": "off",
     "no-restricted-syntax": "off",
     "import/prefer-default-export": "off",
-    "no-param-reassign": ["error", { "props": false }],
+    "no-param-reassign": "off", //["error", { "props": false }],
     "max-classes-per-file": "off",
     "security/detect-object-injection": "off"
   },

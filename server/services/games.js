@@ -82,13 +82,13 @@ const join = async (gameId, playerName, gamePassword) => {
   if (game.password && hash(gamePassword) !== game.password) {
     throw new ValError('Invalid game password');
   }
-  if (
-    game.players.some(
-      (player) => player.name.toUpperCase() === playerName.toUpperCase()
-    )
-  ) {
-    throw new ValError('Player name already in use');
-  }
+  // if (
+  //   game.players.some(
+  //     (player) => player.name.toUpperCase() === playerName.toUpperCase()
+  //   )
+  // ) {
+  //   throw new ValError('Player name already in use');
+  // }
   let role = 'user';
   if (playerName === game.adminName) role = 'admin';
   game.players.push({ name: playerName, role });
