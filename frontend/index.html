@@ -2,14 +2,14 @@
 
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-
     <title>TopfGame</title>
+
+    <meta charset="utf-8" />
     <meta name="description" content="Party game with friends" />
     <meta name="author" content="Michael Rotarius" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
-
     <link rel="stylesheet" href="/vendor/argon-design-system-react.css" />
     <link
       rel="stylesheet"
@@ -23,7 +23,9 @@
         class="navbar-horizontal navbar-dark bg-default navbar navbar-expand-lg"
       >
         <div class="container navBar">
-          <a href="/"><img src="/images/icon.png" width="64" /></a>
+          <a href="/">
+            <img src="/images/icon.png" width="64" alt="topfgame" />
+          </a>
           <span class="headerText">TopfGame</span>
         </div>
       </nav>
@@ -304,7 +306,7 @@
     <audio id="successfulSound" src="/sounds/end.mp3" type="audio/mpeg" />
     <!-- Scripts -->
     <script src="/js/index.js" type="module"></script>
-    <script src="/vendor/bootstrap/jquery-3.4.1.slim.min.js"></script>
+    <script src="/vendor/bootstrap/jquery-3.5.1.slim.min.js"></script>
     <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="/vendor/confetti.js/confetti.min.js"></script>
   </body>
