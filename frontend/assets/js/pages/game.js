@@ -161,7 +161,7 @@ const setGameWords = ({ words }) => {
 
 const gameStartCountdown = () => {
   let countdownSecs = COUNTDOWN_SECONDS;
-  Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}s`;
+  Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}`;
   const countdownInt = setInterval(() => {
     countdownSecs--;
     if (countdownSecs === 0) {
@@ -170,7 +170,7 @@ const gameStartCountdown = () => {
       clearInterval(countdownInt);
       turnStart();
     } else {
-      Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}s`;
+      Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}`;
     }
   }, 1000);
 };
