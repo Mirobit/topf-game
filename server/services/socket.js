@@ -99,7 +99,7 @@ const handlePlayerJoined = async (gameId, playerName, token, ws) => {
       words: [],
       currentRound: 1,
       totalRounds: gameDB.totalRounds,
-      adminName: gamesServices.adminName,
+      adminName: gameDB.adminName,
       status: gameDB.status,
       timeLeft: 0,
     });

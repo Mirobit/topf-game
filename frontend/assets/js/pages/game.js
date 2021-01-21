@@ -6,6 +6,7 @@ import {
   closeNotification,
 } from '../components/notification.js';
 
+const COUNTDOWN_SECONDS = 5;
 let gameId;
 
 const drawPlayerList = () => {
@@ -121,7 +122,7 @@ const turnFinish = () => {
   const endSound = document.getElementById('endSound');
   endSound.volume = 1; // 1 -> 100%
   endSound.play();
-  Store.countdownNode.innerText = 'Over!';
+  Store.gameMessageNode.innerText = 'Over!';
   if (Store.player.activity === 'explaining') {
     sendMessage('game_turn_finished', {
       words: Store.game.words,
@@ -159,16 +160,17 @@ const setGameWords = ({ words }) => {
 };
 
 const gameStartCountdown = () => {
-  let countdownSecs = 5;
-  Store.countdownNode.innerText = countdownSecs;
+  let countdownSecs = COUNTDOWN_SECONDS;
+  Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}s`;
   const countdownInt = setInterval(() => {
     countdownSecs--;
     if (countdownSecs === 0) {
-      Store.countdownNode.innerText = 'Go!';
+      Store.gameMessageNode.innerText =
+        Store.player.activity !== 'none' ? 'Go!' : '';
       clearInterval(countdownInt);
       turnStart();
     } else {
-      Store.countdownNode.innerText = countdownSecs;
+      Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}s`;
     }
   }, 1000);
 };
@@ -180,6 +182,14 @@ const gameStartCountdown = () => {
 
 const setNextRound = ({ roundNo }) => {
   Store.setCurrentRound(roundNo);
+};
+
+const setGameFinished = ({ winner, score }) => {
+  Store.gameMessageNode.innerText = `${winner} won with ${score} points!`;
+  if (winner === Store.player.name) {
+    globalThis.confetti.speed = 1;
+    globalThis.confetti.start(6000);
+  }
 };
 
 const initGame = () => {
@@ -212,6 +222,9 @@ const gameMessageHandler = (message) => {
       break;
     case 'game_player_list':
       setPlayerList(message.payload);
+      break;
+    case 'game_finished':
+      setGameFinished(message.payload);
       break;
     default:
       console.log('unknown command', message);

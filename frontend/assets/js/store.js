@@ -5,7 +5,7 @@ class Store {
 
     this.messageNode = document.getElementById('message');
 
-    this.countdownNode = document.getElementById('gameCountdown');
+    this.gameMessageNode = document.getElementById('gameMessage');
     this.timeLeftNode = document.getElementById('timeLeft');
     this.currentGuesserNode = document.getElementById('currentGuesser');
     this.currentExplainerNode = document.getElementById('currentExplainer');
@@ -19,7 +19,7 @@ class Store {
     this.player = {
       name: null,
       isAdmin: false,
-      activity: null,
+      activity: 'none',
       currentPoints: 0,
       totalPoints: 0,
     };
