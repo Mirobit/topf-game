@@ -1,6 +1,6 @@
-import logger from 'pino';
+import pino from 'pino';
 
-logger('./error.log');
+const logger = pino('./error.log');
 
 const errorHandler = (error, req, res, next) => {
   let { message } = error;
