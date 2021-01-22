@@ -24,7 +24,7 @@ const sendData = async (endpoint, type, data) => {
     method: type,
     headers: {
       Accept: 'application/json',
-      Authorization: 'test',
+      // Authorization: 'test',
       'Content-Type': 'application/json;charset=UTF-8',
     },
     body: JSON.stringify(data),
@@ -39,7 +39,7 @@ const getData = async (endpoint) => {
   const options = {
     method: 'GET',
     headers: {
-      Authorization: 'test',
+      // Authorization: 'test',
     },
   };
 
