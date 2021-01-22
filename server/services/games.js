@@ -77,11 +77,15 @@ const startGame = async (gameId) => {
 };
 
 const join = async (gameId, playerName, gamePassword) => {
-  const game = await Game.findById(gameId);
+  const game = await Game.findById(gameId).lean();
 
   if (game.password && hash(gamePassword) !== game.password) {
     throw new ValError('Invalid game password');
   }
+
+  let role = 'user';
+  if (playerName === game.adminName) role = 'admin';
+
   // if (
   //   game.players.some(
   //     (player) => player.name.toUpperCase() === playerName.toUpperCase()
@@ -89,15 +93,16 @@ const join = async (gameId, playerName, gamePassword) => {
   // ) {
   //   throw new ValError('Player name already in use');
   // }
-  let role = 'user';
-  if (playerName === game.adminName) role = 'admin';
-  game.players.push({ name: playerName, role });
-  await game.save();
+  // game.players.push({ name: playerName, role });
+  // await game.save();
 
+  game.id = game._id;
+
+  delete game._id;
   delete game.password;
-  delete game.words;
-  delete game.adminName;
   delete game.players;
+  delete game.words;
+  delete game.updated_at;
 
   const token = createToken(gameId, playerName, role);
 

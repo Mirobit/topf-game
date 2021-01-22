@@ -342,13 +342,13 @@ const joinGame = async () => {
   const gamePassword = document.getElementById('gamePassword').value;
 
   const result = await sendData('/game/join', 'POST', {
-    gameId,
+    gameId: Store.game.id,
     playerName,
     gamePassword,
   });
   console.log(result);
   if (result.status === 200) {
-    localStorage.setItem('identity', result.data.token);
+    localStorage.setItem(Store.game.id, result.data.token);
     Store.game = result.data.game;
     Store.player.name = playerName;
     Store.player.isAdmin = checkIsAdmin(result.data.token);
@@ -357,7 +357,7 @@ const joinGame = async () => {
 };
 
 const init = async () => {
-  gameId = window.location.pathname.replace('/', '');
+  Store.game.id = window.location.pathname.replace('/', '');
   document.title = `TopfGame - Join Game`;
   document.getElementById('joinGameButton').onclick = joinGame;
   document.getElementById('joinGameForm').hidden = false;
