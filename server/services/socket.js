@@ -1,6 +1,8 @@
 import WebSocket from 'ws';
+
 import * as gamesServices from './games.js';
 import { verifyToken } from './auth.js';
+import { hash } from '../utils/crypter.js';
 
 const games = new Map();
 let wss;
@@ -148,7 +150,11 @@ const handleTurnStart = (gameId) => {
 const handleWordsSubmitted = (gameId, playerName, words) => {
   const game = games.get(gameId);
   for (const word of words) {
-    game.words.push({ string: word, guessed: false });
+    game.words.push({
+      id: hash(word + playerName),
+      string: word,
+      guessed: false,
+    });
   }
 };
 
@@ -224,7 +230,7 @@ const handleTurnFinished = (gameId, words, timeLeft) => {
   for (const word of words) {
     if (word.guessed) {
       points++;
-      game.words.find((wordT) => wordT.string === word.string).guessed = true;
+      game.words.find((wordT) => wordT.id === word.id).guessed = true;
     }
   }
   player.score += points;
