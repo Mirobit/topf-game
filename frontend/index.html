@@ -51,7 +51,7 @@
                     type="text"
                     class="form-control-alternative form-control required"
                     placeholder="Your player name"
-                    maxlength="50"
+                    maxlength="10"
                     id="adminNameNew"
                     aria-describedby="adminNameNewHelp"
                   />
@@ -201,7 +201,7 @@
               />
             </div>
             <div>
-              <button type="button" class="btn btn-primary" id="joinGameButton">
+              <button type="button" class="btn btn-main" id="joinGameButton">
                 <i class="fa fa-sign-in fa-lg" style="margin-right: 10px"></i
                 >Join
               </button>
@@ -212,7 +212,7 @@
             <div id="settingsColumm" class="col-3">
               <div id="wordSuggetionsArea">
                 <div id="wordSuggetions"></div>
-                <button type="button" class="btn btn-primary" id="submitWords">
+                <button type="button" class="btn btn-main" id="submitWords">
                   Submit Words
                 </button>
               </div>
@@ -245,42 +245,44 @@
               </div>
             </div>
             <div id="gameColumm" class="col-6">
-              <div id="gameMessage"></div>
-              <br />
-              Time left: <span id="timeLeft"></span>s
-              <br />
-              Round Points: <span id="currentPoints"></span>
-              <br />
-              Total Points: <span id="totalPoints"></span>
-              <br />
-              Rounds:
-              <span id="currentRound"></span> / <span id="totalRounds"></span>
-              <br />
-              Guesser: <span id="currentGuesser"></span>
-              <br />
-              Explainer: <span id="currentExplainer"></span>
-              <br />
-              <div id="currentTask"></div>
-              <br />
-              <div id="wordArea" hidden>
-                <span id="currentWord"></span>
-                <span>
-                  <button
-                    type="button"
-                    class="btn btn-success btn-sm"
-                    id="wordGuessed"
-                  >
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                  </button>
-                </span>
-                <span>
-                  <button
-                    type="button"
-                    class="btn btn-warning btn-sm"
-                    id="wordSkipped"
-                  >
-                    <i class="fa fa-times" aria-hidden="true"></i></button
-                ></span>
+              <div class="game-card">
+                <div id="gameMessage"></div>
+                <br />
+                Time left: <span id="timeLeft"></span>s
+                <br />
+                Round Points: <span id="currentPoints"></span>
+                <br />
+                Total Points: <span id="totalPoints"></span>
+                <br />
+                Rounds:
+                <span id="currentRound"></span> / <span id="totalRounds"></span>
+                <!-- <br />
+                Guesser: <span id="currentGuesser"></span>
+                <br />
+                Explainer: <span id="currentExplainer"></span> -->
+                <br />
+                <div id="currentTask"></div>
+                <br />
+                <div id="wordArea" hidden>
+                  <span id="currentWord"></span>
+                  <span>
+                    <button
+                      type="button"
+                      class="btn btn-success btn-sm"
+                      id="wordGuessed"
+                    >
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                  </span>
+                  <span>
+                    <button
+                      type="button"
+                      class="btn btn-warning btn-sm"
+                      id="wordSkipped"
+                    >
+                      <i class="fa fa-times" aria-hidden="true"></i></button
+                  ></span>
+                </div>
               </div>
             </div>
             <div id="rightColumm" class="col-3">

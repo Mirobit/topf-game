@@ -67,7 +67,7 @@ body {
 }
 .player-name {
   display: inline-block;
-  width: 60px;
+  width: 110px;
 }
 .player-status {
   display: inline-block;
@@ -78,7 +78,7 @@ body {
   width: 20px;
   color: grey;
 }
-
+/* Colors */
 .cl-success {
   color: #81b29a;
 }
@@ -87,4 +87,44 @@ body {
 }
 .cl-error {
   color: #ff4d58;
+}
+.game-card {
+  padding: 10px;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0.0625rem solid rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
+}
+/* Buttons */
+.btn {
+  text-transform: capitalize;
+}
+.btn:focus,
+.btn.focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.btn-main {
+  color: #fff;
+  background-color: #93c4c6;
+  border-color: #fff;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.btn-main:hover {
+  color: #fff;
+  background-color: #83afb1;
+  border-color: #fff;
+}
+.btn-outline-main {
+  background-color: white;
+  color: #93c4c6;
+  border-color: #93c4c6;
+}
+.btn-outline-main:hover {
+  color: #fff;
+  background-color: #93c4c6;
+  border-color: white;
+}
+.btn-outline-main:focus,
+.btn-outline-main.focus {
+  box-shadow: 0 0 0 0 rgba(94, 114, 228, 0.5);
 }
