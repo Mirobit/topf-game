@@ -65,9 +65,14 @@ body {
 #joinGameForm {
   margin: 0 auto;
 }
-
+#createGame {
+  margin: 0 auto;
+}
 .required::placeholder {
   font-weight: 550;
+}
+.input {
+  background-color: #fafbfc;
 }
 #wordArea {
   user-select: none;
@@ -101,6 +106,26 @@ body {
 }
 .cl-error {
   color: #ff4d58;
+}
+.create-game-header {
+  padding: 10px;
+  background-color: #8598ba;
+  color: white;
+  border-color: #e1e4e8;
+  border-width: 1px;
+  border-style: solid;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.create-game-form {
+  padding: 15px;
+  background-color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-top-width: 0px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-color: #e1e4e8;
 }
 .game-card {
   padding: 10px;
@@ -175,20 +200,20 @@ body {
   background-color: #616e89;
   border-color: #fff;
 }
-/* .btn-outline-main {
+.btn-outline-main {
   background-color: white;
-  color: #93c4c6;
-  border-color: #93c4c6;
+  color: #616e89;
+  border-color: #616e89;
 }
 .btn-outline-main:hover {
   color: #fff;
-  background-color: #93c4c6;
+  background-color: #616e89;
   border-color: white;
 }
 .btn-outline-main:focus,
 .btn-outline-main.focus {
   box-shadow: 0 0 0 0 rgba(94, 114, 228, 0.5);
-} */
+}
 /* makes connfeti-js CSP compliant */
 #confetti-canvas {
   display: block;

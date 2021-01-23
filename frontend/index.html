@@ -30,14 +30,14 @@
       </nav>
       <div class="container mainContent">
         <div id="homePage" class="row" hidden>
-          <div class="col-5">
-            <div class="subHeader">Create a new Game</div>
-            <form>
+          <div id="createGame" class="col-5">
+            <div class="create-game-header">Create a new Game</div>
+            <form class="create-game-form">
               <div class="row form-bottom">
                 <div class="col-6">
                   <input
                     type="text"
-                    class="form-control-alternative form-control required"
+                    class="form-control-alternative form-control input required"
                     placeholder="Game Name"
                     maxlength="50"
                     id="gameNameNew"
@@ -48,7 +48,7 @@
                 <div class="col-6">
                   <input
                     type="text"
-                    class="form-control-alternative form-control required"
+                    class="form-control-alternative form-control input required"
                     placeholder="Your player name"
                     maxlength="10"
                     id="adminNameNew"
@@ -60,7 +60,7 @@
                 <div class="col-12">
                   <input
                     type="text"
-                    class="form-control-alternative form-control"
+                    class="form-control-alternative form-control input"
                     placeholder="Description"
                     id="descriptionNew"
                     aria-describedby="descriptionHelp"
@@ -74,7 +74,7 @@
                     type="Number"
                     value="3"
                     min="1"
-                    class="form-control-alternative form-control"
+                    class="form-control-alternative form-control input"
                     id="roundsNew"
                     aria-describedby="roundsNewHelp"
                   />
@@ -88,7 +88,7 @@
                     value="60"
                     min="5"
                     step="5"
-                    class="form-control-alternative form-control"
+                    class="form-control-alternative form-control input"
                     id="timerNew"
                     aria-describedby="timerNewHelp"
                   />
@@ -102,7 +102,7 @@
                     value="3"
                     min="1"
                     max="10"
-                    class="form-control-alternative form-control"
+                    class="form-control-alternative form-control input"
                     id="wordsCountNew"
                     aria-describedby="wordsCountNewHelp"
                   />
@@ -131,7 +131,7 @@
                   <input
                     type="password"
                     placeholder="Password"
-                    class="form-control-alternative form-control"
+                    class="form-control-alternative form-control input"
                     id="passwordNew"
                     aria-describedby="passwordHelp"
                   />
@@ -140,7 +140,7 @@
                   <input
                     type="password"
                     placeholder="Repeat password"
-                    class="form-control-alternative form-control"
+                    class="form-control-alternative form-control input"
                     id="passwordRepeatNew"
                     aria-describedby="passwordHelp"
                   />
@@ -166,7 +166,7 @@
                 />
                 <button
                   type="button"
-                  class="btn btn-neutral btn-sm copy"
+                  class="btn btn-outline-main btn-sm copy"
                   id="copyUrlNew"
                 >
                   <i class="fa fa-clone" aria-hidden="true"></i>
