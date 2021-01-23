@@ -212,51 +212,59 @@
           <div id="gamePage" class="row col-12" hidden>
             <!-- Suggest Words -->
             <div id="settingsColumm" class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <div id="wordSuggetionsArea">
-                <div id="wordSuggetions"></div>
-                <button type="button" class="btn btn-main-alt" id="submitWords">
-                  Submit Words
-                </button>
-              </div>
-              <!-- Ready Checkbox -->
-              <div class="custom-control custom-checkbox mb-3">
-                <input
-                  class="custom-control-input"
-                  id="setReady"
-                  type="checkbox"
-                  disabled
-                /><label class="custom-control-label text-muted" for="setReady"
-                  >Ready</label
-                >
-              </div>
-              <!-- Start Game Button -->
-              <div
-                class="custom-control custom-checkbox"
-                id="startGameSection"
-                hidden
-              >
-                <button
-                  type="button"
-                  class="btn btn-main-alt"
-                  id="startGame"
+              <div class="game-settings-header">Game Settings</div>
+              <div class="game-settings">
+                <div id="wordSuggetionsArea">
+                  <div id="wordSuggetions"></div>
+                  <button
+                    type="button"
+                    class="btn btn-main-alt"
+                    id="submitWords"
+                  >
+                    Submit Words
+                  </button>
+                </div>
+                <!-- Ready Checkbox -->
+                <div class="custom-control custom-checkbox mb-3">
+                  <input
+                    class="custom-control-input"
+                    id="setReady"
+                    type="checkbox"
+                    disabled
+                  /><label
+                    class="custom-control-label text-muted"
+                    for="setReady"
+                    >Ready</label
+                  >
+                </div>
+                <!-- Start Game Button -->
+                <div
+                  class="custom-control custom-checkbox"
+                  id="startGameSection"
                   hidden
-                  disabled
                 >
-                  Start Game
-                </button>
+                  <button
+                    type="button"
+                    class="btn btn-main-alt"
+                    id="startGame"
+                    hidden
+                    disabled
+                  >
+                    Start Game
+                  </button>
+                </div>
               </div>
             </div>
             <div id="gameColumm" class="col-12 col-sm-6 col-md-4 col-lg-6">
               <div class="game-card">
                 <div id="gameMessage"></div>
-                <br />
                 Time left: <span id="timeLeft"></span>s
                 <br />
                 Round Points: <span id="currentPoints"></span>
                 <br />
                 Total Points: <span id="totalPoints"></span>
                 <br />
-                Rounds <span id="currentRound"></span> /
+                Round <span id="currentRound"></span> /
                 <span id="totalRounds"></span>
                 <!-- <br />
                 Guesser: <span id="currentGuesser"></span>
@@ -290,7 +298,7 @@
             <div id="rightColumm" class="col-12 col-sm-6 col-md-3 col-lg-3">
               <!-- Player list -->
               <div class="player-list-header">Players</div>
-              <div class="" id="playerList"></div>
+              <div id="playerList"></div>
             </div>
           </div>
         </div>

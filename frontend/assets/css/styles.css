@@ -74,6 +74,9 @@ body {
 .input {
   background-color: #fafbfc;
 }
+.word-suggestion-input {
+  margin-bottom: 10px;
+}
 #wordArea {
   user-select: none;
 }
@@ -106,6 +109,26 @@ body {
 }
 .cl-error {
   color: #ff4d58;
+}
+.game-settings-header {
+  padding: 10px;
+  background-color: #8598ba;
+  color: white;
+  border-color: #e1e4e8;
+  border-width: 1px;
+  border-style: solid;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.game-settings {
+  padding: 15px;
+  background-color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-top-width: 0px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-color: #e1e4e8;
 }
 .create-game-header {
   padding: 10px;

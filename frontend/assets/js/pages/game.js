@@ -295,7 +295,7 @@ const initGameLobby = async (game) => {
     );
     wordSuggetion.type = 'text';
     wordSuggetion.classList =
-      'form-control-alternative form-control word-suggestion-input';
+      'form-control-alternative form-control word-suggestion-input input';
     wordSuggetion.placeholder = `Word ${i + 1}`;
     wordSuggetion.maxlength = 50;
     wordSuggetion.id = `wordSuggestion${i + 1}`;
