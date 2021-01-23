@@ -46,7 +46,7 @@ const sendMessage = (command, payload) => {
   console.log('sending msg', command, payload);
   const msgObject = {
     playerName: Store.player.name,
-    gameId: Store.game._id,
+    gameId: Store.game.id,
     command,
     payload,
   };

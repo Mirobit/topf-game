@@ -75,7 +75,7 @@ const gameSchema = new Schema(
         status: {
           type: String,
           enum: [
-            'new',
+            'unready',
             'submitted',
             'ready',
             'playing',
@@ -84,7 +84,7 @@ const gameSchema = new Schema(
             'disconnected',
             'quit',
           ],
-          default: 'new',
+          default: 'unready',
         },
         score: {
           type: Number,

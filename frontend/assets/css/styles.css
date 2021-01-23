@@ -59,7 +59,32 @@ body {
 .required::placeholder {
   font-weight: 550;
 }
-
 #wordArea {
   user-select: none;
+}
+.player-activity {
+  width: 25px;
+}
+.player-name {
+  display: inline-block;
+  width: 60px;
+}
+.player-status {
+  display: inline-block;
+  width: 25px;
+}
+.player-score {
+  display: inline-block;
+  width: 20px;
+  color: grey;
+}
+
+.cl-success {
+  color: #81b29a;
+}
+.cl-warning {
+  color: #fbbf24;
+}
+.cl-error {
+  color: #ff4d58;
 }

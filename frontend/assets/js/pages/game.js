@@ -7,32 +7,48 @@ import {
 } from '../components/notification.js';
 
 const COUNTDOWN_SECONDS = 5;
-let gameId;
 
 const drawPlayerList = () => {
   console.time('playerlist');
   const playerListParentDiv = document.getElementById('playerList');
   playerListParentDiv.innerHTML = '';
   Store.game.players.forEach((player) => {
-    let activityTag = '';
-    switch (player.activity) {
-      case 'none':
-        break;
-      case 'guessing':
-        activityTag = '[G] ';
-        break;
-      case 'explaining':
-        activityTag = '[E] ';
-        break;
-      default:
-        break;
-    }
     const playerDiv = playerListParentDiv.appendChild(
       document.createElement('div')
     );
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${player.name}`;
-    playerDiv.innerText = `${activityTag}${player.name}: ${player.status} (${player.score})`;
+
+    console.log(player);
+    const playerRoleEl = playerDiv.appendChild(document.createElement('i'));
+    if (player.activity === 'explaining')
+      playerRoleEl.classList = 'player-activity fa fa-comment-o';
+    else if (player.activity === 'guessing')
+      playerRoleEl.classList = 'player-activity fa fa-gamepad';
+    else {
+      playerRoleEl.classList = 'player-activity fa fa-tv';
+    }
+    playerRoleEl.setAttribute('aria-hidden', 'true');
+
+    const playerNameEl = playerDiv.appendChild(document.createElement('span'));
+    playerNameEl.classList = 'player-name';
+    playerNameEl.innerText = player.name;
+
+    const playerScoreEl = playerDiv.appendChild(document.createElement('span'));
+    playerScoreEl.classList = 'player-score';
+    playerScoreEl.innerText = player.score;
+
+    const playerStatusEl = playerDiv.appendChild(document.createElement('i'));
+    if (player.status === 'ready')
+      playerStatusEl.classList = 'player-status cl-success fa fa-check';
+    // else if (player.status === 'unready')
+    //   playerStatusEl.classList = 'player-status fa fa-hourglass-start';
+    else if (player.status === 'quit')
+      playerStatusEl.classList = 'player-status fa fa-sign-out';
+    else if (player.status === 'disconnected')
+      playerStatusEl.classList = 'player-status cl-warning fa fa-question';
+    else playerStatusEl.classList = 'player-status';
+    playerStatusEl.setAttribute('aria-hidden', 'true');
   });
   console.timeEnd('playerlist');
 };
@@ -40,7 +56,8 @@ const drawPlayerList = () => {
 const checkPlayersReady = () => {
   let ready = true;
   Store.game.players.forEach((player) => {
-    if (player.status === 'new' || player.status === 'submitted') ready = false;
+    if (player.status === 'unready' || player.status === 'submitted')
+      ready = false;
   });
 
   return ready;
@@ -53,28 +70,8 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
   const playerUpdated = Store.game.players.find(
     (player) => player.name === playerName
   );
-  activity = activity || playerUpdated.activity;
-  let activityTag = '';
-  switch (activity) {
-    case 'none':
-      break;
-    case 'guessing':
-      activityTag = '[G] ';
-      break;
-    case 'explaining':
-      activityTag = '[E] ';
-      break;
-    default:
-      break;
-  }
-  if (!playerUpdated) {
-    const playerDiv = document
-      .getElementById('playerList')
-      .appendChild(document.createElement('div'));
-    playerDiv.classList = 'player-list-entry';
-    playerDiv.id = `playerListEntry-${playerName}`;
-    playerDiv.innerText = `${activityTag}${playerName}: ${newStatus} (${score})`;
 
+  if (!playerUpdated) {
     Store.game.players.push({
       name: playerName,
       status: newStatus,
@@ -82,13 +79,11 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
       score,
     });
   } else {
-    console.log('player:', playerUpdated);
     playerUpdated.status = newStatus;
-    playerUpdated.activity = activity;
-    document.getElementById(
-      `playerListEntry-${playerName}`
-    ).innerText = `${activityTag}${playerName}: ${newStatus} (${playerUpdated.score})`;
   }
+
+  drawPlayerList();
+
   if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = !checkPlayersReady();
   }
@@ -249,7 +244,7 @@ const handleNextWord = (guessed) => {
 
 const handleSetReady = (event) => {
   closeNotification();
-  const newStatus = event.target.checked ? 'ready' : 'new';
+  const newStatus = event.target.checked ? 'ready' : 'unready';
   sendMessage('player_status', { newStatus });
 };
 

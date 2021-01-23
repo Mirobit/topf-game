@@ -17,13 +17,13 @@ class Store {
 
     this.game = {};
     this.player = {
-      name: null,
+      name: undefined,
       isAdmin: false,
       activity: 'none',
       currentPoints: 0,
       totalPoints: 0,
     };
-    this.timeLeftInt = null;
+    this.timeLeftInt = undefined;
   }
 
   setCurrentRound(roundNo) {

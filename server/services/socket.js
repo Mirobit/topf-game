@@ -62,6 +62,7 @@ const getPlayersLean = (gameId) =>
       status: cur.status,
       activity: cur.activity,
       score: cur.score,
+      avatar: cur.avatar,
     });
     return acc;
   }, []);
@@ -78,9 +79,10 @@ const handlePlayerJoined = async (gameId, playerName, token, ws) => {
   const player = {
     gameId,
     name: playerName,
-    status: 'new',
+    status: 'unready',
     activity: 'none',
     score: 0,
+    avatar: 'default.jpg',
     ws,
   };
   player.ws.gameId = gameId;
@@ -115,7 +117,7 @@ const handlePlayerJoined = async (gameId, playerName, token, ws) => {
     command: 'player_joined',
     payload: {
       playerName,
-      newStatus: 'new',
+      newStatus: 'unready',
       activity: player.activity,
       score: player.score,
     },
