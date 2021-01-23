@@ -27,7 +27,7 @@ body {
 .header-logo {
   vertical-align: middle;
 }
-.header-text {
+.header-text a {
   font-size: 30px;
   color: #182d4a;
   font-weight: bold;
@@ -46,10 +46,8 @@ body {
   color: #5e72e4;
   cursor: pointer;
 }
-.headerText {
-  font-size: 26px;
-  color: #182d4a;
-  font-weight: bold;
+.center-h {
+  text-align: center;
 }
 .urlBox {
   margin-top: 15px;
@@ -61,6 +59,9 @@ body {
   margin-left: 10px;
   color: grey;
 }
+.player-name-input {
+  max-width: 125px;
+}
 #joinGameForm {
   margin: 0 auto;
 }
@@ -71,6 +72,7 @@ body {
 #wordArea {
   user-select: none;
 }
+/* player list */
 .player-activity {
   width: 25px;
 }

@@ -170,11 +170,6 @@ const gameStartCountdown = () => {
   }, 1000);
 };
 
-// const setTurnFinished = ({ timeLeft }) => {
-//   clearInterval(Store.timeLeftInt);
-//   Store.game.timeLeft = timeLeft;
-// };
-
 const setNextRound = ({ roundNo }) => {
   Store.setCurrentRound(roundNo);
 };
@@ -333,8 +328,8 @@ const initGameLobby = async (game) => {
 };
 
 const joinGame = async () => {
-  const playerName = document.getElementById('playerNameNew').value;
-  const gamePassword = document.getElementById('gamePassword').value;
+  const playerName = document.getElementById('loginPlayerName').value;
+  const gamePassword = document.getElementById('loginGamePassword').value;
 
   const result = await sendData('/game/join', 'POST', {
     gameId: Store.game.id,
@@ -354,6 +349,7 @@ const joinGame = async () => {
 const init = async () => {
   Store.game.id = window.location.pathname.replace('/', '');
   document.title = `TopfGame - Join Game`;
+  // TODO check if pw
   document.getElementById('joinGameButton').onclick = joinGame;
   document.getElementById('joinGameForm').hidden = false;
 };
