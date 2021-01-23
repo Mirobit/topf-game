@@ -72,6 +72,9 @@ body {
 #wordArea {
   user-select: none;
 }
+.sign-in-button-icon {
+  margin-right: 10px;
+}
 /* player list */
 .player-activity {
   width: 25px;
