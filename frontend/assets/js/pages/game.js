@@ -131,7 +131,6 @@ const turnFinish = () => {
 
 const turnStart = () => {
   if (Store.player.activity === 'explaining') {
-    console.log('explaining', Store.game.words[0].string);
     Store.currentWordNode.innerText = Store.game.words[0].string;
     document.getElementById('wordArea').hidden = false;
   } else {
@@ -204,9 +203,6 @@ const gameMessageHandler = (message) => {
     case 'game_next_round':
       setNextRound(message.payload);
       break;
-    // case 'game_turn_finished':
-    //   setTurnFinished(message.payload);
-    //   break;
     case 'game_turn_start':
       initGame();
       break;
