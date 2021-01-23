@@ -20,9 +20,17 @@ body {
 .mainContent {
   margin-top: 30px;
 }
-.navBar {
-  color: white;
-  justify-content: flex-start !important;
+.navbar2 {
+  margin-top: 20px;
+  text-align: center;
+}
+.header-logo {
+  vertical-align: middle;
+}
+.header-text {
+  font-size: 30px;
+  color: #182d4a;
+  font-weight: bold;
 }
 .footer {
   float: right;
@@ -39,7 +47,8 @@ body {
   cursor: pointer;
 }
 .headerText {
-  font-size: 22px;
+  font-size: 26px;
+  color: #182d4a;
   font-weight: bold;
 }
 .urlBox {
@@ -53,7 +62,7 @@ body {
   color: grey;
 }
 #joinGameForm {
-  margin-left: 40%;
+  margin: 0 auto;
 }
 
 .required::placeholder {
