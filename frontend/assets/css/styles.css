@@ -89,7 +89,7 @@ body {
 }
 .player-score {
   display: inline-block;
-  width: 20px;
+  width: 25px;
   color: grey;
 }
 /* Colors */
@@ -105,9 +105,45 @@ body {
 .game-card {
   padding: 10px;
   background-color: #fff;
-  background-clip: border-box;
-  border: 0.0625rem solid rgba(0, 0, 0, 0.05);
+  /* border: 0.0625rem solid rgba(0, 0, 0, 0.05); */
+  border-color: #e1e4e8;
   border-radius: 0.25rem;
+  border-width: 1px;
+  border-style: solid;
+}
+.player-list-header {
+  padding: 10px;
+  background-color: #8598ba;
+  color: white;
+  border-color: #e1e4e8;
+  border-width: 1px;
+  border-style: solid;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+#playerList {
+  background-color: white;
+  border-style: solid;
+  border-bottom-width: 0px;
+  border-top-width: 0px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-color: #e1e4e8;
+}
+.player-list-entry {
+  padding: 10px;
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-top-width: 0px;
+  border-style: solid;
+
+  border-color: #e1e4e8;
+}
+.player-list-entry:last-of-type {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 /* Buttons */
 .btn {
