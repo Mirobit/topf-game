@@ -182,7 +182,8 @@ const setGameFinished = ({ winner, score }) => {
 };
 
 const initGame = () => {
-  document.getElementById('wordSuggetionsArea').style.visibility = 'hidden';
+  document.getElementById('wordSuggetionsArea').hidden = true;
+  document.getElementById('readyDivider').hidden = true;
   gameStartCountdown();
 };
 

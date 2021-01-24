@@ -214,6 +214,36 @@
             <div id="settingsColumm" class="col-12 col-sm-6 col-md-4 col-lg-3">
               <div class="game-settings-header">Game Settings</div>
               <div class="game-settings">
+                <div class="row game-settings-row">
+                  <!-- Ready Checkbox -->
+                  <div class="game-ready custom-checkbox">
+                    <input
+                      class="custom-control-input"
+                      id="setReady"
+                      type="checkbox"
+                      disabled
+                    /><label
+                      class="custom-control-label text-muted"
+                      for="setReady"
+                      >Ready</label
+                    >
+                  </div>
+                  <!-- Start Game Button -->
+                  <div class="custom-checkbox" id="startGameSection" hidden>
+                    <button
+                      type="button"
+                      class="btn btn-main-alt"
+                      id="startGame"
+                      hidden
+                      disabled
+                    >
+                      Start
+                    </button>
+                  </div>
+                </div>
+                <hr id="readyDivider" />
+
+                <!-- Word suggestion -->
                 <div id="wordSuggetionsArea">
                   <div id="wordSuggetions"></div>
                   <button
@@ -222,35 +252,6 @@
                     id="submitWords"
                   >
                     Submit Words
-                  </button>
-                </div>
-                <!-- Ready Checkbox -->
-                <div class="custom-control custom-checkbox mb-3">
-                  <input
-                    class="custom-control-input"
-                    id="setReady"
-                    type="checkbox"
-                    disabled
-                  /><label
-                    class="custom-control-label text-muted"
-                    for="setReady"
-                    >Ready</label
-                  >
-                </div>
-                <!-- Start Game Button -->
-                <div
-                  class="custom-control custom-checkbox"
-                  id="startGameSection"
-                  hidden
-                >
-                  <button
-                    type="button"
-                    class="btn btn-main-alt"
-                    id="startGame"
-                    hidden
-                    disabled
-                  >
-                    Start Game
                   </button>
                 </div>
               </div>

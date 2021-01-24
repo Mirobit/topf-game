@@ -74,12 +74,6 @@ body {
 .input {
   background-color: #fafbfc;
 }
-.word-suggestion-input {
-  margin-bottom: 10px;
-}
-#wordArea {
-  user-select: none;
-}
 .sign-in-button-icon {
   margin-right: 10px;
 }
@@ -121,7 +115,6 @@ body {
   border-top-right-radius: 6px;
 }
 .game-settings {
-  padding: 15px;
   background-color: white;
   border-style: solid;
   border-width: 1px;
@@ -129,6 +122,34 @@ body {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   border-color: #e1e4e8;
+}
+.game-settings-row {
+  padding: 15px;
+  justify-content: space-between;
+}
+.game-ready {
+  margin-left: 43px;
+  margin-top: 10px;
+}
+#startGameSection {
+  margin-top: 0px;
+  margin-right: 28px;
+}
+#readyDivider {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+#wordSuggetionsArea {
+  padding: 15px;
+}
+.word-suggestion-input {
+  margin-bottom: 12px;
+}
+#wordArea {
+  user-select: none;
+}
+#submitWords {
+  margin-top: 5px;
 }
 .create-game-header {
   padding: 10px;
@@ -157,6 +178,7 @@ body {
   border-radius: 6px;
   border-width: 1px;
   border-style: solid;
+  box-shadow: (0, 0, 0, 0.18) 0px 1px 2px;
 }
 .player-list-header {
   padding: 10px;
