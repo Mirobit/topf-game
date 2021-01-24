@@ -56,8 +56,56 @@ body {
   background-color: #fe938c;
 }
 .alert-success {
-  background-color: #93c4c6;
+  /* background-color: #93c4c6; */
+  background-color: #81b29a;
 }
+/* Confirm button */
+.btn-confirm {
+  color: #fff;
+  background-color: #81b29a;
+  border-color: #81b29a;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.btn-confirm:hover {
+  color: #fff;
+  background-color: #9cd8bb;
+  border-color: #9cd8bb;
+}
+.btn-confirm:focus,
+.btn-confirm.focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08),
+    0 0 0 0 rgba(77, 213, 155, 0.5);
+}
+.btn-confirm.disabled,
+.btn-confirm:disabled {
+  color: #fff;
+  background-color: #5c7f6d;
+  border-color: #5c7f6d;
+}
+/* Skip button */
+.btn-skip {
+  color: #fff;
+  background-color: #fe938c;
+  border-color: #fe938c;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.btn-skip:hover {
+  color: #fff;
+  background-color: #ffa28c;
+  border-color: #ffa28c;
+}
+.btn-skip:focus,
+.btn-skip.focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08),
+    0 0 0 0 rgba(77, 213, 155, 0.5);
+}
+.btn-skip.disabled,
+.btn-skip:disabled {
+  color: #fff;
+  background-color: #cca789;
+  border-color: #cca789;
+}
+
 #message {
   max-width: 300px;
 }
@@ -114,7 +162,8 @@ body {
   color: #fbbf24;
 }
 .cl-error {
-  color: #ff4d58;
+  /* color: #ff4d58; */
+  color: #fe938c;
 }
 #settingsColumm {
   margin-bottom: 10px;
