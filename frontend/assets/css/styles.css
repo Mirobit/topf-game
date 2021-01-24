@@ -49,6 +49,18 @@ body {
 .center-h {
   text-align: center;
 }
+.alert-warning {
+  background-color: #e6b89c;
+}
+.alert-error {
+  background-color: #fe938c;
+}
+.alert-success {
+  background-color: #93c4c6;
+}
+#message {
+  max-width: 300px;
+}
 .urlBox {
   margin-top: 15px;
 }
@@ -104,6 +116,9 @@ body {
 .cl-error {
   color: #ff4d58;
 }
+#settingsColumm {
+  margin-bottom: 10px;
+}
 .game-settings-header {
   padding: 10px;
   background-color: #8598ba;
@@ -126,14 +141,13 @@ body {
 .game-settings-row {
   padding: 15px;
   justify-content: space-between;
+  align-items: center;
 }
 .game-ready {
   margin-left: 43px;
-  margin-top: 10px;
 }
 #startGameSection {
-  margin-top: 0px;
-  margin-right: 28px;
+  margin-right: 15px;
 }
 #readyDivider {
   margin-top: 0px;
@@ -173,6 +187,7 @@ body {
 }
 .game-card {
   padding: 10px;
+  margin-bottom: 20px;
   background-color: #fff;
   border-color: #e1e4e8;
   border-radius: 6px;
