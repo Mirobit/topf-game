@@ -22,13 +22,19 @@ body {
 }
 .navbar2 {
   padding-top: 20px;
-  text-align: center;
 }
 .header-logo {
   vertical-align: middle;
 }
+.header {
+  margin: 0 auto;
+  padding-top: 20px;
+}
+.header-text {
+  margin-top: 28px;
+}
 .header-text a {
-  font-size: 30px;
+  font-size: 42px;
   color: #182d4a;
   font-weight: bold;
 }
