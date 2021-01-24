@@ -82,6 +82,14 @@ body {
   background-color: #5c7f6d;
   border-color: #5c7f6d;
 }
+.btn-confirm:not(:disabled):not(.disabled):active,
+.btn-confirm:not(:disabled):not(.disabled).active,
+.show > .btn-confirm.dropdown-toggle {
+  color: #fff;
+  background-color: #81b29a;
+  border-color: #81b29a;
+  /* box-shadow: 0 0px 0px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
+}
 /* Skip button */
 .btn-skip {
   color: #fff;
@@ -104,6 +112,14 @@ body {
   color: #fff;
   background-color: #cca789;
   border-color: #cca789;
+}
+.btn-skip:not(:disabled):not(.disabled):active,
+.btn-skip:not(:disabled):not(.disabled).active,
+.show > .btn-skip.dropdown-toggle {
+  color: #fff;
+  background-color: #fc8279;
+  border-color: #fc8279;
+  /* box-shadow: 0 0px 0px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
 }
 
 #message {
