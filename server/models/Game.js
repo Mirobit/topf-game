@@ -105,6 +105,11 @@ const gameSchema = new Schema(
         },
       },
     ],
+    avatar: {
+      type: String,
+      required: true,
+      default: '',
+    },
   },
   {
     timestamps: {
