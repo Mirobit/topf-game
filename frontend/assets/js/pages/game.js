@@ -21,12 +21,15 @@ const drawPlayerList = () => {
 
     console.log(player);
     const playerRoleEl = playerDiv.appendChild(document.createElement('i'));
-    if (player.activity === 'explaining')
+    if (player.activity === 'explaining') {
       playerRoleEl.classList = 'player-activity fa fa-comment-o';
-    else if (player.activity === 'guessing')
+      playerRoleEl.title = 'Explaining';
+    } else if (player.activity === 'guessing') {
       playerRoleEl.classList = 'player-activity fa fa-gamepad';
-    else {
+      playerRoleEl.title = 'Guessing';
+    } else {
       playerRoleEl.classList = 'player-activity fa fa-tv';
+      playerRoleEl.title = 'Watching';
     }
     playerRoleEl.setAttribute('aria-hidden', 'true');
 
@@ -39,15 +42,18 @@ const drawPlayerList = () => {
     playerScoreEl.innerText = player.score;
 
     const playerStatusEl = playerDiv.appendChild(document.createElement('i'));
-    if (player.status === 'ready')
+    if (player.status === 'ready') {
       playerStatusEl.classList = 'player-status cl-success fa fa-check';
-    // else if (player.status === 'unready')
-    //   playerStatusEl.classList = 'player-status fa fa-hourglass-start';
-    else if (player.status === 'quit')
+      playerStatusEl.title = 'Player is ready';
+      // else if (player.status === 'unready')
+      //   playerStatusEl.classList = 'player-status fa fa-hourglass-start';
+    } else if (player.status === 'quit') {
       playerStatusEl.classList = 'player-status fa fa-sign-out';
-    else if (player.status === 'disconnected')
+      playerStatusEl.title = 'Player left';
+    } else if (player.status === 'disconnected') {
       playerStatusEl.classList = 'player-status cl-warning fa fa-question';
-    else playerStatusEl.classList = 'player-status';
+      playerStatusEl.title = 'Connection lost';
+    } else playerStatusEl.classList = 'player-status';
     playerStatusEl.setAttribute('aria-hidden', 'true');
   });
   console.timeEnd('playerlist');
