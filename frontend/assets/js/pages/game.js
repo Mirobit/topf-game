@@ -97,6 +97,11 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
 
 const updateResultsLastTurn = ({ timeLeft }) => {
   Store.syncTimeLeft(timeLeft);
+  if (timeLeft === 0) {
+    Store.setGameMessage("Time's up!");
+  } else {
+    Store.setGameMessage(`${Store.game.currentRound}. Round finished!`);
+  }
   if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = false;
   }
@@ -120,7 +125,6 @@ const turnFinish = () => {
   const endSound = document.getElementById('endSound');
   endSound.volume = 1; // 1 -> 100%
   endSound.play();
-  Store.setGameMessage("Time's up!");
   if (Store.player.activity === 'explaining') {
     sendMessage('game_turn_finished', {
       words: Store.game.words,

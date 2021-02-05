@@ -71,7 +71,6 @@ const getPlayersLean = (gameId) =>
       status: cur.status,
       activity: cur.activity,
       score: cur.score,
-      avatar: cur.avatar,
     });
     return acc;
   }, []);
@@ -181,6 +180,10 @@ const setGameFinished = (gameId) => {
       highscore = player.score;
     }
   }
+  sendMessageGame(gameId, {
+    command: 'game_player_list',
+    payload: { players: getPlayersLean(gameId) },
+  });
   sendMessageGame(gameId, {
     command: 'game_finished',
     payload: { winner, score: highscore },
