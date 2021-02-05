@@ -220,6 +220,10 @@ body {
 #startGameSection {
   margin-right: 15px;
 }
+#startGame {
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
 .divider-no-margin {
   margin-top: 0px;
   margin-bottom: 0px;

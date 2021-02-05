@@ -204,14 +204,18 @@ const gameStartCountdown = () => {
 
 const setNextRound = ({ roundNo }) => {
   Store.setCurrentRound(roundNo);
+  document.getElementById('startGame').innerText = 'Next Round';
 };
 
 const setGameFinished = ({ winner, score }) => {
-  Store.setGameMessage(`${winner} won with ${score} points!`);
+  let gameMessage = `${winner} won the game with ${score} points!`;
   if (winner === Store.player.name) {
     globalThis.confetti.speed = 1;
     globalThis.confetti.start(6000);
+    gameMessage = `You won the game with ${score} points!`;
   }
+  Store.setGameMessage(gameMessage);
+  document.getElementById('startGame').hidden = true;
 };
 
 const initGame = () => {
@@ -317,7 +321,7 @@ const handleSubmitWords = (event) => {
 const handleStartGame = () => {
   closeNotification();
   document.getElementById('startGame').disabled = true;
-  document.getElementById('startGame').innerText = 'Next';
+  document.getElementById('startGame').innerText = 'Next Turn';
   sendMessage('game_turn_start', true);
 };
 
