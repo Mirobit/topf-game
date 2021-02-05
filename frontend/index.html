@@ -216,7 +216,58 @@
             </div>
           </div>
           <div id="gamePage" class="row col-12" hidden>
-            <!-- Suggest Words -->
+            <div id="playerColumm" class="col-12 col-sm-6 col-md-3 col-lg-3">
+              <!-- Player list -->
+              <div class="player-list-header">Players</div>
+              <div id="playerList"></div>
+            </div>
+            <div id="gameColumm" class="col-12 col-sm-6 col-md-4 col-lg-6">
+              <div class="game-card">
+                <div id="gameTopRow">
+                  <span id="roundsArea">
+                    <i
+                      class="fa fa-calendar-o"
+                      aria-hidden="true"
+                      title="Round"
+                    ></i>
+                    <span id="currentRound"></span> /
+                    <span id="totalRounds"></span>
+                  </span>
+                  <span id="timeLeftArea">
+                    <span id="timeLeft"></span>
+                    <i
+                      class="fa fa-hourglass-start"
+                      aria-hidden="true"
+                      title="Time left in seconds"
+                    ></i
+                  ></span>
+                </div>
+                <div id="gameMessage">Waiting for first round to start...</div>
+                <div id="currentPoints" hidden></div>
+                <hr class="divider-no-margin" />
+                <!-- <br />
+                Guesser: <span id="currentGuesser"></span>
+                <br />
+                Explainer: <span id="currentExplainer"></span> -->
+                <div id="wordArea" hidden>
+                  <div id="currentWord">testword</div>
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-confirm"
+                      id="wordGuessed"
+                    >
+                      <i class="fa fa-lg fa-check" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-skip" id="wordSkipped">
+                      <i class="fa fa-lg fa-question" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div id="message"></div>
+            </div>
+            <!-- Settings Coloum -->
             <div id="settingsColumm" class="col-12 col-sm-6 col-md-4 col-lg-3">
               <div class="game-settings-header">Game Settings</div>
               <div class="game-settings">
@@ -247,8 +298,7 @@
                     </button>
                   </div>
                 </div>
-                <hr id="readyDivider" />
-
+                <hr id="readyDivider" class="divider-no-margin" />
                 <!-- Word suggestion -->
                 <div id="wordSuggetionsArea">
                   <div id="wordSuggetions"></div>
@@ -261,59 +311,6 @@
                   </button>
                 </div>
               </div>
-            </div>
-            <div id="gameColumm" class="col-12 col-sm-6 col-md-4 col-lg-6">
-              <div class="game-card">
-                <div id="gameTopRow">
-                  <span id="roundsArea">
-                    <i
-                      class="fa fa-calendar-o"
-                      aria-hidden="true"
-                      title="Round"
-                    ></i>
-                    <span id="currentRound"></span> /
-                    <span id="totalRounds"></span>
-                  </span>
-                  <span id="timeLeftArea">
-                    <span id="timeLeft"></span>
-                    <i
-                      class="fa fa-hourglass-start"
-                      aria-hidden="true"
-                      title="Time left in seconds"
-                    ></i
-                  ></span>
-                </div>
-                <div id="gameMessage"></div>
-                <div id="currentPoints" hidden></div>
-                <!-- <br />
-                Guesser: <span id="currentGuesser"></span>
-                <br />
-                Explainer: <span id="currentExplainer"></span> -->
-                <br />
-                <div id="currentTask"></div>
-                <br />
-                <div id="wordArea" hidden>
-                  <div id="currentWord"></div>
-                  <div>
-                    <button
-                      type="button"
-                      class="btn btn-confirm"
-                      id="wordGuessed"
-                    >
-                      <i class="fa fa-lg fa-check" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="btn btn-skip" id="wordSkipped">
-                      <i class="fa fa-lg fa-question" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div id="message"></div>
-            </div>
-            <div id="rightColumm" class="col-12 col-sm-6 col-md-3 col-lg-3">
-              <!-- Player list -->
-              <div class="player-list-header">Players</div>
-              <div id="playerList"></div>
             </div>
           </div>
         </div>

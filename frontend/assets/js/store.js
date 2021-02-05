@@ -38,6 +38,10 @@ class Store {
     this.game.timeLeft = timeLeft;
     this.timeLeftNode.innerText = timeLeft;
   }
+
+  setGameMessage(message) {
+    this.gameMessageNode.innerText = message;
+  }
 }
 
 export default new Store();

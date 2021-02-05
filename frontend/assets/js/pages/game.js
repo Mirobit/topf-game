@@ -96,12 +96,10 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
 };
 
 const updateResultsLastTurn = ({ timeLeft }) => {
-  console.log('timeleft!!!', timeLeft);
   Store.syncTimeLeft(timeLeft);
   if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = false;
   }
-  console.log('timeleft!!! afer', Store.game.timeLeft);
 };
 
 const setPlayerList = (data) => {
@@ -110,7 +108,6 @@ const setPlayerList = (data) => {
 };
 
 const updateGameInfo = () => {
-  console.log('updating game info');
   Store.timeLeftNode.innerText = Store.game.timer;
   Store.totalRoundsNode.innerText = Store.game.totalRounds;
   Store.currentRoundNode.innerText = Store.game.currentRound;
@@ -123,7 +120,7 @@ const turnFinish = () => {
   const endSound = document.getElementById('endSound');
   endSound.volume = 1; // 1 -> 100%
   endSound.play();
-  Store.gameMessageNode.innerText = 'Over!';
+  Store.setGameMessage("Time's up!");
   if (Store.player.activity === 'explaining') {
     sendMessage('game_turn_finished', {
       words: Store.game.words,
@@ -156,21 +153,43 @@ const turnStart = () => {
 
 const setGameWords = ({ words }) => {
   Store.player.activity = 'explaining';
+  console.log('setting player activity', Store.player.activity);
   Store.game.words = words;
 };
 
 const gameStartCountdown = () => {
+  console.log(Store.player.activity);
+  let gameMessage;
   let countdownSecs = COUNTDOWN_SECONDS;
-  Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}`;
+
+  if (Store.player.activity === 'explaining')
+    gameMessage = `Explaining in ${countdownSecs}`;
+  else if (Store.player.activity === 'guessing')
+    gameMessage = `Guessing in ${countdownSecs}`;
+  else gameMessage = `${countdownSecs}`;
+
+  Store.setGameMessage(gameMessage);
+
   const countdownInt = setInterval(() => {
     countdownSecs--;
     if (countdownSecs === 0) {
-      Store.gameMessageNode.innerText =
-        Store.player.activity !== 'none' ? 'Go!' : '';
+      if (Store.player.activity === 'explaining')
+        gameMessage = 'You can start explaining';
+      else if (Store.player.activity === 'guessing')
+        gameMessage = 'You can start guessing';
+      else gameMessage = 'Turn started';
+
+      Store.setGameMessage(gameMessage);
       clearInterval(countdownInt);
       turnStart();
     } else {
-      Store.gameMessageNode.innerText = `Get ready: ${countdownSecs}`;
+      if (Store.player.activity === 'explaining')
+        gameMessage = `Explaining in ${countdownSecs}`;
+      else if (Store.player.activity === 'guessing')
+        gameMessage = `Guessing in ${countdownSecs}`;
+      else gameMessage = `${countdownSecs}`;
+
+      Store.setGameMessage(gameMessage);
     }
   }, 1000);
 };
@@ -180,7 +199,7 @@ const setNextRound = ({ roundNo }) => {
 };
 
 const setGameFinished = ({ winner, score }) => {
-  Store.gameMessageNode.innerText = `${winner} won with ${score} points!`;
+  Store.setGameMessage(`${winner} won with ${score} points!`);
   if (winner === Store.player.name) {
     globalThis.confetti.speed = 1;
     globalThis.confetti.start(6000);
@@ -281,7 +300,6 @@ const handleSubmitWords = (event) => {
   );
   wordNodes.forEach((wordNode) => {
     wordNode.disabled = true;
-    console.log(wordNode.readonly);
   });
 };
 
@@ -308,7 +326,7 @@ const initGameLobby = async (game) => {
     wordSuggetion.type = 'text';
     wordSuggetion.classList =
       'form-control-alternative form-control word-suggestion-input input';
-    wordSuggetion.placeholder = `Word ${i + 1}`;
+    wordSuggetion.placeholder = ` ${i + 1}. Word`;
     wordSuggetion.maxlength = 50;
     wordSuggetion.id = `wordSuggestion${i + 1}`;
     wordSuggetion['aria-describedby'] = `wordSuggestionHelp${1 + 1}`;

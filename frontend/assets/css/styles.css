@@ -220,7 +220,7 @@ body {
 #startGameSection {
   margin-right: 15px;
 }
-#readyDivider {
+.divider-no-margin {
   margin-top: 0px;
   margin-bottom: 0px;
 }
@@ -231,7 +231,13 @@ body {
   margin-bottom: 12px;
 }
 #wordArea {
+  margin-top: 20px;
+  margin-bottom: 20px;
   user-select: none;
+  text-align: center;
+}
+#wordGuessed {
+  margin-right: 20px;
 }
 #submitWords {
   margin-top: 5px;
@@ -257,7 +263,7 @@ body {
   border-color: #e1e4e8;
 }
 .game-card {
-  min-height: 150px;
+  min-height: 227px;
   padding: 10px;
   margin-bottom: 20px;
   background-color: #fff;
@@ -267,6 +273,8 @@ body {
   border-style: solid;
   box-shadow: (0, 0, 0, 0.18) 0px 1px 2px;
 }
+/* 8ecae6 alt background color headers */
+/* #5E72E4 alt */
 .player-list-header {
   padding: 10px;
   background-color: #8598ba;
@@ -362,4 +370,12 @@ body {
 }
 #timeLeftArea {
   float: right;
+}
+#gameMessage {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bolder;
+  color: #8ecae6;
 }
