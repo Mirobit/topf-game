@@ -272,12 +272,17 @@ const handleSubmitWords = (event) => {
   }
 
   sendMessage('player_words_submitted', { words });
-  document.getElementById('submitWords').disabled = true;
+  document.getElementById('submitWords').hidden = true;
+  // document.getElementById('submitWords').disabled = true;
   document.getElementById('setReady').disabled = false;
   displayNotification(
     true,
     `Words succesfully submitted. You can now signal that you are ready!`
   );
+  wordNodes.forEach((wordNode) => {
+    wordNode.disabled = true;
+    console.log(wordNode.readonly);
+  });
 };
 
 const handleStartGame = () => {
