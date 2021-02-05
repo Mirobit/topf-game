@@ -127,8 +127,8 @@ const turnFinish = () => {
       timeLeft: Store.game.timeLeft,
     });
     document.getElementById('wordArea').hidden = true;
-    Store.player.activity = 'none';
   }
+  Store.player.activity = 'none';
   Store.game.curWordIndex = 0;
 };
 
@@ -151,10 +151,14 @@ const turnStart = () => {
   }, 1000);
 };
 
-const setGameWords = ({ words }) => {
+const setGameExplain = ({ words }) => {
   Store.player.activity = 'explaining';
   console.log('setting player activity', Store.player.activity);
   Store.game.words = words;
+};
+
+const setGameGuess = () => {
+  Store.player.activity = 'guessing';
 };
 
 const gameStartCountdown = () => {
@@ -223,8 +227,11 @@ const gameMessageHandler = (message) => {
     case 'player_words_guessed':
       updateResultsLastTurn(message.payload);
       break;
-    case 'game_words':
-      setGameWords(message.payload);
+    case 'game_set_explain':
+      setGameExplain(message.payload);
+      break;
+    case 'game_set_guess':
+      setGameGuess(message.payload);
       break;
     case 'game_next_round':
       setNextRound(message.payload);

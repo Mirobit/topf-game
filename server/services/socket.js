@@ -44,6 +44,13 @@ const getExplainerName = (gameId) => {
   return explainerName;
 };
 
+const getGuesserName = (gameId) => {
+  const guesserName = games
+    .get(gameId)
+    .players.find((player) => player.activity === 'guessing').name;
+  return guesserName;
+};
+
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
 const getRandomizedWords = (gameId) => {
@@ -139,12 +146,18 @@ const handlePlayerStatusChange = (gameId, playerName, newStatus) => {
 
 const handleTurnStart = (gameId) => {
   const explainerName = getExplainerName(gameId);
+  const guesserName = getGuesserName(gameId);
   const words = getRandomizedWords(gameId);
-  sendMessageGame(gameId, { command: 'game_turn_start', payload: '' });
+
   sendMessagePlayer(gameId, explainerName, {
-    command: 'game_words',
+    command: 'game_set_explain',
     payload: { words },
   });
+  sendMessagePlayer(gameId, guesserName, {
+    command: 'game_set_guess',
+    payload: {},
+  });
+  sendMessageGame(gameId, { command: 'game_turn_start', payload: '' });
 };
 
 const handleWordsSubmitted = (gameId, playerName, words) => {
