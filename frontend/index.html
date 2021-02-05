@@ -264,15 +264,27 @@
             </div>
             <div id="gameColumm" class="col-12 col-sm-6 col-md-4 col-lg-6">
               <div class="game-card">
+                <div id="gameTopRow">
+                  <span id="roundsArea">
+                    <i
+                      class="fa fa-calendar-o"
+                      aria-hidden="true"
+                      title="Round"
+                    ></i>
+                    <span id="currentRound"></span> /
+                    <span id="totalRounds"></span>
+                  </span>
+                  <span id="timeLeftArea">
+                    <span id="timeLeft"></span>
+                    <i
+                      class="fa fa-hourglass-start"
+                      aria-hidden="true"
+                      title="Time left in seconds"
+                    ></i
+                  ></span>
+                </div>
                 <div id="gameMessage"></div>
-                Time left: <span id="timeLeft"></span>s
-                <br />
-                Round Points: <span id="currentPoints"></span>
-                <br />
-                Total Points: <span id="totalPoints"></span>
-                <br />
-                Round <span id="currentRound"></span> /
-                <span id="totalRounds"></span>
+                <div id="currentPoints" hidden></div>
                 <!-- <br />
                 Guesser: <span id="currentGuesser"></span>
                 <br />
@@ -280,9 +292,9 @@
                 <br />
                 <div id="currentTask"></div>
                 <br />
-                <div id="wordArea">
-                  <span id="currentWord"></span>
-                  <span>
+                <div id="wordArea" hidden>
+                  <div id="currentWord"></div>
+                  <div>
                     <button
                       type="button"
                       class="btn btn-confirm"
@@ -290,14 +302,10 @@
                     >
                       <i class="fa fa-lg fa-check" aria-hidden="true"></i>
                     </button>
-                  </span>
-                  <span>
                     <button type="button" class="btn btn-skip" id="wordSkipped">
-                      <i
-                        class="fa fa-lg fa-question"
-                        aria-hidden="true"
-                      ></i></button
-                  ></span>
+                      <i class="fa fa-lg fa-question" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
               <div id="message"></div>

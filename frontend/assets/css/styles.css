@@ -257,6 +257,7 @@ body {
   border-color: #e1e4e8;
 }
 .game-card {
+  min-height: 150px;
   padding: 10px;
   margin-bottom: 20px;
   background-color: #fff;
@@ -352,4 +353,13 @@ body {
   pointer-events: none;
   position: fixed;
   top: 0;
+}
+
+#currentWord {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+#timeLeftArea {
+  float: right;
 }

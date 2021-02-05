@@ -12,7 +12,7 @@ class Store {
     this.currentRoundNode = document.getElementById('currentRound');
     this.totalRoundsNode = document.getElementById('totalRounds');
     this.currentPointsNode = document.getElementById('currentPoints');
-    this.totalPointsNode = document.getElementById('totalPoints');
+    // this.totalPointsNode = document.getElementById('totalPoints');
     this.currentWordNode = document.getElementById('currentWord');
 
     this.game = {};

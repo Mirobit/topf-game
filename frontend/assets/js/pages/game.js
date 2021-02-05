@@ -115,7 +115,7 @@ const updateGameInfo = () => {
   Store.totalRoundsNode.innerText = Store.game.totalRounds;
   Store.currentRoundNode.innerText = Store.game.currentRound;
   Store.currentPointsNode.innerText = Store.player.currentPoints;
-  Store.totalPointsNode.innerText = Store.player.totalPoints;
+  // Store.totalPointsNode.innerText = Store.player.totalPoints;
 };
 
 const turnFinish = () => {
