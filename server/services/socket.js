@@ -51,7 +51,7 @@ const getGuesserName = (gameId) => {
   return guesserName;
 };
 
-const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+const getRandomInt = (max) => Math.floor(Math.random() * max);
 
 const getRandomizedWords = (gameId) => {
   const words = games.get(gameId).words.filter((word) => !word.guessed);
@@ -278,6 +278,26 @@ const handleTurnFinished = (gameId, words, timeLeft) => {
   }
 };
 
+const handleShuffelPlayers = (gameId) => {
+  const { players } = games.get(gameId);
+
+  for (let i = players.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [players[i], players[j]] = [players[j], players[i]];
+  }
+
+  for (let i = 0; i < players.length; i++) {
+    if (i === 0) players[i].activity = 'explaining';
+    else if (i === 1) players[i].activity = 'guessing';
+    else players[i].activity = 'none';
+  }
+
+  sendMessageGame(gameId, {
+    command: 'game_player_list',
+    payload: { players: getPlayersLean(gameId) },
+  });
+};
+
 const messageHandler = (message, ws) => {
   switch (message.command) {
     case 'game_turn_finished':
@@ -311,6 +331,9 @@ const messageHandler = (message, ws) => {
         message.playerName,
         message.payload.words
       );
+      break;
+    case 'game_shuffel_players':
+      handleShuffelPlayers(message.gameId);
       break;
     default:
       console.log('unknown command', message.command);

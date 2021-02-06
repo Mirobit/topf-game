@@ -123,7 +123,6 @@ const updateGameInfo = () => {
   Store.totalRoundsNode.innerText = Store.game.totalRounds;
   Store.currentRoundNode.innerText = Store.game.currentRound;
   Store.currentPointsNode.innerText = Store.player.currentPoints;
-  // Store.totalPointsNode.innerText = Store.player.totalPoints;
 };
 
 const turnFinish = () => {
@@ -226,7 +225,6 @@ const setGameFinished = ({ winner, score }) => {
 
 const initGame = () => {
   document.getElementById('wordSuggetionsArea').hidden = true;
-  // document.getElementById('readyDivider').hidden = true;
   gameStartCountdown();
 };
 
@@ -267,6 +265,14 @@ const gameMessageHandler = (message) => {
 const handlePayerLeft = () => {
   closeConnection();
   // TODO show player different page
+};
+
+const handleShuffelPlayers = () => {
+  document.getElementById('shuffelPlayers').classList.add('fa-spin');
+  sendMessage('game_shuffel_players', true);
+  setTimeout(() => {
+    document.getElementById('shuffelPlayers').classList.remove('fa-spin');
+  }, 500);
 };
 
 const handleNextWord = (guessed) => {
@@ -327,6 +333,7 @@ const handleSubmitWords = (event) => {
 
 const handleStartGame = () => {
   closeNotification();
+  document.getElementById('shuffelPlayers').hidden = true;
   document.getElementById('startGame').disabled = true;
   document.getElementById('startGame').innerText = 'Next Turn';
   sendMessage('game_turn_start', true);
@@ -358,6 +365,8 @@ const initGameLobby = async (game) => {
   if (Store.player.isAdmin) {
     document.getElementById('startGame').hidden = false;
     document.getElementById('startGame').onclick = handleStartGame;
+    document.getElementById('shuffelPlayers').hidden = false;
+    document.getElementById('shuffelPlayers').onclick = handleShuffelPlayers;
   }
 
   // Set game board

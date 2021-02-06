@@ -304,6 +304,12 @@ body {
   border-style: solid;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+#shuffelPlayers {
+  cursor: pointer;
 }
 #playerList {
   background-color: white;
