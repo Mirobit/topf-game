@@ -3,7 +3,6 @@ html {
 }
 body {
   background-color: #f3f3f3;
-  width: 100vw;
   margin: 0;
   padding: 0;
 }
@@ -187,10 +186,16 @@ body {
   /* color: #ff4d58; */
   color: #fe938c;
 }
-#settingsColumm {
-  margin-bottom: 10px;
+#playerColumn {
+  min-width: 250px;
 }
-.game-settings-header {
+#gameColumn {
+  min-width: 250px;
+}
+/* #settingsColumm {
+  margin-bottom: 10px;
+} */
+/* .game-settings-header {
   padding: 10px;
   background-color: #8598ba;
   color: white;
@@ -199,15 +204,16 @@ body {
   border-style: solid;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-}
+} */
 .game-settings {
-  background-color: white;
-  border-style: solid;
-  border-width: 1px;
-  border-top-width: 0px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  background-color: #ffffff;
   border-color: #e1e4e8;
+  border-radius: 6px;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: (0, 0, 0, 0.18) 0px 1px 2px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .game-settings-row {
   padding: 15px;
@@ -230,6 +236,11 @@ body {
 }
 #wordSuggetionsArea {
   padding: 15px;
+  text-align: center;
+}
+#wordSuggetions {
+  margin: 0 auto;
+  max-width: 200px;
 }
 .word-suggestion-input {
   margin-bottom: 12px;
