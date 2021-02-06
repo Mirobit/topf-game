@@ -59,7 +59,7 @@ const createGame = async () => {
   }
 };
 const init = async () => {
-  document.title = `TopfGame - Create new Game`;
+  document.title = `TopfGame - Create a new game`;
   document.getElementById('createGameButton').onclick = createGame;
   document.getElementById('passwordProtection').onclick = tooglePassword;
   Store.homePage.hidden = false;

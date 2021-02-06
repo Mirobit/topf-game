@@ -65,6 +65,13 @@ body {
   /* background-color: #93c4c6; */
   background-color: #81b29a;
 }
+.alert-dismissible {
+  display: inline-block;
+  padding-right: 35px;
+}
+.close {
+  right: 10px !important;
+}
 /* Confirm button */
 .btn-confirm {
   color: #fff;
@@ -128,9 +135,6 @@ body {
   /* box-shadow: 0 0px 0px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
 }
 
-#message {
-  max-width: 300px;
-}
 .urlBox {
   margin-top: 15px;
 }
