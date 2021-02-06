@@ -95,12 +95,18 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
   }
 };
 
-const updateResultsLastTurn = ({ timeLeft }) => {
+const updateResultsLastTurn = ({ points, playerName, roundNo, timeLeft }) => {
   Store.syncTimeLeft(timeLeft);
   if (timeLeft === 0) {
-    Store.setGameMessage("Time's up!");
+    Store.setGameMessage(
+      `${playerName} guessed ${points} ${points > 1 ? 'words' : 'word'}`
+    );
   } else {
-    Store.setGameMessage(`${Store.game.currentRound}. Round finished!`);
+    Store.setGameMessage(
+      `${playerName} guessed ${points} ${
+        points > 1 ? 'words' : 'word'
+      } and finished the ${roundNo}. round`
+    );
   }
   if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = false;
@@ -220,7 +226,7 @@ const setGameFinished = ({ winner, score }) => {
 
 const initGame = () => {
   document.getElementById('wordSuggetionsArea').hidden = true;
-  document.getElementById('readyDivider').hidden = true;
+  // document.getElementById('readyDivider').hidden = true;
   gameStartCountdown();
 };
 
