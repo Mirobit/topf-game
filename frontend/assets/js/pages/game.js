@@ -306,6 +306,7 @@ const handleSubmitWords = (event) => {
   }
 
   sendMessage('player_words_submitted', { words });
+  Store.setGameMessage('Waiting for game to start...');
   document.getElementById('submitWords').hidden = true;
   // document.getElementById('submitWords').disabled = true;
   document.getElementById('setReady').disabled = false;
