@@ -412,3 +412,21 @@ body {
   margin: auto;
   margin-left: 10px;
 }
+
+.tooltiptext {
+  visibility: hidden;
+  width: 150px;
+  background-color: #465063;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  margin-top: 25px;
+  right: 15px;
+}
+.help-icon:hover .tooltiptext,
+.help-icon:active .tooltiptext {
+  visibility: visible;
+}
