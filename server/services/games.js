@@ -3,14 +3,14 @@ import { hash } from '../utils/crypter.js';
 import { createToken } from './auth.js';
 import { ValError } from '../utils/errors.js';
 
-// const get = async (id) => {
-//   try {
-//     const game = await Game.findById(id);
-//     return game;
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// };
+const get = async (id) => {
+  try {
+    const game = await Game.findById(id);
+    return game;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 // const list = async () => {
 //   try {
@@ -82,4 +82,4 @@ const join = async (gameId, playerName, gamePassword) => {
   return { game, token };
 };
 
-export { create, join };
+export { get, create, join };
