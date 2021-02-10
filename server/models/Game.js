@@ -28,12 +28,10 @@ const gameSchema = new Schema(
     totalRounds: {
       type: Number,
       required: true,
-      default: 3,
     },
     timer: {
       type: Number,
       required: true,
-      default: 60,
     },
     timeLeft: {
       type: Number,

@@ -32,7 +32,7 @@ router.post(
     const gameId = await gamesService.create({
       name: req.body.gameName,
       description: req.body.description,
-      rounds: req.body.rounds,
+      totalRounds: req.body.rounds,
       timer: req.body.timer,
       wordsCount: req.body.wordsCount,
       password: req.body.password,
