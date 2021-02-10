@@ -405,3 +405,10 @@ body {
   font-weight: bolder;
   color: #8ecae6;
 }
+.flex {
+  display: flex;
+}
+.help-icon {
+  margin: auto;
+  margin-left: 10px;
+}

@@ -45,7 +45,7 @@
             <div class="create-game-header">Create a new game</div>
             <form class="create-game-form">
               <div class="row form-bottom">
-                <div class="col-6">
+                <div class="col-5">
                   <input
                     type="text"
                     class="form-control-alternative form-control input required"
@@ -56,15 +56,26 @@
                   />
                 </div>
 
-                <div class="col-6">
-                  <input
-                    type="text"
-                    class="form-control-alternative form-control input required"
-                    placeholder="Your player name"
-                    maxlength="10"
-                    id="adminNameNew"
-                    aria-describedby="adminNameNewHelp"
-                  />
+                <div class="col-7 flex">
+                  <div>
+                    <input
+                      type="text"
+                      class="form-control-alternative form-control input required"
+                      placeholder="Your player name"
+                      maxlength="10"
+                      id="adminNameNew"
+                      aria-describedby="adminNameNewHelp"
+                    />
+                  </div>
+                  <div class="help-icon">
+                    <i
+                      class="fa fa-question-circle-o fa-lg"
+                      aria-hidden="true"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="The user with this name is the game administrator. The admin can start the game and the next turn/round."
+                    ></i>
+                  </div>
                 </div>
               </div>
               <div class="row form-bottom">
@@ -83,7 +94,7 @@
                 <div class="col-3">
                   <input
                     type="Number"
-                    value="3"
+                    value="4"
                     min="1"
                     class="form-control-alternative form-control input"
                     id="roundsNew"
@@ -96,7 +107,7 @@
                 <div class="col-3">
                   <input
                     type="Number"
-                    value="60"
+                    value="45"
                     min="5"
                     step="5"
                     class="form-control-alternative form-control input"
