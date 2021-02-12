@@ -8,7 +8,7 @@ const security = (req, res, next) => {
   // TODO wait for react dev tools firefox fix (script-src 'self' 'unsafe-inline';)
   res.header(
     'Content-Security-Policy',
-    "default-src 'self'; object-src 'none'"
+    "default-src 'self'; img-src data: 'self'; object-src 'none'"
   );
   next();
 };

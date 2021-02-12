@@ -238,8 +238,9 @@ const setNextTurn = (gameId, finishedRound) => {
 
 const handleTurnFinished = (gameId, words, timeLeft) => {
   const game = games.get(gameId);
-  const player = game.players.find(
-    (playerT) => playerT.activity === 'guessing'
+  const playerG = game.players.find((player) => player.activity === 'guessing');
+  const playerE = game.players.find(
+    (player) => player.activity === 'explaining'
   );
   let points = 0;
 
@@ -249,13 +250,14 @@ const handleTurnFinished = (gameId, words, timeLeft) => {
       game.words.find((wordT) => wordT.id === word.id).guessed = true;
     }
   }
-  player.score += points;
+  playerG.score += points;
+  playerE.score += points;
 
   sendMessageGame(gameId, {
     command: 'player_words_guessed',
     payload: {
       points,
-      playerName: player.name,
+      playerName: playerG.name,
       roundNo: game.currentRound,
       timeLeft,
     },
