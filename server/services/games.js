@@ -12,42 +12,12 @@ const get = async (id) => {
   }
 };
 
-// const list = async () => {
-//   try {
-//     const games = await Game.find({}, null, { sort: { created_at: -1 } });
-//     return games;
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// };
-
 const create = async (data) => {
   const game = await new Game(data);
   if (data.password) game.password = hash(data.password);
   await game.save();
   return game._id;
 };
-
-// const update = async (id, data) => {
-//   try {
-//     await Game.findOneAndUpdate({ _id: id }, data, {
-//       new: true,
-//       runValidators: true,
-//     });
-//     return;
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// };
-
-// const remove = async (id) => {
-//   try {
-//     await Game.findOneAndDelete({ _id: id });
-//     return;
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// };
 
 const join = async (gameId, playerName, gamePassword) => {
   const game = await Game.findById(gameId).lean();
@@ -81,5 +51,35 @@ const join = async (gameId, playerName, gamePassword) => {
 
   return { game, token };
 };
+
+// const list = async () => {
+//   try {
+//     const games = await Game.find({}, null, { sort: { created_at: -1 } });
+//     return games;
+//   } catch (error) {
+//     throw new Error(error.message);
+//   }
+// };
+
+// const update = async (id, data) => {
+//   try {
+//     await Game.findOneAndUpdate({ _id: id }, data, {
+//       new: true,
+//       runValidators: true,
+//     });
+//     return;
+//   } catch (error) {
+//     throw new Error(error.message);
+//   }
+// };
+
+// const remove = async (id) => {
+//   try {
+//     await Game.findOneAndDelete({ _id: id });
+//     return;
+//   } catch (error) {
+//     throw new Error(error.message);
+//   }
+// };
 
 export { get, create, join };
