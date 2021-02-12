@@ -5,10 +5,10 @@ const security = (req, res, next) => {
   res.header('X-Content-Type-Options', 'nosniff');
   res.header('Referrer-Policy', 'same-origin');
   res.header('X-XSS-Protection', '1; mode=block');
-  // TODO remove 'unsafe-inline' (react dev tools firefox error)
+  // TODO wait for react dev tools firefox fix (script-src 'self' 'unsafe-inline';)
   res.header(
     'Content-Security-Policy',
-    "default-src 'self' 'unsafe-inline'; connect-src 'self'; style-src 'self'; img-src data: 'self'; object-src 'none'"
+    "default-src 'self'; object-src 'none'"
   );
   next();
 };
