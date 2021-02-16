@@ -32,8 +32,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node server/app.js",
-    "test-e2e": "jest ./tests/*",
-    "ci": "npm run dev && npm run test-e2e",
+    "test-e2e": "jest",
     "dev": "cross-env NODE_ENV=development nodemon --ignore 'frontend/' server/app.js",
     "bundle-js": "./node_modules/.bin/esbuild frontend/assets/js/index.js --bundle --minify --outfile=dist/assets/js/index.js --target=firefox85",
     "build-frontend": "rm -rf dist &&cp -r ./frontend ./dist && rm -rf dist/assets/js && npm run bundle-js"
@@ -44,6 +43,7 @@
   },
   "jest": {
     "verbose": true,
+    "testRegex": "./tests/",
     "testTimeout": 5000
   },
   "author": "Michael Rotarius",

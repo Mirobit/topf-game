@@ -23,8 +23,8 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await browserAdmin.close();
-  // await browserPlayer1.close();
-  // await browserPlayer2.close();
+  await browserPlayer1.close();
+  await browserPlayer2.close();
 });
 
 test('Create a new game', async () => {
