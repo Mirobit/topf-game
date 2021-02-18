@@ -8,7 +8,7 @@ let pageAdmin;
 let pagePlayer1;
 let pagePlayer2;
 
-let gameUrl;
+let gameUrl = '';
 
 beforeAll(async () => {
   // { headless: false, slowMo: 50 }
@@ -16,7 +16,11 @@ beforeAll(async () => {
   browserPlayer1 = await browserAdmin.newContext();
   browserPlayer2 = await browserAdmin.newContext();
 
+  browserPlayer1.setDefaultTimeout(1000);
+  browserPlayer2.setDefaultTimeout(1000);
+
   pageAdmin = await browserAdmin.newPage();
+  pageAdmin.setDefaultTimeout(1000);
   pagePlayer1 = await browserPlayer1.newPage();
   pagePlayer2 = await browserPlayer2.newPage();
 });
