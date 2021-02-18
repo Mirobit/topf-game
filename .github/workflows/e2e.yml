@@ -27,7 +27,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: nohup node index.js >> app.log 2>&1 &
+    - run: nohup node server/app.js >> app.log 2>&1 &
     - run: npm run test-e2e
       env:
         MONGODB_URI: mongodb://localhost/topfgame
