@@ -27,10 +27,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: nohup npm start 2>/dev/null 1>/dev/null&
+    - run: nohup node index.js >> app.log 2>&1 &
     - run: npm run test-e2e
       env:
         MONGODB_URI: mongodb://localhost/topfgame
         PORT: 8000
         SALT_SECRET: 11111111111111111
         JWT_SECRET: 1
+    - uses: actions/upload-artifact@v2
+      with:
+        name: node-log
+        path: app.log
