@@ -17,7 +17,7 @@ jobs:
         
     strategy:
       matrix:
-        node-version: [14.x, 15.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -27,14 +27,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: nohup node server/app.js >> app.log 2>&1 &
-    - run: npm run test-e2e
+    - run: nohup server/app.js 2>/dev/null 1>/dev/null&
       env:
         MONGODB_URI: mongodb://localhost/topfgame
         PORT: 8000
         SALT_SECRET: 11111111111111111
         JWT_SECRET: 1
-    - uses: actions/upload-artifact@v2
-      with:
-        name: node-log
-        path: app.log
+    - run: wget http://localhost:8000
+    - run: cat index.html
+    - run: npm run test-e2e
