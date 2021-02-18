@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright-chromium');
 
 let browserAdmin;
 let browserPlayer1;
