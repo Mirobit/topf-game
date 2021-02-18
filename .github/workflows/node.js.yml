@@ -1,0 +1,37 @@
+name: E2E Testing
+
+on:
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo
+        ports:
+        # will assign a random free host port
+        - 27017:27017
+        
+    strategy:
+      matrix:
+        node-version: [14.x, 15.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: nohup npm start 2>/dev/null 1>/dev/null&
+    - run: npm test-e2e
+      env:
+        MONGODB_URI: mongodb://localhost/topfgame
+        PORT: 8000
+        SALT_SECRET: 11111111111111111
+        JWT_SECRET: 1
