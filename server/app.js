@@ -12,19 +12,17 @@ import wssInit from './services/socket.js';
 import dirname from './utils/dirname.cjs';
 
 mongoose.Promise = Promise;
-mongoose
-  .connect(process.env.MONGODB_URI, {
+try {
+  await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
-  })
-  .then(() => {
-    console.log('Connected to Mongo!');
-  })
-  .catch((error) => {
-    console.error('Error connecting to mongo', error);
   });
+  console.log('Connected to mongo');
+} catch (error) {
+  console.error('Error connecting to mongo', error);
+}
 
 const app = express();
 const server = http.createServer(app);
