@@ -16,11 +16,11 @@ beforeAll(async () => {
   browserPlayer1 = await browserAdmin.newContext();
   browserPlayer2 = await browserAdmin.newContext();
 
-  browserPlayer1.setDefaultTimeout(1000);
-  browserPlayer2.setDefaultTimeout(1000);
+  browserPlayer1.setDefaultTimeout(2000);
+  browserPlayer2.setDefaultTimeout(2000);
 
   pageAdmin = await browserAdmin.newPage();
-  pageAdmin.setDefaultTimeout(1000);
+  pageAdmin.setDefaultTimeout(2000);
   pagePlayer1 = await browserPlayer1.newPage();
   pagePlayer2 = await browserPlayer2.newPage();
 });
