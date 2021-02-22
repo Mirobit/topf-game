@@ -33,12 +33,14 @@ const start = async () => {
   app.use(express.static(path.join(dirname, '../../frontend/assets')));
   app.use(routes);
   app.use(errorHandler);
-
-  server.listen(process.env.PORT, () => {
+  try {
+    await server.listen(process.env.PORT);
     console.log(
       `Server is up and running: http://localhost:${process.env.PORT}`
     );
-  });
+  } catch (error) {
+    console.error('Could not start server', error);
+  }
 };
 
 start();
