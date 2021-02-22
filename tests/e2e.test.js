@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { chromium } = require('playwright-chromium');
 
 let browserAdmin;
@@ -30,7 +32,7 @@ afterAll(async () => {
 });
 
 test('Create a new game', async () => {
-  await pageAdmin.goto('http://localhost:8000');
+  await pageAdmin.goto(`http://localhost:${process.env.PORT}`);
   await pageAdmin.fill('#gameNameNew', 'Test Game');
   await pageAdmin.fill('#adminNameNew', 'Rome');
   await pageAdmin.fill('#roundsNew', '5');
