@@ -1,6 +1,6 @@
-require('dotenv').config();
+import 'dotenv/config.js';
 
-const { chromium } = require('playwright-chromium');
+import { chromium } from 'playwright-chromium';
 
 let browserAdmin;
 let browserPlayer1;

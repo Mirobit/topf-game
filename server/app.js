@@ -33,6 +33,7 @@ const start = async () => {
   app.use(express.static(path.join(dirname, '../../frontend/assets')));
   app.use(routes);
   app.use(errorHandler);
+
   try {
     await server.listen(process.env.PORT);
     console.log(

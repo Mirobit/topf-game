@@ -7,10 +7,10 @@
     "prettier",
     "plugin:security/recommended",
     "plugin:node/recommended",
-    "plugin:jest",
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
+  "plugins": ["jest"],
   "rules": {
     "no-unused-vars": "off",
     "no-console": "off",
@@ -25,9 +25,10 @@
     "max-classes-per-file": "off",
     "security/detect-object-injection": "off"
   },
-  "ignorePatterns": ["node_modules", "frontend/assets/vendor"],
+  "ignorePatterns": ["dist", "node_modules", "frontend/assets/vendor"],
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   }
 }

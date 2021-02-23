@@ -37,6 +37,11 @@
     "bundle-js": "./node_modules/.bin/esbuild frontend/assets/js/index.js --bundle --minify --outfile=dist/assets/js/index.js --target=firefox85",
     "build-frontend": "rm -rf dist && cp -r ./frontend ./dist && rm -rf dist/assets/js && npm run bundle-js"
   },
+  "files": [
+    ".env.example",
+    "server",
+    "frontend"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mirobit/TopfGame/labelit"
