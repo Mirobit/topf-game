@@ -34,7 +34,7 @@
     "dev": "cross-env NODE_ENV=development nodemon --ignore 'frontend/' server/app.js",
     "prod": "pm2 start server/app.js --env production",
     "test-e2e": "jest",
-    "bundle-js": "./node_modules/.bin/esbuild frontend/assets/js/index.js --bundle --minify --outfile=dist/assets/js/index.js --target=firefox85",
+    "bundle-js": "./node_modules/.bin/esbuild frontend/assets/js/index.js --bundle --minify --outfile=dist/assets/js/index.js --target=es2020",
     "build-frontend": "rm -rf dist && cp -r ./frontend ./dist && rm -rf dist/assets/js && npm run bundle-js"
   },
   "files": [

@@ -30,7 +30,7 @@ const start = async () => {
 
   app.use(express.json());
   app.use(security);
-  app.use(express.static(path.join(dirname, '../../frontend/assets')));
+  app.use(express.static(path.join(dirname, '../../frontend')));
   app.use(routes);
   app.use(errorHandler);
 
