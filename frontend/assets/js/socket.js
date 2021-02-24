@@ -13,9 +13,8 @@ const initWs = (mH) => {
   ws = new WebSocket(socketUrl);
 
   console.log('init ws');
-  console.log(Store.game, Store.token);
   ws.onopen = () => {
-    console.log('ws open', Store.game);
+    console.log('ws open');
     ws.send(
       JSON.stringify({
         playerName: Store.player.name,

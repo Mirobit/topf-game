@@ -85,13 +85,14 @@ const handlePlayerJoined = async (gameId, playerName, token, ws) => {
     return;
   }
 
-  const player = {
+  let player = {
     gameId,
     name: playerName,
     status: 'unready',
     activity: 'none',
     score: 0,
     avatar: 'default.jpg',
+    hasSubmittedWords: false,
     ws,
   };
   player.ws.gameId = gameId;
@@ -100,8 +101,27 @@ const handlePlayerJoined = async (gameId, playerName, token, ws) => {
   const game = games.get(gameId);
 
   if (game) {
-    if (game.players.length === 1) player.activity = 'guessing';
-    game.players.push(player);
+    const existingPlayer = game.players.find(
+      (tPlayer) => tPlayer.name === playerName
+    );
+    if (existingPlayer) {
+      existingPlayer.status = 'unready';
+      existingPlayer.ws = ws;
+      existingPlayer.ws.gameId = gameId;
+      existingPlayer.ws.playerName = playerName;
+      player = existingPlayer;
+      sendMessagePlayer(gameId, playerName, {
+        command: 'player_store_update',
+        payload: {
+          score: player.score,
+          activity: player.activity,
+          hasSubmittedWords: player.hasSubmittedWords,
+        },
+      });
+    } else {
+      if (game.players.length === 1) player.activity = 'guessing';
+      game.players.push(player);
+    }
   } else {
     const gameDB = await gamesServices.get(gameId);
     player.activity = 'explaining';
@@ -162,6 +182,9 @@ const handleTurnStart = (gameId) => {
 
 const handleWordsSubmitted = (gameId, playerName, words) => {
   const game = games.get(gameId);
+  game.players.find(
+    (player) => player.name === playerName
+  ).hasSubmittedWords = true;
   for (const word of words) {
     game.words.push({
       id: hash(word + playerName),

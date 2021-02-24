@@ -29,7 +29,7 @@ const join = async (gameId, playerName, gamePassword, oldToken) => {
   let payload;
   if (oldToken) {
     console.log('gameservives oltokre', oldToken);
-    payload = verifyToken((gameId, playerName, oldToken));
+    payload = verifyToken(gameId, playerName, oldToken);
   }
 
   let role = 'user';

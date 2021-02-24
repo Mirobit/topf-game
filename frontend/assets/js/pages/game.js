@@ -9,6 +9,7 @@ import {
 const COUNTDOWN_SECONDS = 5;
 
 const drawPlayerList = () => {
+  console.log(Store.players);
   console.time('playerlist');
   const playerListParentDiv = document.getElementById('playerList');
   playerListParentDiv.innerHTML = '';
@@ -93,6 +94,15 @@ const updatePlayerStatus = ({ playerName, newStatus, activity, score }) => {
   if (Store.player.isAdmin) {
     document.getElementById('startGame').disabled = !checkPlayersReady();
   }
+};
+
+const updatePlayerStore = ({ hasSubmittedWords, score, activity }) => {
+  document.getElementById('wordSuggetionsArea').hidden = hasSubmittedWords;
+  document.getElementById('setReady').disabled = !hasSubmittedWords;
+  Store.setGameMessage(`You rejoined the game`);
+  Store.player.hasSubmittedWords = hasSubmittedWords;
+  Store.player.totalPoints = score;
+  Store.player.activity = activity;
 };
 
 const updateResultsLastTurn = ({ points, playerName, roundNo, timeLeft }) => {
@@ -229,6 +239,7 @@ const initGame = () => {
 };
 
 const gameMessageHandler = (message) => {
+  console.log('message', message);
   if (message)
     switch (message.command) {
       case 'player_status':
@@ -239,6 +250,9 @@ const gameMessageHandler = (message) => {
         break;
       case 'player_words_guessed':
         updateResultsLastTurn(message.payload);
+        break;
+      case 'player_store_update':
+        updatePlayerStore(message.payload);
         break;
       case 'game_set_explain':
         setGameExplain(message.payload);
@@ -321,7 +335,6 @@ const handleSubmitWords = (event) => {
   sendMessage('player_words_submitted', { words });
   Store.setGameMessage('Waiting for the game to start...');
   document.getElementById('submitWords').hidden = true;
-  // document.getElementById('submitWords').disabled = true;
   document.getElementById('setReady').disabled = false;
   displayNotification(
     true,

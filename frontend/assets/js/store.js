@@ -22,6 +22,7 @@ class Store {
       activity: 'none',
       currentPoints: 0,
       totalPoints: 0,
+      hasSubmittedWords: false,
     };
     this.timeLeftInt = undefined;
     this.token = undefined;
