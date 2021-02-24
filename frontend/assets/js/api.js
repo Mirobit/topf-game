@@ -4,10 +4,10 @@ const BASE_URL = window.location.origin;
 
 const handleError = (result) => {
   if (result.status === 200) return;
-  if (result.status === 401) {
-    window.location.pathname = '/login';
-    return;
-  }
+  // if (result.status === 401) {
+  //   window.location.pathname = '/login';
+  //   return;
+  // }
 
   displayNotification(
     false,

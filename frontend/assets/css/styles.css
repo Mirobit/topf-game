@@ -434,6 +434,7 @@ body {
 .notification {
   margin: auto;
   margin-top: 15px;
+  max-width: 500px;
 }
 #message {
   margin-left: 0px;

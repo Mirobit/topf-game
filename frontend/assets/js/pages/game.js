@@ -8,14 +8,25 @@ import {
 
 const COUNTDOWN_SECONDS = 5;
 
+const checkPlayersReady = () => {
+  let ready = true;
+  Store.game.players.forEach((player) => {
+    if (player.status === 'unready' || player.status === 'disconnected')
+      ready = false;
+  });
+
+  return ready;
+};
+
 const removePlayer = (playerName) => {
   sendMessage('game_remove_player', {
     playerName,
   });
+  closeNotification();
+  document.getElementById('startGame').disabled = !checkPlayersReady();
 };
 
 const drawPlayerList = () => {
-  console.log(Store.game.players);
   console.time('playerlist');
   const playerListParentDiv = document.getElementById('playerList');
   playerListParentDiv.innerHTML = '';
@@ -68,21 +79,16 @@ const drawPlayerList = () => {
         removePlayerEl.title = 'Remove player from game';
         removePlayerEl.setAttribute('aria-hidden', 'true');
         removePlayerEl.onclick = () => removePlayer(player.name);
+        displayNotification(
+          false,
+          `Connection to player <i>${player.name}</i> was lost. Please remove the player or wait for <i>${player.name}</i> to rejoin before continuing the game.`
+        );
+        document.getElementById('startGame').disabled = true;
       }
     } else playerStatusEl.classList = 'player-status';
     playerStatusEl.setAttribute('aria-hidden', 'true');
   });
   console.timeEnd('playerlist');
-};
-
-const checkPlayersReady = () => {
-  let ready = true;
-  Store.game.players.forEach((player) => {
-    if (player.status === 'unready' || player.status === 'submitted')
-      ready = false;
-  });
-
-  return ready;
 };
 
 const checkIsAdmin = (token) =>
