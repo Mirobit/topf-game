@@ -24,6 +24,7 @@ class Store {
       totalPoints: 0,
     };
     this.timeLeftInt = undefined;
+    this.token = undefined;
   }
 
   setCurrentRound(roundNo) {

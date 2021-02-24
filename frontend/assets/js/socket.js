@@ -3,7 +3,6 @@ import Store from './store.js';
 
 let ws;
 let messageHandler;
-let token;
 
 const initWs = (mH) => {
   messageHandler = mH;
@@ -13,16 +12,16 @@ const initWs = (mH) => {
 
   ws = new WebSocket(socketUrl);
 
-  token = localStorage.getItem(Store.game.id);
-  console.log(Store.game, token);
+  console.log('init ws');
+  console.log(Store.game, Store.token);
   ws.onopen = () => {
-    console.log('ws open');
+    console.log('ws open', Store.game);
     ws.send(
       JSON.stringify({
         playerName: Store.player.name,
         gameId: Store.game.id,
         command: 'player_joined',
-        payload: { token },
+        payload: { token: Store.token },
       })
     );
   };

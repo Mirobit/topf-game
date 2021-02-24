@@ -74,7 +74,8 @@ router.post(
     const data = await gamesService.join(
       req.body.gameId,
       req.body.playerName,
-      req.body.password
+      req.body.password,
+      req.body.token
     );
     res.json({ status: 200, data });
   })

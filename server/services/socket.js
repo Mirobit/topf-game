@@ -3,6 +3,7 @@ import WebSocket from 'ws';
 import * as gamesServices from './games.js';
 import { verifyToken } from './auth.js';
 import { hash } from '../utils/crypter.js';
+import asyncWrap from '../middleware/asyncWrap.js';
 
 const games = new Map();
 let wss;
@@ -320,6 +321,7 @@ const messageHandler = (message, ws) => {
       );
       break;
     case 'player_joined':
+      console.log(message);
       handlePlayerJoined(
         message.gameId,
         message.playerName,
@@ -344,22 +346,27 @@ const messageHandler = (message, ws) => {
 
 const init = (server) => {
   wss = new WebSocket.Server({ server });
+  try {
+    wss.on('connection', (ws) => {
+      console.log('new connection');
 
-  wss.on('connection', (ws) => {
-    console.log('new connection');
-    ws.on('message', (message) => {
-      console.log('message from', JSON.parse(message));
-      messageHandler(JSON.parse(message), ws);
-    });
-    ws.on('close', (code) => {
-      console.log('innerclose:', code);
-      handlePlayerLeft(ws.gameId, ws.playerName, code);
-    });
-    ws.on('error', (data) => {
-      console.log('innererror', data);
-    });
-  });
+      ws.on('message', (message) => {
+        console.log('message from', JSON.parse(message));
+        messageHandler(JSON.parse(message), ws);
+      });
 
+      ws.on('close', (code) => {
+        console.log('innerclose:', code);
+        handlePlayerLeft(ws.gameId, ws.playerName, code);
+      });
+
+      ws.on('error', (data) => {
+        console.log('innererror', data);
+      });
+    });
+  } catch ($e) {
+    console.log('caught ws error');
+  }
   wss.on('error', (error) => {
     console.log(error);
   });

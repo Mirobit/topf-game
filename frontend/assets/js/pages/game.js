@@ -229,37 +229,38 @@ const initGame = () => {
 };
 
 const gameMessageHandler = (message) => {
-  switch (message.command) {
-    case 'player_status':
-      updatePlayerStatus(message.payload);
-      break;
-    case 'player_joined':
-      updatePlayerStatus(message.payload);
-      break;
-    case 'player_words_guessed':
-      updateResultsLastTurn(message.payload);
-      break;
-    case 'game_set_explain':
-      setGameExplain(message.payload);
-      break;
-    case 'game_set_guess':
-      setGameGuess(message.payload);
-      break;
-    case 'game_next_round':
-      setNextRound(message.payload);
-      break;
-    case 'game_turn_start':
-      initGame();
-      break;
-    case 'game_player_list':
-      setPlayerList(message.payload);
-      break;
-    case 'game_finished':
-      setGameFinished(message.payload);
-      break;
-    default:
-      console.log('unknown command', message);
-  }
+  if (message)
+    switch (message.command) {
+      case 'player_status':
+        updatePlayerStatus(message.payload);
+        break;
+      case 'player_joined':
+        updatePlayerStatus(message.payload);
+        break;
+      case 'player_words_guessed':
+        updateResultsLastTurn(message.payload);
+        break;
+      case 'game_set_explain':
+        setGameExplain(message.payload);
+        break;
+      case 'game_set_guess':
+        setGameGuess(message.payload);
+        break;
+      case 'game_next_round':
+        setNextRound(message.payload);
+        break;
+      case 'game_turn_start':
+        initGame();
+        break;
+      case 'game_player_list':
+        setPlayerList(message.payload);
+        break;
+      case 'game_finished':
+        setGameFinished(message.payload);
+        break;
+      default:
+        console.log('unknown command', message);
+    }
 };
 
 const handlePayerLeft = () => {
@@ -339,12 +340,9 @@ const handleStartGame = () => {
   sendMessage('game_turn_start', true);
 };
 
-const initGameLobby = async (game) => {
+const initGameLobby = async () => {
   closeNotification();
-  Store.game = game;
-  document.title = `TopfGame - ${game.name}`;
-
-  initWs(gameMessageHandler);
+  document.title = `TopfGame - ${Store.game.name}`;
 
   // Create forms
   const wordsParentDiv = document.getElementById('wordSuggetions');
@@ -392,14 +390,21 @@ const joinGame = async () => {
     gameId: Store.game.id,
     playerName,
     gamePassword,
+    token: localStorage.getItem(Store.game.id),
   });
-  console.log(result);
+  console.log('this', result);
   if (result.status === 200) {
-    localStorage.setItem(Store.game.id, result.data.token);
     Store.game = result.data.game;
     Store.player.name = playerName;
-    Store.player.isAdmin = checkIsAdmin(result.data.token);
-    initGameLobby(result.data.game);
+    Store.token = result.data.token;
+    Store.player.isAdmin = checkIsAdmin(Store.token);
+
+    initGameLobby();
+    initWs(gameMessageHandler);
+    localStorage.setItem(Store.game.id, result.data.token);
+  } else {
+    console.log(result.status);
+    displayNotification(false, result.message);
   }
 };
 

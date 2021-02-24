@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 
 import security from './middleware/security.js';
 import errorHandler from './middleware/errorHandler.js';
+
 import routes from './routes/index.js';
 import wssInit from './services/socket.js';
 import dirname from './utils/dirname.cjs';
@@ -26,6 +27,7 @@ const start = async () => {
 
   const app = express();
   const server = http.createServer(app);
+
   wssInit(server);
 
   app.use(express.json());
@@ -42,6 +44,12 @@ const start = async () => {
   } catch (error) {
     console.error('Could not start server', error);
   }
+
+  process.on('uncaughtException', (err) => {
+    console.log('**************************');
+    console.log('* [process.on(uncaughtException)]: err:', err);
+    console.log('**************************');
+  });
 };
 
 start();

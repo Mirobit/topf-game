@@ -1,6 +1,6 @@
 import Game from '../models/Game.js';
 import { hash } from '../utils/crypter.js';
-import { createToken } from './auth.js';
+import { createToken, verifyToken } from './auth.js';
 import { ValError } from '../utils/errors.js';
 
 const get = async (id) => {
@@ -19,28 +19,34 @@ const create = async (data) => {
   return game._id;
 };
 
-const join = async (gameId, playerName, gamePassword) => {
-  const game = await Game.findById(gameId).lean();
+const join = async (gameId, playerName, gamePassword, oldToken) => {
+  let game = await Game.findById(gameId);
 
   if (game.password && hash(gamePassword) !== game.password) {
     throw new ValError('Invalid game password');
   }
 
+  let payload;
+  if (oldToken) {
+    console.log('gameservives oltokre', oldToken);
+    payload = verifyToken((gameId, playerName, oldToken));
+  }
+
   let role = 'user';
   if (playerName === game.adminName) role = 'admin';
 
-  // if (
-  //   game.players.some(
-  //     (player) => player.name.toUpperCase() === playerName.toUpperCase()
-  //   )
-  // ) {
-  //   throw new ValError('Player name already in use');
-  // }
-  // game.players.push({ name: playerName, role });
-  // await game.save();
+  const existingPlayer = game.players.find(
+    (player) => player.name.toUpperCase() === playerName.toUpperCase()
+  );
 
+  if (existingPlayer && !oldToken) {
+    throw new ValError('Player name already in use');
+  } else if (!existingPlayer) {
+    game.players.push({ name: playerName, role });
+    await game.save();
+  }
+  game = game.toObject();
   game.id = game._id;
-
   delete game._id;
   delete game.password;
   delete game.players;
@@ -48,7 +54,6 @@ const join = async (gameId, playerName, gamePassword) => {
   delete game.updated_at;
 
   const token = createToken(gameId, playerName, role);
-
   return { game, token };
 };
 
