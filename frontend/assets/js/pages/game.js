@@ -8,8 +8,14 @@ import {
 
 const COUNTDOWN_SECONDS = 5;
 
+const removePlayer = (playerName) => {
+  sendMessage('game_remove_player', {
+    playerName,
+  });
+};
+
 const drawPlayerList = () => {
-  console.log(Store.players);
+  console.log(Store.game.players);
   console.time('playerlist');
   const playerListParentDiv = document.getElementById('playerList');
   playerListParentDiv.innerHTML = '';
@@ -20,7 +26,6 @@ const drawPlayerList = () => {
     playerDiv.classList = 'player-list-entry';
     playerDiv.id = `playerListEntry-${player.name}`;
 
-    console.log(player);
     const playerRoleEl = playerDiv.appendChild(document.createElement('i'));
     if (player.activity === 'explaining') {
       playerRoleEl.classList = 'player-activity fa fa-comment-o';
@@ -46,14 +51,24 @@ const drawPlayerList = () => {
     if (player.status === 'ready') {
       playerStatusEl.classList = 'player-status cl-success fa fa-check';
       playerStatusEl.title = 'Player is ready';
-      // else if (player.status === 'unready')
-      //   playerStatusEl.classList = 'player-status fa fa-hourglass-start';
+    } else if (player.status === 'unready') {
+      playerStatusEl.classList = 'player-status fa fa-hourglass-o';
+      playerStatusEl.title = 'Player not ready';
     } else if (player.status === 'quit') {
       playerStatusEl.classList = 'player-status fa fa-sign-out';
       playerStatusEl.title = 'Player left';
     } else if (player.status === 'disconnected') {
       playerStatusEl.classList = 'player-status cl-warning fa fa-question';
       playerStatusEl.title = 'Connection lost';
+      if (Store.player.isAdmin) {
+        const removePlayerEl = playerDiv.appendChild(
+          document.createElement('i')
+        );
+        removePlayerEl.classList = 'cl-error fa fa-times clickable';
+        removePlayerEl.title = 'Remove player from game';
+        removePlayerEl.setAttribute('aria-hidden', 'true');
+        removePlayerEl.onclick = () => removePlayer(player.name);
+      }
     } else playerStatusEl.classList = 'player-status';
     playerStatusEl.setAttribute('aria-hidden', 'true');
   });

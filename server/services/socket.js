@@ -8,7 +8,7 @@ import asyncWrap from '../middleware/asyncWrap.js';
 const games = new Map();
 let wss;
 
-const sendMessageGame = (gameId, messageData) => {
+const sendMessageAll = (gameId, messageData) => {
   console.log('message to', gameId, messageData);
   const { players } = games.get(gameId);
   players.forEach((player) => {
@@ -25,7 +25,7 @@ const sendMessagePlayer = (gameId, playerName, messageData) => {
 };
 
 const messagePlayerStatus = (gameId, playerName, newStatus) => {
-  sendMessageGame(gameId, {
+  sendMessageAll(gameId, {
     command: 'player_status',
     payload: { playerName, newStatus },
   });
@@ -142,7 +142,7 @@ const handlePlayerJoined = async (gameId, playerName, token, ws) => {
       players: getPlayersLean(gameId),
     },
   });
-  sendMessageGame(gameId, {
+  sendMessageAll(gameId, {
     command: 'player_joined',
     payload: {
       playerName,
@@ -153,8 +153,9 @@ const handlePlayerJoined = async (gameId, playerName, token, ws) => {
   });
 };
 
-const handlePlayerLeft = (gameId, playerName, code) => {
-  const newStatus = code === 10005 ? 'quit' : 'disconnected';
+const handlePlayerConnectionClosed = (gameId, playerName, code) => {
+  // code === 10005
+  const newStatus = 'disconnected';
   updatePlayerStatus(gameId, playerName, newStatus);
   messagePlayerStatus(gameId, playerName, newStatus);
 };
@@ -177,7 +178,7 @@ const handleTurnStart = (gameId) => {
     command: 'game_set_guess',
     payload: {},
   });
-  sendMessageGame(gameId, { command: 'game_turn_start', payload: '' });
+  sendMessageAll(gameId, { command: 'game_turn_start', payload: '' });
 };
 
 const handleWordsSubmitted = (gameId, playerName, words) => {
@@ -204,11 +205,11 @@ const setGameFinished = (gameId) => {
       highscore = player.score;
     }
   }
-  sendMessageGame(gameId, {
+  sendMessageAll(gameId, {
     command: 'game_player_list',
     payload: { players: getPlayersLean(gameId) },
   });
-  sendMessageGame(gameId, {
+  sendMessageAll(gameId, {
     command: 'game_finished',
     payload: { winner, score: highscore },
   });
@@ -248,13 +249,13 @@ const setNextTurn = (gameId, finishedRound) => {
       return word;
     });
     game.currentRound++;
-    sendMessageGame(gameId, {
+    sendMessageAll(gameId, {
       command: 'game_next_round',
       payload: { roundNo: game.currentRound },
     });
   }
 
-  sendMessageGame(gameId, {
+  sendMessageAll(gameId, {
     command: 'game_player_list',
     payload: { players: getPlayersLean(gameId) },
   });
@@ -277,7 +278,7 @@ const handleTurnFinished = (gameId, words, timeLeft) => {
   playerG.score += points;
   playerE.score += points;
 
-  sendMessageGame(gameId, {
+  sendMessageAll(gameId, {
     command: 'player_words_guessed',
     payload: {
       points,
@@ -318,7 +319,17 @@ const handleShuffelPlayers = (gameId) => {
     else players[i].activity = 'none';
   }
 
-  sendMessageGame(gameId, {
+  sendMessageAll(gameId, {
+    command: 'game_player_list',
+    payload: { players: getPlayersLean(gameId) },
+  });
+};
+
+const handleRemovePlayer = (gameId, playerName) => {
+  const game = games.get(gameId);
+  game.players = game.players.filter((player) => player.name !== playerName);
+
+  sendMessageAll(gameId, {
     command: 'game_player_list',
     payload: { players: getPlayersLean(gameId) },
   });
@@ -362,6 +373,9 @@ const messageHandler = (message, ws) => {
     case 'game_shuffel_players':
       handleShuffelPlayers(message.gameId);
       break;
+    case 'game_remove_player':
+      handleRemovePlayer(message.gameId, message.payload.playerName);
+      break;
     default:
       console.log('unknown command', message.command);
   }
@@ -380,7 +394,7 @@ const init = (server) => {
 
       ws.on('close', (code) => {
         console.log('innerclose:', code);
-        handlePlayerLeft(ws.gameId, ws.playerName, code);
+        handlePlayerConnectionClosed(ws.gameId, ws.playerName, code);
       });
 
       ws.on('error', (data) => {
