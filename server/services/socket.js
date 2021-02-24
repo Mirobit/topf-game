@@ -289,7 +289,6 @@ const handleTurnFinished = (gameId, words, timeLeft) => {
   });
 
   let roundFinished = true;
-  // TODO: handle duplicates
   for (const word of game.words) {
     if (!word.guessed) {
       roundFinished = false;
@@ -333,6 +332,7 @@ const handleRemovePlayer = (gameId, playerName) => {
     command: 'game_player_list',
     payload: { players: getPlayersLean(gameId) },
   });
+  // TODO: Update db
 };
 
 const messageHandler = (message, ws) => {
