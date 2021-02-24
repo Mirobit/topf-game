@@ -430,3 +430,12 @@ body {
 .help-icon:active .tooltiptext {
   visibility: visible;
 }
+
+.notification {
+  margin: auto;
+  margin-top: 15px;
+}
+#message {
+  margin-left: 0px;
+  margin-right: 0px;
+}
