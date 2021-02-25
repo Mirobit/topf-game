@@ -357,7 +357,7 @@ const messageHandler = (message, ws) => {
       break;
     case 'player_joined':
       console.log(message);
-      handlePlayerJoineds(
+      handlePlayerJoined(
         message.gameId,
         message.playerName,
         message.payload.token,
@@ -389,14 +389,14 @@ const handleError = (error, ws) => {
     if (process.env.NODE_ENV === 'development') console.log(error);
     else logger.info(error);
   }
-  try {
-    sendMessagePlayer(ws.gameId, ws.playerName, {
-      command: 'error',
-      payload: { message: 'Unexpected error. Server closed the connection' },
-    });
-  } catch (err) {
-    // Do nothing
-  }
+  // try {
+  //   sendMessagePlayer(ws.gameId, ws.playerName, {
+  //     command: 'error',
+  //     payload: { message: 'Unexpected error. Server closed the connection' },
+  //   });
+  // } catch (err) {
+  //   // Do nothing
+  // }
   try {
     ws.close();
   } catch (err) {

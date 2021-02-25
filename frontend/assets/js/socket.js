@@ -12,9 +12,7 @@ const initWs = (mH) => {
 
   ws = new WebSocket(socketUrl);
 
-  console.log('init ws');
   ws.onopen = () => {
-    console.log('ws open');
     ws.send(
       JSON.stringify({
         playerName: Store.player.name,
@@ -26,12 +24,18 @@ const initWs = (mH) => {
   };
 
   ws.onerror = (error) => {
-    displayNotification(false, 'Server closed connection');
+    displayNotification(
+      false,
+      'Unexpected server error. Server closed connection'
+    );
     console.log('errror:', error);
   };
 
   ws.onclose = () => {
-    console.log('connection cloed');
+    displayNotification(
+      false,
+      'Unexpected server error. Server closed connection'
+    );
   };
 
   ws.onmessage = (message) => {
