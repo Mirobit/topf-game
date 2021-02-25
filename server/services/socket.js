@@ -1,10 +1,11 @@
 import WebSocket from 'ws';
+import pino from 'pino';
 
 import * as gamesServices from './games.js';
 import { verifyToken } from './auth.js';
 import { hash } from '../utils/crypter.js';
-import asyncWrap from '../middleware/asyncWrap.js';
 
+const logger = pino('./error.log');
 const games = new Map();
 let wss;
 
@@ -356,7 +357,7 @@ const messageHandler = (message, ws) => {
       break;
     case 'player_joined':
       console.log(message);
-      handlePlayerJoined(
+      handlePlayerJoineds(
         message.gameId,
         message.playerName,
         message.payload.token,
@@ -381,29 +382,51 @@ const messageHandler = (message, ws) => {
   }
 };
 
+const handleError = (error, ws) => {
+  let { message } = error;
+  if (!error.status) {
+    message = 'server';
+    if (process.env.NODE_ENV === 'development') console.log(error);
+    else logger.info(error);
+  }
+  try {
+    sendMessagePlayer(ws.gameId, ws.playerName, {
+      command: 'error',
+      payload: { message: 'Unexpected error. Server closed the connection' },
+    });
+  } catch (err) {
+    // Do nothing
+  }
+  try {
+    ws.close();
+  } catch (err) {
+    // Do nothing
+  }
+};
+
 const init = (server) => {
   wss = new WebSocket.Server({ server });
-  try {
-    wss.on('connection', (ws) => {
-      console.log('new connection');
-
-      ws.on('message', (message) => {
+  wss.on('connection', (ws) => {
+    ws.on('message', (message) => {
+      try {
         console.log('message from', JSON.parse(message));
         messageHandler(JSON.parse(message), ws);
-      });
-
-      ws.on('close', (code) => {
+      } catch (error) {
+        handleError(error, ws);
+      }
+    });
+    ws.on('close', (code) => {
+      try {
         console.log('innerclose:', code);
         handlePlayerConnectionClosed(ws.gameId, ws.playerName, code);
-      });
-
-      ws.on('error', (data) => {
-        console.log('innererror', data);
-      });
+      } catch (error) {
+        handleError(error, ws);
+      }
     });
-  } catch ($e) {
-    console.log('caught ws error');
-  }
+    ws.on('error', (data) => {
+      console.log('innererror', data);
+    });
+  });
   wss.on('error', (error) => {
     console.log(error);
   });
