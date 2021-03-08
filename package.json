@@ -11,21 +11,21 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.18",
+    "mongoose": "^5.11.19",
     "pino": "^6.11.1",
-    "ws": "^7.4.3"
+    "ws": "^7.4.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^7.20.0",
+    "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^24.1.5",
+    "eslint-plugin-jest": "^24.1.9",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-security": "^1.4.0",
     "jest": "^26.6.3",
-    "playwright-chromium": "^1.9.0",
+    "playwright-chromium": "^1.9.1",
     "prettier": "^2.2.1"
   },
   "scripts": {
