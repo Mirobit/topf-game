@@ -28,7 +28,7 @@ const join = async (gameId, playerName, gamePassword, oldToken) => {
 
   let payload;
   if (oldToken) {
-    console.log('gameservives oltokre', oldToken);
+    console.log('gameservives old token', oldToken);
     payload = verifyToken(gameId, playerName, oldToken);
   }
 

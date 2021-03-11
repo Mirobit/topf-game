@@ -416,17 +416,23 @@ const initGameLobby = async () => {
   Store.gamePage.hidden = false;
 };
 
-const joinGame = async () => {
-  const playerName = document.getElementById('loginPlayerName').value;
-  const gamePassword = document.getElementById('loginGamePassword').value;
+const parseJWT = (token) => {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
+const joinGame = async (playerName, gamePassword, token = null) => {
+  console.log('joinign', playerName);
   const result = await sendData('/game/join', 'POST', {
     gameId: Store.game.id,
     playerName,
     gamePassword,
-    token: localStorage.getItem(Store.game.id),
+    token,
   });
-  console.log('this', result);
+
   if (result.status === 200) {
     Store.game = result.data.game;
     Store.player.name = playerName;
@@ -442,12 +448,33 @@ const joinGame = async () => {
   }
 };
 
+const handleJoinGame = async () => {
+  const playerName = document.getElementById('loginPlayerName').value;
+  const gamePassword = document.getElementById('loginGamePassword').value;
+
+  joinGame(playerName, gamePassword);
+};
+
 const init = async () => {
   Store.game.id = window.location.pathname.replace('/', '');
-  document.title = `TopfGame - Join Game`;
-  // TODO check if pw
-  document.getElementById('joinGameButton').onclick = joinGame;
-  document.getElementById('joinGameForm').hidden = false;
+  const token = localStorage.getItem(Store.game.id);
+
+  if (token) {
+    const jwtPayload = parseJWT(token);
+    if (jwtPayload === null) {
+      displayNotification(
+        false,
+        'Invalid player token. Please delete your local browser storage'
+      );
+      return;
+    }
+    joinGame(jwtPayload.playerName, '', token);
+  } else {
+    document.title = `TopfGame - Join Game`;
+    // TODO check if pw
+    document.getElementById('joinGameButton').onclick = handleJoinGame;
+    document.getElementById('joinGameForm').hidden = false;
+  }
 };
 
 const close = () => {
