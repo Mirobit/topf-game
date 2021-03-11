@@ -2,21 +2,22 @@ import jwt from 'jsonwebtoken';
 import { AuthError } from '../utils/errors.js';
 
 const verifyToken = (gameId, playerName, token) => {
-  jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
-    if (error) {
-      if (error.name === 'TokenExpiredError') {
-        throw new AuthError('Sessions expired, please login');
-      } else {
-        console.log(error);
-        throw new AuthError('Invalid session, please logout');
+  // TODO make promise
+  return new Promise((resolve) => {
+    jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
+      if (error) {
+        if (error.name === 'TokenExpiredError') {
+          throw new AuthError('Sessions expired, please login');
+        } else {
+          throw new AuthError('Invalid session, please logout');
+        }
+      } else if (payload.playerName !== playerName) {
+        throw new AuthError('Different player name');
+      } else if (payload.gameId !== gameId) {
+        throw new AuthError('Invalid game');
       }
-    } else if (payload.playerName !== playerName) {
-      throw new AuthError('Invalid user');
-    } else if (payload.gameId !== gameId) {
-      console.log(payload, gameId);
-      throw new AuthError('Invalid game');
-    }
-    return payload;
+      resolve(payload);
+    });
   });
 };
 

@@ -4,15 +4,13 @@ import * as gamesService from '../../services/games.js';
 
 const router = express.Router();
 // Single
-// router.get('/:gameId', async (req, res) => {
-//   try {
-//     const game = await gamesService.get(req.params.gameId);
-//     res.json({ status: true, game });
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ status: false });
-//   }
-// });
+router.get(
+  '/:gameId',
+  asyncWrap(async (req, res) => {
+    const game = await gamesService.get(req.params.gameId);
+    res.json({ status: 200, payload: game });
+  })
+);
 
 // List
 // router.get('/', async (req, res) => {
@@ -74,7 +72,7 @@ router.post(
     const data = await gamesService.join(
       req.body.gameId,
       req.body.playerName,
-      req.body.password,
+      req.body.gamePassword,
       req.body.token
     );
     res.json({ status: 200, data });

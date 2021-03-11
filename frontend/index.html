@@ -207,17 +207,6 @@
 
         <div id="gameWrapper" class="row">
           <div id="joinGameForm" hidden>
-            <div class="form-bottom" id="loginPassword" hidden>
-              <input
-                type="password"
-                class="form-control form-control-alternative"
-                placeholder="Game password"
-                id="loginGamePassword"
-                aria-describedby="loginGamePasswordHelp"
-                minlength="4"
-                autofocus
-              />
-            </div>
             <div class="form-bottom player-name-input">
               <input
                 type="text"
@@ -226,6 +215,22 @@
                 id="loginPlayerName"
                 aria-describedby="loginPlayerNameHelp"
                 maxlength="10"
+                autofocus
+              />
+            </div>
+            <div
+              class="form-bottom player-name-input"
+              id="loginPassword"
+              hidden
+            >
+              <input
+                type="password"
+                class="form-control form-control-alternative"
+                placeholder="Game password"
+                id="loginGamePassword"
+                aria-describedby="loginGamePasswordHelp"
+                minlength="4"
+                autocomplete="off"
               />
             </div>
             <div class="center-h">

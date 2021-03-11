@@ -4,12 +4,12 @@ import { createToken, verifyToken } from './auth.js';
 import { ValError } from '../utils/errors.js';
 
 const get = async (id) => {
-  try {
-    const game = await Game.findById(id);
-    return game;
-  } catch (error) {
-    throw new Error(error.message);
+  const game = await Game.findById(id).lean();
+  if (!game) {
+    throw new ValError('Game does not exists');
   }
+  const hasPassword = game.password !== '';
+  return { name: game.name, hasPassword };
 };
 
 const create = async (data) => {
@@ -22,14 +22,18 @@ const create = async (data) => {
 const join = async (gameId, playerName, gamePassword, oldToken) => {
   let game = await Game.findById(gameId);
 
-  if (game.password && hash(gamePassword) !== game.password) {
-    throw new ValError('Invalid game password');
+  if (!game) {
+    throw new ValError('Game does not exists');
   }
 
   let payload;
   if (oldToken) {
     console.log('gameservives old token', oldToken);
-    payload = verifyToken(gameId, playerName, oldToken);
+    payload = await verifyToken(gameId, playerName, oldToken);
+  }
+
+  if (game.password && !payload && hash(gamePassword) !== game.password) {
+    throw new ValError('Invalid game password');
   }
 
   let role = 'user';

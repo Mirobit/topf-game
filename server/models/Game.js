@@ -20,6 +20,7 @@ const gameSchema = new Schema(
     password: {
       type: String,
       required: false,
+      default: '',
     },
     videoLink: {
       type: String,

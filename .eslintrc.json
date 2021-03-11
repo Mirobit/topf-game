@@ -19,6 +19,7 @@
     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
     "import/extensions": "off",
     "func-names": "off",
+    "arrow-body-style": "off",
     "no-restricted-syntax": "off",
     "import/prefer-default-export": "off",
     "no-param-reassign": "off", //["error", { "props": false }],

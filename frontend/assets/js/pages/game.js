@@ -1,4 +1,4 @@
-import { sendData } from '../api.js';
+import { sendData, getData } from '../api.js';
 import { closeConnection, sendMessage, initWs } from '../socket.js';
 import Store from '../store.js';
 import {
@@ -425,7 +425,6 @@ const parseJWT = (token) => {
 };
 
 const joinGame = async (playerName, gamePassword, token = null) => {
-  console.log('joinign', playerName);
   const result = await sendData('/game/join', 'POST', {
     gameId: Store.game.id,
     playerName,
@@ -443,7 +442,6 @@ const joinGame = async (playerName, gamePassword, token = null) => {
     initWs(gameMessageHandler);
     localStorage.setItem(Store.game.id, result.data.token);
   } else {
-    console.log(result.status);
     displayNotification(false, result.message);
   }
 };
@@ -470,8 +468,11 @@ const init = async () => {
     }
     joinGame(jwtPayload.playerName, '', token);
   } else {
-    document.title = `TopfGame - Join Game`;
-    // TODO check if pw
+    const { payload: game } = await getData(`/game/${Store.game.id}`);
+    document.title = `TopfGame - Join: ${game.name}`;
+    if (game.hasPassword) {
+      document.getElementById('loginPassword').hidden = false;
+    }
     document.getElementById('joinGameButton').onclick = handleJoinGame;
     document.getElementById('joinGameForm').hidden = false;
   }
