@@ -11,21 +11,21 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.0",
+    "mongoose": "^5.12.2",
     "pino": "^6.11.2",
     "ws": "^7.4.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^7.22.0",
+    "eslint": "^7.23.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^24.3.1",
+    "eslint-plugin-jest": "^24.3.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-security": "^1.4.0",
     "jest": "^26.6.3",
-    "playwright-chromium": "^1.9.2",
+    "playwright-chromium": "^1.10.0",
     "prettier": "^2.2.1"
   },
   "scripts": {
@@ -33,6 +33,7 @@
     "start": "node server/app.js",
     "dev": "cross-env NODE_ENV=development nodemon --ignore 'frontend/' server/app.js",
     "prod": "pm2 start server/app.js --env production",
+    "docker-scan": "docker scan --file Dockerfile",
     "test-e2e": "jest",
     "bundle-js": "./node_modules/.bin/esbuild frontend/assets/js/index.js --bundle --minify --outfile=dist/assets/js/index.js --target=es2020",
     "build-frontend": "rm -rf dist && cp -r ./frontend ./dist && rm -rf dist/assets/js && npm run bundle-js"
