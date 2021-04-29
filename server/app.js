@@ -23,6 +23,7 @@ const start = async () => {
     console.log('Connected to mongo');
   } catch (error) {
     console.error('Error connecting to mongo', error);
+    process.exit(0);
   }
 
   const app = express();
@@ -43,6 +44,7 @@ const start = async () => {
     );
   } catch (error) {
     console.error('Could not start server', error);
+    process.exit(0);
   }
 };
 
