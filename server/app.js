@@ -44,12 +44,6 @@ const start = async () => {
   } catch (error) {
     console.error('Could not start server', error);
   }
-
-  process.on('uncaughtException', (err) => {
-    console.log('**************************');
-    console.log('* [process.on(uncaughtException)]: err:', err);
-    console.log('**************************');
-  });
 };
 
 start();
