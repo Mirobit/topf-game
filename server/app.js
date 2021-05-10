@@ -1,4 +1,4 @@
-import 'dotenv/config.js';
+import 'dotenv/config';
 
 import http from 'http';
 import path from 'path';
