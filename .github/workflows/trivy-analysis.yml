@@ -1,6 +1,8 @@
 name: Trivy Docker Analysis
 on:
   push:
+    branches:
+      - main
     paths:
       - 'Dockerfile'
       - 'package.json'
