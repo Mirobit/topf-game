@@ -30,9 +30,9 @@ const start = async () => {
   const server = http.createServer(app);
 
   wssInit(server);
-
-  app.use(express.json());
+  
   app.use(security);
+  app.use(express.json());
   app.use(express.static(path.join(dirname, '../../frontend')));
   app.use(routes);
   app.use(errorHandler);
