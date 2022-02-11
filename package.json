@@ -13,7 +13,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.1",
     "pino": "^7.6.5",
-    "ws": "^7.4.6"
+    "ws": "^8.5.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
