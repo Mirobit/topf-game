@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import WebSocket, { WebSocketServer } from 'ws';
 import pino from 'pino';
 
 import * as gamesServices from './games.js';
@@ -405,7 +405,7 @@ const handleError = (error, ws) => {
 };
 
 const init = (server) => {
-  wss = new WebSocket.Server({ server });
+  wss = new WebSocketServer({ server });
   wss.on('connection', (ws) => {
     ws.on('message', (message) => {
       try {
