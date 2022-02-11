@@ -1,6 +1,6 @@
 import 'dotenv/config.js';
 
-import play from 'playwright-chromium';
+import { chromium } from 'playwright-chromium';
 
 let browserAdmin;
 let browserPlayer1;
@@ -14,7 +14,7 @@ let gameUrl = '';
 
 beforeAll(async () => {
   // { headless: false, slowMo: 50 }
-  browserAdmin = await play.chromium.launch();
+  browserAdmin = await chromium.launch();
   browserPlayer1 = await browserAdmin.newContext();
   browserPlayer2 = await browserAdmin.newContext();
 
