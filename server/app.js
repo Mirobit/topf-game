@@ -14,12 +14,7 @@ import dirname from './utils/dirname.cjs';
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    });
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to mongo');
   } catch (error) {
     console.error('Error connecting to mongo');
