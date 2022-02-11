@@ -22,8 +22,8 @@ const start = async () => {
     });
     console.log('Connected to mongo');
   } catch (error) {
-    console.error('Error connecting to mongo', error);
-    process.exit(0);
+    console.error('Error connecting to mongo');
+    throw (error);
   }
 
   const app = express();
@@ -43,8 +43,8 @@ const start = async () => {
       `Server is up and running: http://localhost:${process.env.PORT}`
     );
   } catch (error) {
-    console.error('Could not start server', error);
-    process.exit(0);
+    console.error('Could not start server');
+    throw (error);
   }
 };
 
